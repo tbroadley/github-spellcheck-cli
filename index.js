@@ -1,7 +1,23 @@
+const Git = require('nodegit');
+const tmp = require('tmp-promise');
+
 const { getMisspellings } = require('./lib/spellcheck');
 
-const document = 'The quikc (brown) foxx jumps ovr teh lazy dgo...';
-getMisspellings(document)
-  .then(result => {
-    console.log(JSON.stringify(result, null, 2));
-  });
+const [user, repo] = process.argv[2].split('/');
+
+console.log('Creating temporary directory...');
+tmp.dir({ unsafeCleanup: true })
+  .then(({ path }) => {
+    const url = `https://github.com/${user}/${repo}.git`;
+    console.log(`Cloning ${url}...`);
+    return Git.Clone(url, path);
+  }).then(repo => {
+    console.log('Getting the last commit from the master branch...');
+    return repo.getMasterCommit();
+  }).then(master => {
+    console.log('Getting README.md from the master branch...');
+    return master.getEntry('README.md');
+  }).then(entry => entry.getBlob())
+  .then(blob => {
+    return getMisspellings(blob.toString()).then(result => console.log(result));
+  }).catch(error => console.error(error));

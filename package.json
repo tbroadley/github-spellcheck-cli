@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.4",
-    "spellchecker": "^3.4.4"
+    "nodegit": "^0.20.3",
+    "spellchecker": "^3.4.4",
+    "tmp-promise": "^1.0.4"
   },
   "devDependencies": {
     "chai": "^4.1.2",
