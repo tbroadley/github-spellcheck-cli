@@ -70,7 +70,11 @@ tmp.dir({ unsafeCleanup: true })
     console.log('Spell-checking the remaining files...');
     return Promise.all(_.map(matchedTreeEntries, entry => {
       return entry.getBlob()
-        .then(blob => getMisspellings(blob.toString()));
+        .then(blob => getMisspellings(blob.toString()))
+        .then(misspellings => _.map(misspellings, misspelling => _.assign({}, misspelling, {
+          path: entry.path(),
+        })));
     }));
-  }).then(result => console.log(result))
+  }).then(_.flatten)
+  .then(result => console.log(result))
   .catch(error => console.error(error));
