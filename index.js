@@ -38,7 +38,7 @@ tmp.dir({ unsafeCleanup: true })
       walker.start();
     });
   }).then(treeEntries => {
-    console.log('Filtering the list of files to only include Markdown and text files...');
+    console.log(`Filtering the list to only include files with extensions '${extensions.join(', ')}'...`);
     return _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()))
   }).then(matchedTreeEntries => {
     console.log('Spell-checking the remaining files...');
