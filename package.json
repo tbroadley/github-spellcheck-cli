@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "command-line-args": "^4.0.7",
     "lodash": "^4.17.4",
     "nodegit": "^0.20.3",
     "spellchecker": "^3.4.4",

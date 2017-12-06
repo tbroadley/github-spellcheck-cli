@@ -1,10 +1,18 @@
+const commandLineArgs = require('command-line-args');
 const _ = require('lodash');
 const Git = require('nodegit');
 const tmp = require('tmp-promise');
 
 const { getMisspellings } = require('./lib/spellcheck');
 
-const [user, repo] = process.argv[2].split('/');
+const optionDefinitions = [
+  { name: 'repository', alias: 'r', defaultOption: true },
+];
+const {
+  repository: userAndRepo,
+} = commandLineArgs(optionDefinitions);
+
+const [user, repo] = userAndRepo.split('/');
 
 console.log('Creating a temporary directory...');
 tmp.dir({ unsafeCleanup: true })
