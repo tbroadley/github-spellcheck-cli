@@ -9,7 +9,7 @@ console.log('Creating temporary directory...');
 tmp.dir({ unsafeCleanup: true })
   .then(({ path }) => {
     const url = `https://github.com/${user}/${repo}.git`;
-    console.log(`Cloning ${url}...`);
+    console.log(`Cloning ${url} into temporary directory...`);
     return Git.Clone(url, path);
   }).then(repo => {
     console.log('Getting the last commit from the master branch...');
