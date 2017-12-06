@@ -3,6 +3,7 @@ const _ = require('lodash');
 const Git = require('nodegit');
 const tmp = require('tmp-promise');
 
+const { filterByUserSelection } = require('./lib/filter-by-user-selection');
 const { getMisspellings } = require('./lib/spellcheck');
 
 const optionDefinitions = [
@@ -21,6 +22,9 @@ const {
 const [user, repo] = userAndRepo.split('/');
 const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
+let nodeGitRepo;
+let masterCommit;
+
 console.log('Creating a temporary directory...');
 tmp.dir({ unsafeCleanup: true })
   .then(({ path }) => {
@@ -28,11 +32,13 @@ tmp.dir({ unsafeCleanup: true })
     console.log(`Cloning ${url} into the temporary directory...`);
     return Git.Clone(url, path);
   }).then(repo => {
+    nodeGitRepo = repo;
     console.log('Getting the last commit from the master branch...');
     return repo.getMasterCommit();
-  }).then(masterCommit => {
+  }).then(commit => {
+    masterCommit = commit;
     console.log('Getting the state of the working tree...');
-    return masterCommit.getTree();
+    return commit.getTree();
   }).then(tree => {
     console.log('Getting a list of files in the working tree...');
     return new Promise((resolve, reject) => {
@@ -68,6 +74,7 @@ tmp.dir({ unsafeCleanup: true })
     return _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()))
   }).then(matchedTreeEntries => {
     console.log('Spell-checking the remaining files...');
+    console.log();
     return Promise.all(_.map(matchedTreeEntries, entry => {
       return entry.getBlob()
         .then(blob => getMisspellings(blob.toString()))
@@ -76,5 +83,6 @@ tmp.dir({ unsafeCleanup: true })
         })));
     }));
   }).then(_.flatten)
+  .then(misspellings => filterByUserSelection(misspellings, nodeGitRepo, masterCommit))
   .then(result => console.log(result))
   .catch(error => console.error(error));
