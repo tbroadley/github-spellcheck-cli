@@ -7,12 +7,15 @@ const { getMisspellings } = require('./lib/spellcheck');
 
 const optionDefinitions = [
   { name: 'repository', alias: 'r', defaultOption: true },
+  { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'] },
 ];
 const {
   repository: userAndRepo,
+  extensions,
 } = commandLineArgs(optionDefinitions);
 
 const [user, repo] = userAndRepo.split('/');
+const extensionRegex = new RegExp(`\.(${extensions.join('|')})$`);
 
 console.log('Creating a temporary directory...');
 tmp.dir({ unsafeCleanup: true })
@@ -36,7 +39,7 @@ tmp.dir({ unsafeCleanup: true })
     });
   }).then(treeEntries => {
     console.log('Filtering the list of files to only include Markdown and text files...');
-    return _.filter(treeEntries, treeEntry => /\.(md|txt)$/.test(treeEntry.path()))
+    return _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()))
   }).then(matchedTreeEntries => {
     console.log('Spell-checking the remaining files...');
     return Promise.all(_.map(matchedTreeEntries, entry => {
