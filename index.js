@@ -19,5 +19,7 @@ tmp.dir({ unsafeCleanup: true })
     return master.getEntry('README.md');
   }).then(entry => entry.getBlob())
   .then(blob => {
-    return getMisspellings(blob.toString()).then(result => console.log(result));
-  }).catch(error => console.error(error));
+    console.log('Getting misspelled words in README.md...');
+    return getMisspellings(blob.toString());
+  }).then(result => console.log(result))
+  .catch(error => console.error(error));
