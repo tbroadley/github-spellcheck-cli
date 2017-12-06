@@ -8,10 +8,14 @@ const { getMisspellings } = require('./lib/spellcheck');
 const optionDefinitions = [
   { name: 'repository', alias: 'r', defaultOption: true },
   { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'] },
+  { name: 'include', multiple: true, defaultValue: [] },
+  { name: 'exclude', multiple: true, defaultValue: [] },
 ];
 const {
   repository: userAndRepo,
   extensions,
+  include,
+  exclude,
 } = commandLineArgs(optionDefinitions);
 
 const [user, repo] = userAndRepo.split('/');
@@ -37,6 +41,28 @@ tmp.dir({ unsafeCleanup: true })
       walker.on('error', reject);
       walker.start();
     });
+  }).then(treeEntries => {
+    if (!_.isEmpty(include)) {
+      console.log('Filtering the list to only include files that match the regexes specified with the --include option...');
+      return _.filter(treeEntries, treeEntry => {
+        return _(include)
+          .map(reString => new RegExp(reString))
+          .some(re => re.test(treeEntry.path()));
+      });
+    } else {
+      return treeEntries;
+    }
+  }).then(treeEntries => {
+    if (!_.isEmpty(exclude)) {
+      console.log('Excluding files that match the regexes specified with the --exclude option...');
+      return _.reject(treeEntries, treeEntry => {
+        return _(exclude)
+          .map(reString => new RegExp(reString))
+          .some(re => re.test(treeEntry.path()));
+      });
+    } else {
+      return treeEntries;
+    }
   }).then(treeEntries => {
     console.log(`Filtering the list to only include files with extensions '${extensions.join(', ')}'...`);
     return _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()))
