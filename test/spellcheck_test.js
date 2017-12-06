@@ -98,16 +98,16 @@ Code boock with language and space
     );
   });
 
-  it('should handle HTML tags correctly', () => {
+  it('should handle HTML elements correctly', () => {
     const document = `
-<table>
-  <th>
+<table keyy='valuet'>
+  <th anotherkey=val>
     <td>
       Hello
     </td>
   </th>
   <tr>
-    <td>
+    <td key="valueindoublequotes">
       Wrold
     </td>
   </tr>
@@ -115,12 +115,23 @@ Code boock with language and space
 
 Mistak
     `;
-    const misspellings = ['table', 'th', 'td', 'Wrold', 'Mistak'];
+    const misspellings = [
+      'table',
+      'keyy',
+      'valuet',
+      'anotherkey',
+      'val',
+      'valueindoublequotes',
+      'th',
+      'td',
+      'Wrold',
+      'Mistak'
+    ];
     const indices = buildIndicesFromWords(document, misspellings);
     const suggestions = [];
     const { getMisspellings } = mockSpellchecker(indices, _.constant(suggestions));
     return getMisspellings(document).should.eventually.deep.equal(
-      _.map([indices[3], indices[4]], index => ({
+      _.map([indices[8], indices[9]], index => ({
         index,
         misspelling: document.substring(index.start, index.end),
         suggestions: [],
