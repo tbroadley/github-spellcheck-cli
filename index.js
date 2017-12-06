@@ -15,7 +15,7 @@ const {
 } = commandLineArgs(optionDefinitions);
 
 const [user, repo] = userAndRepo.split('/');
-const extensionRegex = new RegExp(`\.(${extensions.join('|')})$`);
+const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
 console.log('Creating a temporary directory...');
 tmp.dir({ unsafeCleanup: true })
