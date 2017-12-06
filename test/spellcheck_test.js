@@ -97,4 +97,34 @@ Code boock with language and space
       }))
     );
   });
-})
+
+  it('should handle HTML tags correctly', () => {
+    const document = `
+<table>
+  <th>
+    <td>
+      Hello
+    </td>
+  </th>
+  <tr>
+    <td>
+      Wrold
+    </td>
+  </tr>
+</table>
+
+Mistak
+    `;
+    const misspellings = ['table', 'th', 'td', 'Wrold', 'Mistak'];
+    const indices = buildIndicesFromWords(document, misspellings);
+    const suggestions = [];
+    const { getMisspellings } = mockSpellchecker(indices, _.constant(suggestions));
+    return getMisspellings(document).should.eventually.deep.equal(
+      _.map([indices[3], indices[4]], index => ({
+        index,
+        misspelling: document.substring(index.start, index.end),
+        suggestions: [],
+      }))
+    );
+  });
+});
