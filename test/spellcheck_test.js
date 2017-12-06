@@ -28,7 +28,7 @@ describe('getMisspellings', () => {
     return getMisspellings('Test sentence').should.eventually.deep.equal([]);
   });
 
-  it('should a single misspelling given a sentence with one misspelling', () => {
+  it('should return a single misspelling given a sentence with one misspelling', () => {
     const indices = [{ start: 5, end: 12 }];
     const suggestions = ['sentence', 'sententious'];
     const { getMisspellings } = mockSpellchecker(indices, _.constant(suggestions));
@@ -39,5 +39,5 @@ describe('getMisspellings', () => {
         suggestions,
       },
     ]);
-  })
+  });
 })
