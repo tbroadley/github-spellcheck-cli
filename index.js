@@ -4,7 +4,7 @@ const { Clone, Diff } = require('nodegit');
 const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
-const { addByUserSelection } = require('./lib/filter-by-user-selection');
+const { addByUserSelection } = require('./lib/add-by-user-selection');
 const { getMisspellings } = require('./lib/spellcheck');
 
 async function go() {
