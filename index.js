@@ -92,7 +92,7 @@ async function go() {
     }
   } else {
     console.log();
-    console.log('No corrections added. Exiting...');
+    console.log(chalk.red('No corrections added. Exiting...'));
   }
 
   prompt.finish();
