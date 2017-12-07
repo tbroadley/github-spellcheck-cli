@@ -1,6 +1,7 @@
 const commandLineArgs = require('command-line-args');
 const _ = require('lodash');
 const { Clone, Diff } = require('nodegit');
+const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
 const { addByUserSelection } = require('./lib/filter-by-user-selection');
@@ -71,6 +72,23 @@ async function go() {
   }));
 
   await addByUserSelection(_.flatten(misspellingsByFile), repo);
+
+  const diff = await Diff.treeToWorkdir(repo, tree);
+  const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
+
+  console.log();
+  console.log(diffBuf);
+
+  const response = await prompt('Are you sure you want to create a pull request with these corrections? y(es), n(o): ')
+
+  switch (response) {
+    case 'y':
+    case 'yes':
+      // Create pull request
+      break;
+  }
+
+  prompt.finish();
 }
 
 go();
