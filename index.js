@@ -74,18 +74,24 @@ async function go() {
   await addByUserSelection(_.flatten(misspellingsByFile), repo);
 
   const diff = await Diff.treeToWorkdir(repo, tree);
-  const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
 
-  console.log();
-  console.log(diffBuf);
+  if (diff.numDeltas() > 0) {
+    const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
 
-  const response = await prompt('Are you sure you want to create a pull request with these corrections? y(es), n(o): ')
+    console.log();
+    console.log(diffBuf);
 
-  switch (response) {
-    case 'y':
-    case 'yes':
-      // Create pull request
-      break;
+    const response = await prompt('Are you sure you want to create a pull request with these corrections? y(es), n(o): ')
+
+    switch (response) {
+      case 'y':
+      case 'yes':
+        // Create pull request
+        break;
+    }
+  } else {
+    console.log();
+    console.log('No corrections added. Exiting...');
   }
 
   prompt.finish();
