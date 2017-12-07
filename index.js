@@ -7,6 +7,7 @@ const tmp = require('tmp-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
 const { getMisspellings } = require('./lib/spellcheck');
+const { respondToUserInput } = require('./lib/user-input');
 
 async function go() {
   const optionDefinitions = [
@@ -82,14 +83,19 @@ async function go() {
     console.log();
     console.log(diffBuf);
 
-    const response = await prompt(chalk.blue('Are you sure you want to create a pull request with these corrections? y(es), n(o): '));
-
-    switch (response) {
-      case 'y':
-      case 'yes':
-        // Create pull request
-        break;
-    }
+    await respondToUserInput(
+      'Are you sure you want to create a pull request with these corrections? y(es), n(o): ',
+      [
+        {
+          regex: /^y(es)?$/,
+          responseFunction: _.noop,
+        },
+        {
+          regex: /^n(o)?$/,
+          responseFunction: _.noop,
+        }
+      ]
+    );
   } else {
     console.log();
     console.log(chalk.red('No corrections added. Exiting...'));
