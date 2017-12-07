@@ -6,6 +6,7 @@ const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
+const { highlightDiff } = require('./lib/highlighting');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
@@ -81,7 +82,7 @@ async function go() {
     const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
 
     console.log();
-    console.log(diffBuf);
+    console.log(highlightDiff(diffBuf));
 
     await respondToUserInput(
       'Are you sure you want to create a pull request with these corrections? y(es), n(o): ',
