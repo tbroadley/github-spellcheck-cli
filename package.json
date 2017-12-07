@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.3.0",
     "command-line-args": "^4.0.7",
     "diff": "^3.4.0",
     "fs-extra": "^4.0.3",

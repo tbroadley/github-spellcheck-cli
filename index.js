@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const _ = require('lodash');
 const { Clone, Diff } = require('nodegit');
@@ -81,7 +82,7 @@ async function go() {
     console.log();
     console.log(diffBuf);
 
-    const response = await prompt('Are you sure you want to create a pull request with these corrections? y(es), n(o): ')
+    const response = await prompt(chalk.blue('Are you sure you want to create a pull request with these corrections? y(es), n(o): '));
 
     switch (response) {
       case 'y':
