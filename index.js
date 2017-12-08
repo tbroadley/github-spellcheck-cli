@@ -2,12 +2,13 @@ const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs-extra');
 const _ = require('lodash');
-const { Clone, Diff, Index } = require('nodegit');
+const { Clone, Diff, Index, Remote } = require('nodegit');
 const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
 const {
+  createPullRequest,
   findForkOfRepo,
   forkRepo,
   getAllReposForAuthenticatedUser,
@@ -150,6 +151,16 @@ async function go() {
             );
 
             console.log(`Commit ${newCommit} created.`);
+
+            const [remoteName] = await Remote.list(repo);
+            const remote = Remote.lookup(repo, remoteName);
+
+            console.log(`Pushing to remote "${remoteName}"...`);
+            await remote.push([`refs/heads/${branchName}`]);
+
+            console.log('Creating a pull request...');
+            const [sourceRepoUser, sourceRepoName] = userAndRepo.split('/');
+            await createPullRequest(sourceRepoUser, sourceRepoName, `${repoUser}:${branchName}`);
           },
         },
         {
