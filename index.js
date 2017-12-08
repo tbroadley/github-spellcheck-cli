@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const _ = require('lodash');
-const { Clone, Diff } = require('nodegit');
+const { Clone, Diff, Index } = require('nodegit');
 const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
@@ -89,7 +89,31 @@ async function go() {
       [
         {
           regex: /^y(es)?$/,
-          responseFunction: _.noop,
+          responseFunction: async () => {
+            const branchName = 'fix-typos';
+            console.log(`Creating a new branch "${branchName}"...`);
+            const newBranchRef = await repo.createBranch('fix-typos', commit, false);
+
+            const index = await repo.refreshIndex();
+
+            console.log('Adding all changes to the index...');
+            await index.addAll(['*'], Index.ADD_OPTION.ADD_DEFAULT);
+            await index.write();
+            const indexOid = await index.writeTree();
+
+            const signature = repo.defaultSignature();
+            console.log('Committing all changes...');
+            const newCommit = await repo.createCommit(
+              'HEAD',
+              signature,
+              signature,
+              'Fix typos',
+              indexOid,
+              [commit]
+            );
+
+            console.log(`Commit ${newCommit} created.`);
+          },
         },
         {
           regex: /^n(o)?$/,
