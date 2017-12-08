@@ -70,12 +70,13 @@ async function go() {
 
   const url = `https://github.com/${repoUser}/${repoName}.git`;
   console.log(`Cloning ${url} into the temporary directory...`);
+  const githubCredentialsOptions = {
+    callbacks: {
+      credentials: () => Cred.userpassPlaintextNew(process.env.GITHUB_TOKEN, 'x-oauth-basic'),
+    },
+  };
   const repo = await Clone(url, path, {
-    fetchOpts: {
-      callbacks: {
-        credentials: () => Cred.userpassPlaintextNew(process.env.GITHUB_TOKEN, 'x-oauth-basic'),
-      },
-    }
+    fetchOpts: githubCredentialsOptions,
   });
 
   console.log('Getting the last commit from the master branch...');
@@ -138,6 +139,9 @@ async function go() {
             console.log(`Creating a new branch "${branchName}"...`);
             const newBranchRef = await repo.createBranch('fix-typos', commit, false);
 
+            console.log(`Checking out "${branchName}"...`);
+            await repo.checkoutBranch(newBranchRef);
+
             const index = await repo.refreshIndex();
 
             console.log('Adding all changes to the index...');
@@ -159,14 +163,20 @@ async function go() {
             console.log(`Commit ${newCommit} created.`);
 
             const [remoteName] = await Remote.list(repo);
-            const remote = Remote.lookup(repo, remoteName);
+            const remote = await Remote.lookup(repo, remoteName);
 
             console.log(`Pushing to remote "${remoteName}"...`);
-            await remote.push([`refs/heads/${branchName}`]);
+            await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
             console.log('Creating a pull request...');
             const [sourceRepoUser, sourceRepoName] = userAndRepo.split('/');
-            await createPullRequest(sourceRepoUser, sourceRepoName, `${repoUser}:${branchName}`);
+            const pullRequest = await createPullRequest(
+              sourceRepoUser,
+              sourceRepoName,
+              `${repoUser}:${branchName}`
+            );
+
+            console.log(`Pull request #${pullRequest.number} created. You can view it here: ${pullRequest.html_url}`);
           },
         },
         {
