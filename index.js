@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs-extra');
 const _ = require('lodash');
-const { Clone, Diff, Index, Remote } = require('nodegit');
+const { Clone, Cred, Diff, Index, Remote } = require('nodegit');
 const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
@@ -70,7 +70,13 @@ async function go() {
 
   const url = `https://github.com/${repoUser}/${repoName}.git`;
   console.log(`Cloning ${url} into the temporary directory...`);
-  const repo = await Clone(url, path);
+  const repo = await Clone(url, path, {
+    fetchOpts: {
+      callbacks: {
+        credentials: () => Cred.userpassPlaintextNew(process.env.GITHUB_TOKEN, 'x-oauth-basic'),
+      },
+    }
+  });
 
   console.log('Getting the last commit from the master branch...');
   const commit = await repo.getMasterCommit();
