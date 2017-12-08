@@ -3,6 +3,7 @@ const commandLineArgs = require('command-line-args');
 const fs = require('fs-extra');
 const _ = require('lodash');
 const { Clone, Cred, Diff, Index, Remote } = require('nodegit');
+const opn = require('opn');
 const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
@@ -176,7 +177,8 @@ async function go() {
               `${repoUser}:${branchName}`
             );
 
-            console.log(`Pull request #${pullRequest.number} created. You can view it here: ${pullRequest.html_url}`);
+            console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
+            await opn(pullRequest.html_url);
           },
         },
         {
