@@ -1,36 +1,73 @@
 const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
+const fs = require('fs-extra');
 const _ = require('lodash');
 const { Clone, Diff, Index } = require('nodegit');
 const prompt = require('prompt-promise');
 const tmp = require('tmp-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
+const {
+  findForkOfRepo,
+  forkRepo,
+  getAllReposForAuthenticatedUser,
+} = require ('./lib/github');
 const { highlightDiff } = require('./lib/highlighting');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
 async function go() {
   const optionDefinitions = [
+    { name: 'token', alias: 't' },
     { name: 'repository', alias: 'r', defaultOption: true },
     { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'] },
     { name: 'include', multiple: true, defaultValue: [] },
     { name: 'exclude', multiple: true, defaultValue: [] },
   ];
   const {
+    token,
     repository: userAndRepo,
     extensions,
     include,
     exclude,
   } = commandLineArgs(optionDefinitions);
 
-  const [user, repoName] = userAndRepo.split('/');
+  if (token) {
+    await fs.writeFile('.env', `GITHUB_TOKEN=${token}`);
+  }
+  require('dotenv').config();
+
+  let [repoUser, repoName] = userAndRepo.split('/');
   const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
+
+  console.log('Getting a list of all GitHub repos that you have access to...');
+  const userRepos = await getAllReposForAuthenticatedUser();
+
+  const repoWithSameFullName = _.find(userRepos, { full_name: userAndRepo });
+  if (repoWithSameFullName) {
+    console.log(`You already have access to ${userAndRepo}.`);
+  } else {
+    console.log(`You don\'t have access to ${userAndRepo}.`);
+    console.log(`Looking for a fork of ${userAndRepo} that you have access to...`);
+    const fork = await findForkOfRepo(userAndRepo, userRepos);
+    if (fork) {
+      console.log(`You have access to ${fork.full_name}, which is a fork of ${userAndRepo}.`);
+      repoUser = fork.owner.login;
+      repoName = fork.name;
+    } else {
+      console.log(`You don\'t have access to ${userAndRepo} or any of its forks.`);
+      console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
+      const newFork = await forkRepo(repoUser, repoName);
+      console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`)
+      repoUser = newFork.owner.login;
+      repoName = newFork.name;
+    }
+  }
 
   console.log('Creating a temporary directory...');
   const { path } = await tmp.dir({ unsafeCleanup: true });
 
-  const url = `https://github.com/${user}/${repoName}.git`;
+  const url = `https://github.com/${repoUser}/${repoName}.git`;
   console.log(`Cloning ${url} into the temporary directory...`);
   const repo = await Clone(url, path);
 
