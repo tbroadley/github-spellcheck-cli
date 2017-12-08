@@ -14,6 +14,7 @@ const {
   forkRepo,
   getAllReposForAuthenticatedUser,
 } = require ('./lib/github');
+const { h } = require('./lib/handle-promise-rejection');
 const { highlightDiff } = require('./lib/highlighting');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
@@ -35,7 +36,7 @@ async function go() {
   } = commandLineArgs(optionDefinitions);
 
   if (token) {
-    await fs.writeFile('.env', `GITHUB_TOKEN=${token}`);
+    await h(fs.writeFile('.env', `GITHUB_TOKEN=${token}`));
   }
   require('dotenv').config();
 
@@ -43,7 +44,7 @@ async function go() {
   const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
   console.log('Getting a list of all GitHub repos that you have access to...');
-  const userRepos = await getAllReposForAuthenticatedUser();
+  const userRepos = await h(getAllReposForAuthenticatedUser());
 
   const repoWithSameFullName = _.find(userRepos, { full_name: userAndRepo });
   if (repoWithSameFullName) {
@@ -51,7 +52,7 @@ async function go() {
   } else {
     console.log(`You don\'t have access to ${userAndRepo}.`);
     console.log(`Looking for a fork of ${userAndRepo} that you have access to...`);
-    const fork = await findForkOfRepo(userAndRepo, userRepos);
+    const fork = await h(findForkOfRepo(userAndRepo, userRepos));
     if (fork) {
       console.log(`You have access to ${fork.full_name}, which is a fork of ${userAndRepo}.`);
       repoUser = fork.owner.login;
@@ -59,7 +60,7 @@ async function go() {
     } else {
       console.log(`You don\'t have access to ${userAndRepo} or any of its forks.`);
       console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
-      const newFork = await forkRepo(repoUser, repoName);
+      const newFork = await h(forkRepo(repoUser, repoName));
       console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`)
       repoUser = newFork.owner.login;
       repoName = newFork.name;
@@ -67,7 +68,7 @@ async function go() {
   }
 
   console.log('Creating a temporary directory...');
-  const { path } = await tmp.dir({ unsafeCleanup: true });
+  const { path } = await h(tmp.dir({ unsafeCleanup: true }));
 
   const url = `https://github.com/${repoUser}/${repoName}.git`;
   console.log(`Cloning ${url} into the temporary directory...`);
@@ -81,10 +82,10 @@ async function go() {
   });
 
   console.log('Getting the last commit from the master branch...');
-  const commit = await repo.getMasterCommit();
+  const commit = await h(repo.getMasterCommit());
 
   console.log('Getting the state of the working tree...');
-  const tree = await commit.getTree();
+  const tree = await h(commit.getTree());
 
   console.log('Getting a list of files in the working tree...');
   let treeEntries = await new Promise((resolve, reject) => {
@@ -113,19 +114,19 @@ async function go() {
 
   console.log('Spell-checking the remaining files...');
   const misspellingsByFile = await Promise.all(_.map(treeEntries, async entry => {
-    const blob = await entry.getBlob();
-    const misspellings = await getMisspellings(blob.toString());
+    const blob = await h(entry.getBlob());
+    const misspellings = await h(getMisspellings(blob.toString()));
     return _.map(misspellings, misspelling => _.assign({}, misspelling, {
       path: entry.path(),
     }));
   }));
 
-  await addByUserSelection(_.flatten(misspellingsByFile), repo);
+  await h(addByUserSelection(_.flatten(misspellingsByFile), repo));
 
-  const diff = await Diff.treeToWorkdir(repo, tree);
+  const diff = await h(Diff.treeToWorkdir(repo, tree));
 
   if (diff.numDeltas() > 0) {
-    const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
+    const diffBuf = await h(diff.toBuf(Diff.FORMAT.PATCH));
 
     console.log();
     console.log(highlightDiff(diffBuf));
@@ -138,17 +139,17 @@ async function go() {
           responseFunction: async () => {
             const branchName = 'fix-typos';
             console.log(`Creating a new branch "${branchName}"...`);
-            const newBranchRef = await repo.createBranch('fix-typos', commit, false);
+            const newBranchRef = await h(repo.createBranch('fix-typos', commit, false));
 
             console.log(`Checking out "${branchName}"...`);
-            await repo.checkoutBranch(newBranchRef);
+            await h(repo.checkoutBranch(newBranchRef));
 
-            const index = await repo.refreshIndex();
+            const index = await h(repo.refreshIndex());
 
             console.log('Adding all changes to the index...');
-            await index.addAll(['*'], Index.ADD_OPTION.ADD_DEFAULT);
-            await index.write();
-            const indexOid = await index.writeTree();
+            await h(index.addAll(['*'], Index.ADD_OPTION.ADD_DEFAULT));
+            await h(index.write());
+            const indexOid = await h(index.writeTree());
 
             const signature = repo.defaultSignature();
             console.log('Committing all changes...');
@@ -163,11 +164,11 @@ async function go() {
 
             console.log(`Commit ${newCommit} created.`);
 
-            const [remoteName] = await Remote.list(repo);
-            const remote = await Remote.lookup(repo, remoteName);
+            const [remoteName] = await h(Remote.list(repo));
+            const remote = await h(Remote.lookup(repo, remoteName));
 
             console.log(`Pushing to remote "${remoteName}"...`);
-            await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
+            await h(remote.push([`refs/heads/${branchName}`], githubCredentialsOptions));
 
             console.log('Creating a pull request...');
             const [sourceRepoUser, sourceRepoName] = userAndRepo.split('/');
@@ -178,7 +179,7 @@ async function go() {
             );
 
             console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
-            await opn(pullRequest.html_url);
+            await h(opn(pullRequest.html_url));
           },
         },
         {
