@@ -38,6 +38,7 @@ async function go() {
   const optionDefinitions = [
     { name: 'token', alias: 't' },
     { name: 'repository', alias: 'r', defaultOption: true },
+    { name: 'branch', alias: 'b', defaultValue: 'fix-typos' },
     { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'] },
     { name: 'include', multiple: true, defaultValue: [] },
     { name: 'exclude', multiple: true, defaultValue: [] },
@@ -45,6 +46,7 @@ async function go() {
   const {
     token,
     repository,
+    branch: branchName,
     extensions,
     include,
     exclude,
@@ -156,7 +158,6 @@ async function go() {
         {
           regex: /^y(es)?$/,
           responseFunction: async () => {
-            const branchName = 'fix-typos';
             console.log(`Creating a new branch "${branchName}"...`);
             const newBranchRef = await h(repo.createBranch('fix-typos', commit, false));
 
