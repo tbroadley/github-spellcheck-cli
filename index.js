@@ -10,6 +10,7 @@ const tmp = require('tmp-promise');
 const { addByUserSelection } = require('./lib/add-by-user-selection');
 const {
   createPullRequest,
+  deleteRepo,
   findForkOfRepo,
   forkRepo,
   getAllReposForAuthenticatedUser,
@@ -46,6 +47,8 @@ async function go() {
   console.log('Getting a list of all GitHub repos that you have access to...');
   const userRepos = await h(getAllReposForAuthenticatedUser());
 
+  let isNewFork = false;
+
   const repoWithSameFullName = _.find(userRepos, { full_name: userAndRepo });
   if (repoWithSameFullName) {
     console.log(`You already have access to ${userAndRepo}.`);
@@ -58,6 +61,7 @@ async function go() {
       repoUser = fork.owner.login;
       repoName = fork.name;
     } else {
+      isNewFork = true;
       console.log(`You don\'t have access to ${userAndRepo} or any of its forks.`);
       console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
       const newFork = await h(forkRepo(repoUser, repoName));
@@ -125,10 +129,11 @@ async function go() {
 
   const diff = await h(Diff.treeToWorkdir(repo, tree));
 
+  console.log();
+
   if (diff.numDeltas() > 0) {
     const diffBuf = await h(diff.toBuf(Diff.FORMAT.PATCH));
 
-    console.log();
     console.log(highlightDiff(diffBuf));
 
     await respondToUserInput(
@@ -188,8 +193,12 @@ async function go() {
         }
       ]
     );
+  } else if (isNewFork) {
+    console.log(chalk.red('No corrections added.'));
+    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
+    await h(deleteRepo(repoUser, repoName));
+    console.log(chalk.red('Exiting...'));
   } else {
-    console.log();
     console.log(chalk.red('No corrections added. Exiting...'));
   }
 
