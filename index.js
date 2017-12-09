@@ -140,13 +140,12 @@ async function go() {
     }));
   }));
 
-  await h(addByUserSelection(_.flatten(misspellingsByFile), repo));
-
-  const diff = await h(Diff.treeToWorkdir(repo, tree));
+  const changeCount = await h(addByUserSelection(_.flatten(misspellingsByFile), repo));
 
   console.log();
 
-  if (diff.numDeltas() > 0) {
+  if (changeCount > 0) {
+    const diff = await h(Diff.treeToWorkdir(repo, tree));
     const diffBuf = await h(diff.toBuf(Diff.FORMAT.PATCH));
 
     console.log(highlightDiff(diffBuf));
@@ -195,7 +194,9 @@ async function go() {
             const pullRequest = await createPullRequest(
               sourceRepoUser,
               sourceRepoName,
-              `${repoUser}:${branchName}`
+              `${repoUser}:${branchName}`,
+              `Fix typo${changeCount === 1 ? '' : 's'}`,
+              'This artisanal pull request was hand-crafted using https://github.com/tbroadley/github-spellcheck.',
             );
 
             console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
