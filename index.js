@@ -20,6 +20,20 @@ const { highlightDiff } = require('./lib/highlighting');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
+function parseRepo(repo) {
+  const regexes = [
+    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w]+)$/,
+    /^([-\w]+)\/([-_\w]+)$/,
+  ];
+  const matchingRegex = _.find(regexes, re => re.test(repo));
+  if (matchingRegex) {
+    const result = matchingRegex.exec(repo);
+    return [result[1], result[2]];
+  } else {
+    return Promise.reject('Repository name is invalid.');
+  }
+}
+
 async function go() {
   const optionDefinitions = [
     { name: 'token', alias: 't' },
@@ -30,7 +44,7 @@ async function go() {
   ];
   const {
     token,
-    repository: userAndRepo,
+    repository,
     extensions,
     include,
     exclude,
@@ -41,7 +55,8 @@ async function go() {
   }
   require('dotenv').config();
 
-  let [repoUser, repoName] = userAndRepo.split('/');
+  let [repoUser, repoName] = await h(parseRepo(repository));
+  const userAndRepo = `${repoUser}/${repoName}`;
   const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
   console.log('Getting a list of all GitHub repos that you have access to...');
@@ -176,7 +191,7 @@ async function go() {
             await h(remote.push([`refs/heads/${branchName}`], githubCredentialsOptions));
 
             console.log('Creating a pull request...');
-            const [sourceRepoUser, sourceRepoName] = userAndRepo.split('/');
+            const [sourceRepoUser, sourceRepoName] = h(parseRepo(userAndRepo));
             const pullRequest = await createPullRequest(
               sourceRepoUser,
               sourceRepoName,
