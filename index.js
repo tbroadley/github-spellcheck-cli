@@ -193,14 +193,14 @@ async function go() {
             await h(remote.push([`refs/heads/${branchName}`], githubCredentialsOptions));
 
             console.log('Creating a pull request...');
-            const [sourceRepoUser, sourceRepoName] = h(parseRepo(userAndRepo));
-            const pullRequest = await createPullRequest(
+            const [sourceRepoUser, sourceRepoName] = await h(parseRepo(userAndRepo));
+            const pullRequest = await h(createPullRequest(
               sourceRepoUser,
               sourceRepoName,
               `${repoUser}:${branchName}`,
               `Fix typo${changeCount === 1 ? '' : 's'}`,
               'This artisanal pull request was hand-crafted using https://github.com/tbroadley/github-spellcheck.'
-            );
+            ));
 
             console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
             await h(opn(pullRequest.html_url));
