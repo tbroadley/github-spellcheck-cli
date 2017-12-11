@@ -38,7 +38,8 @@ async function go() {
   const optionDefinitions = [
     { name: 'token', alias: 't' },
     { name: 'repository', alias: 'r', defaultOption: true },
-    { name: 'branch', alias: 'b', defaultValue: 'fix-typos' },
+    { name: 'branch', defaultValue: 'fix-typos' },
+    { name: 'base', defaultValue: 'master' },
     { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'] },
     { name: 'include', multiple: true, defaultValue: [] },
     { name: 'exclude', multiple: true, defaultValue: [] },
@@ -47,6 +48,7 @@ async function go() {
     token,
     repository,
     branch: branchName,
+    base: baseBranchName,
     extensions,
     include,
     exclude,
@@ -102,8 +104,8 @@ async function go() {
     fetchOpts: githubCredentialsOptions,
   });
 
-  console.log('Getting the last commit from the master branch...');
-  const commit = await h(repo.getMasterCommit());
+  console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
+  const commit = await h(repo.getBranchCommit(baseBranchName));
 
   console.log('Getting the state of the working tree...');
   const tree = await h(commit.getTree());
