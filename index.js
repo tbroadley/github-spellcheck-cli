@@ -199,7 +199,7 @@ async function go() {
               sourceRepoName,
               `${repoUser}:${branchName}`,
               `Fix typo${changeCount === 1 ? '' : 's'}`,
-              'This artisanal pull request was hand-crafted using https://github.com/tbroadley/github-spellcheck.'
+              'PR created using https://github.com/tbroadley/github-spellcheck.'
             ));
 
             console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
