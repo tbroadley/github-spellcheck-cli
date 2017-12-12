@@ -23,18 +23,18 @@ describe('getMisspellings', () => {
     });
   }
 
-  function mockSpellchecker(indices, getCorrectionsForMisspelling) {
+  function mockSpellchecker(indices, corrections) {
     mockery.deregisterMock('spellchecker');
     mockery.resetCache();
     mockery.registerMock('spellchecker', {
       checkSpellingAsync: _.constant(Promise.resolve(indices)),
-      getCorrectionsForMisspelling,
+      getCorrectionsForMisspelling: misspelling => corrections[misspelling],
     });
     return require('../lib/spellcheck');
   }
 
   it('should return an empty array given a sentence with no misspellings', () => {
-    const { getMisspellings } = mockSpellchecker([], _.noop);
+    const { getMisspellings } = mockSpellchecker([], {});
     return getMisspellings('Test sentence').should.eventually.deep.equal([]);
   });
 
@@ -42,13 +42,13 @@ describe('getMisspellings', () => {
     const document = 'Test sentenc';
     const misspellings = ['sentenc'];
     const indices = buildIndicesFromWords(document, misspellings);
-    const suggestions = ['sentence', 'sententious'];
-    const { getMisspellings } = mockSpellchecker(indices, _.constant(suggestions));
+    const corrections = { sentenc: ['sentence', 'sententious'] };
+    const { getMisspellings } = mockSpellchecker(indices, corrections);
     return getMisspellings(document).should.eventually.deep.equal([
       {
         index: _.first(indices),
         misspelling: 'sentenc',
-        suggestions,
+        suggestions: corrections['sentenc'],
       },
     ]);
   });
