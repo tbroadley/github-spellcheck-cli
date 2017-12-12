@@ -81,11 +81,11 @@ async function go() {
       repoUser = fork.owner.login;
       repoName = fork.name;
     } else {
-      isNewFork = true;
       console.log(`You don\'t have access to ${userAndRepo} or any of its forks.`);
       console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
       const newFork = await forkRepo(repoUser, repoName);
       console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`)
+      isNewFork = true;
       repoUser = newFork.owner.login;
       repoName = newFork.name;
     }
