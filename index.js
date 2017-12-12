@@ -2,10 +2,10 @@ const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs-extra');
 const _ = require('lodash');
-const { Clone, Cred, Diff, Index, Remote } = require('nodegit');
+const { Clone, Cred, Diff, Index, Remote, Repository } = require('nodegit');
 const opn = require('opn');
+const path = require('path');
 const prompt = require('prompt-promise');
-const tmp = require('tmp-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
 const {
@@ -91,19 +91,32 @@ async function go() {
     }
   }
 
-  console.log('Creating a temporary directory...');
-  const { path } = await tmp.dir({ unsafeCleanup: true });
-
-  const url = `https://github.com/${repoUser}/${repoName}.git`;
-  console.log(`Cloning ${url} into the temporary directory...`);
   const githubCredentialsOptions = {
     callbacks: {
       credentials: () => Cred.userpassPlaintextNew(process.env.GITHUB_TOKEN, 'x-oauth-basic'),
     },
   };
-  const repo = await Clone(url, path, {
-    fetchOpts: githubCredentialsOptions,
-  });
+
+  console.log(`Checking if ${repoUser}/${repoName} has already been cloned...`);
+  const clonePath = path.join(__dirname, `/tmp/${repoUser}/${repoName}`);
+  const exists = await fs.pathExists(clonePath);
+
+  let repo;
+  if (exists) {
+    console.log(`Pulling the latest on the branch '${baseBranchName}'...`);
+    repo = await Repository.open(clonePath);
+    await repo.fetchAll(githubCredentialsOptions);
+    await repo.mergeBranches(baseBranchName, `origin/${baseBranchName}`);
+  } else {
+    console.log('Creating a temporary directory...');
+    await fs.ensureDir(`tmp/${repoUser}/${repoName}`);
+
+    const url = `https://github.com/${repoUser}/${repoName}.git`;
+    console.log(`Cloning ${url} into the temporary directory...`);
+    repo = await Clone(url, clonePath, {
+      fetchOpts: githubCredentialsOptions,
+    });
+  }
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
   const commit = await repo.getBranchCommit(baseBranchName);
