@@ -19,6 +19,10 @@ const { highlightDiff } = require('./lib/highlighting');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
+let isNewFork = false;
+let repoUser;
+let repoName;
+
 function parseRepo(repo) {
   const regexes = [
     /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w]+)$/,
@@ -58,14 +62,12 @@ async function go() {
   }
   require('dotenv').config();
 
-  let [repoUser, repoName] = await parseRepo(repository);
+  [repoUser, repoName] = await parseRepo(repository);
   const userAndRepo = `${repoUser}/${repoName}`;
   const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
   console.log('Getting a list of all GitHub repos that you have access to...');
   const userRepos = await getAllReposForAuthenticatedUser();
-
-  let isNewFork = false;
 
   const repoWithSameFullName = _.find(userRepos, { full_name: userAndRepo });
   if (repoWithSameFullName) {
@@ -223,7 +225,14 @@ async function go() {
   prompt.finish();
 }
 
-go().catch(error => {
-  console.error(chalk.red(error));
+go().catch(async error => {
+  console.error(chalk.red(`Error: ${error}`));
+
+  if (isNewFork) {
+    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
+    await deleteRepo(repoUser, repoName);
+  }
+
+  console.log(chalk.red('Exiting...'));
   process.exit(1);
 });
