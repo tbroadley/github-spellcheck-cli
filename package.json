@@ -19,6 +19,7 @@
     "nodegit": "^0.20.3",
     "opn": "^5.1.0",
     "prompt-promise": "^1.0.3",
+    "remark": "^8.0.0",
     "spellchecker": "^3.4.4"
   },
   "devDependencies": {
