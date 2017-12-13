@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs-extra');
 const _ = require('lodash');
-const { Clone, Cred, Diff, Index, Remote, Repository } = require('nodegit');
+const { Clone, Cred, Diff, Index, Remote, Repository, Reset } = require('nodegit');
 const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt-promise');
@@ -120,6 +120,9 @@ async function go() {
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
   const commit = await repo.getBranchCommit(baseBranchName);
+
+  console.log('Resetting local repository...');
+  await Reset.reset(repo, commit, Reset.TYPE.HARD);
 
   console.log('Getting the state of the working tree...');
   const tree = await commit.getTree();
