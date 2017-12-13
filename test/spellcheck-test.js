@@ -112,4 +112,41 @@ describe('getMisspellings', () => {
       },
     ]);
   });
+
+  it('should skip Markdown image URLs but not alt text', () => {
+    const document = '![Alt text with errror](/my-awesome-image.png)';
+    const misspellings = ['errror', 'png'];
+    const indices = buildIndicesFromWords(document, misspellings);
+    const corrections = {
+      errror: ['error'],
+      png: ['pang'],
+    };
+    const { getMisspellings } = mockSpellchecker(indices, corrections);
+    return getMisspellings(document, 'test.md').should.eventually.deep.equal([
+      {
+        index: _.first(indices),
+        misspelling: 'errror',
+        suggestions: corrections['errror'],
+      }
+    ]);
+  });
+
+  it('should handle a Markdown image in a link', () => {
+    const document = '[![Alt text with errror](/my-awesome-image.png)](/github)';
+    const misspellings = ['errror', 'png', 'github'];
+    const indices = buildIndicesFromWords(document, misspellings);
+    const corrections = {
+      errror: ['error'],
+      png: ['pang'],
+      github: ['gilt'],
+    };
+    const { getMisspellings } = mockSpellchecker(indices, corrections);
+    return getMisspellings(document, 'test.md').should.eventually.deep.equal([
+      {
+        index: _.first(indices),
+        misspelling: 'errror',
+        suggestions: corrections['errror'],
+      }
+    ]);
+  });
 });
