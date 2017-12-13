@@ -98,9 +98,17 @@ async function go() {
     },
   };
 
-  console.log(`Checking if ${repoUser}/${repoName} has already been cloned...`);
   clonePath = path.join(__dirname, `/tmp/${repoUser}/${repoName}`);
-  const exists = await fs.pathExists(clonePath);
+
+  let exists;
+  if (isNewFork) {
+    console.log(`Making sure the temporary directory for ${repoUser}/${repoName} doesn't already exist...`);
+    await fs.remove(clonePath);
+    exists = false;
+  } else {
+    console.log(`Checking if ${repoUser}/${repoName} has already been cloned...`);
+    exists = await fs.pathExists(clonePath);
+  }
 
   let repo;
   if (exists) {
