@@ -144,4 +144,43 @@ describe('getMisspellings', () => {
       fileName: 'test.md',
     });
   });
+
+  it('should handle an HTML img tag in a Markdown file', () => {
+    return testSpellcheck({
+      document: '# Heading\n\n<img src="/test.png">',
+      misspellings: ['img', 'src'],
+      corrections: {
+        img: ['image'],
+        src: ['sec'],
+      },
+      expectedMisspellings: [],
+      fileName: 'test.md',
+    });
+  });
+
+  it('should handle an HTML table in a Markdown file', () => {
+    return testSpellcheck({
+      document: `
+# Heading
+
+<table>
+  <th>
+    <td>Colunm 1</td>
+    <td>Column 2</td>
+  </th>
+  <tr>
+    <td>Test</td>
+    <td>Test 2</td>
+  </tr>
+  <tr>
+    <td colspan="2">Wiide column</td>
+  </tr>
+</table>
+      `,
+      misspellings: ['th', 'td', 'Colunm', 'tr', 'colspan', 'Wiide'],
+      corrections: {},
+      expectedMisspellings: [2, 5],
+      fileName: 'test.md',
+    });
+  });
 });
