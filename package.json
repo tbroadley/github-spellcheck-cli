@@ -1,5 +1,5 @@
 {
-  "name": "github-spellcheck",
+  "name": "github-spellcheck-cli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

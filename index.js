@@ -225,7 +225,7 @@ async function go() {
               sourceRepoName,
               `${repoUser}:${branchName}`,
               `Fix typo${changeCount === 1 ? '' : 's'}`,
-              'PR created using https://github.com/tbroadley/github-spellcheck.'
+              'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
             );
 
             console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
