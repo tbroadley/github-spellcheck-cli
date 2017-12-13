@@ -135,18 +135,14 @@ async function go() {
     walker.start();
   });
 
-  function matchSomeRegex(regexes) {
-    return treeEntry => _(regexes).some(re => new RegExp(re).test(treeEntry.path()));
-  }
-
   if (!_.isEmpty(include)) {
     console.log('Filtering the list to only include files that match the regexes specified with the --include option...');
-    treeEntries = _.filter(treeEntries, matchSomeRegex(include));
+    treeEntries = _.filter(treeEntries, entry => _.includes(include, entry.path()));
   }
 
   if (!_.isEmpty(exclude)) {
     console.log('Excluding files that match the regexes specified with the --exclude option...');
-    treeEntries = _.reject(treeEntries, matchSomeRegex(exclude));
+    treeEntries = _.reject(treeEntries, entry => _.includes(exclude, entry.path()));
   }
 
   console.log(`Filtering the list to only include files with extensions '${extensions.join(', ')}'...`);
