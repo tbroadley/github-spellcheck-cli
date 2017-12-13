@@ -133,7 +133,7 @@ async function go() {
   });
 
   function matchSomeRegex(regexes) {
-    return treeEntry => _(regexes).map(re => new RegExp(re).test(treeEntry.path()));
+    return treeEntry => _(regexes).some(re => new RegExp(re).test(treeEntry.path()));
   }
 
   if (!_.isEmpty(include)) {
@@ -152,7 +152,7 @@ async function go() {
   console.log('Spell-checking the remaining files...');
   const misspellingsByFile = await Promise.all(_.map(treeEntries, async entry => {
     const blob = await entry.getBlob();
-    const misspellings = await getMisspellings(blob.toString().replace(/\r\n/g, '\n'), blob.path());
+    const misspellings = await getMisspellings(blob.toString().replace(/\r\n/g, '\n'), entry.path());
     return _.map(misspellings, misspelling => _.assign({}, misspelling, {
       path: entry.path(),
     }));
