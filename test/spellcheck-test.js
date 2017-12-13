@@ -33,120 +33,115 @@ describe('getMisspellings', () => {
     return require('../lib/spellcheck');
   }
 
+  function testSpellcheck({ document, misspellings, corrections, expectedMisspellings, fileName }) {
+    const indices = buildIndicesFromWords(document, misspellings);
+    const { getMisspellings } = mockSpellchecker(indices, corrections);
+    return getMisspellings(document, fileName).should.eventually.deep.equal(
+      _.map(expectedMisspellings, index => ({
+        index: indices[index],
+        misspelling: misspellings[index],
+        suggestions: corrections[misspellings[index]],
+      }))
+    );
+  }
+
   it('should return an empty array given a sentence with no misspellings', () => {
-    const { getMisspellings } = mockSpellchecker([], {});
-    return getMisspellings('Test sentence', 'test.txt').should.eventually.deep.equal([]);
+    return testSpellcheck({
+      document: 'Test sentence',
+      misspellings: [],
+      corrections: [],
+      expectedMisspellings: [],
+      fileName: 'test.txt',
+    });
   });
 
   it('should return a single misspelling given a sentence with one misspelling', () => {
-    const document = 'Test sentenc';
-    const misspellings = ['sentenc'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = { sentenc: ['sentence', 'sententious'] };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.txt').should.eventually.deep.equal([
-      {
-        index: _.first(indices),
-        misspelling: 'sentenc',
-        suggestions: corrections['sentenc'],
-      },
-    ]);
+    return testSpellcheck({
+      document: 'Test sentenc',
+      misspellings: ['sentenc'],
+      corrections: { sentenc: ['sentence'] },
+      expectedMisspellings: [0],
+      fileName: 'test.txt'
+    });
   });
 
   it('should skip lines between triple backticks in a Markdown file', () => {
-    const document = '```\ntset\n```';
-    const misspellings = ['tset'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = { tset: ['test'] };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.md').should.eventually.deep.equal([]);
+    return testSpellcheck({
+      document: '```\ntset\n```',
+      misspellings: ['tset'],
+      corrections: { tset: ['test'] },
+      expectedMisspellings: [],
+      fileName: 'test.md',
+    });
   });
 
   it('should skip code blocks specified with four-space indent in a Markdown file', () => {
-    const document = '# Heading\n\n    tset\n\ntest';
-    const misspellings = ['tset'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = { tset: ['test'] };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.md').should.eventually.deep.equal([]);
+    return testSpellcheck({
+      document: '# Heading\n\n    tset\n\ntest',
+      misspellings: ['tset'],
+      corrections: { tset: ['test'] },
+      expectedMisspellings: [],
+      fileName: 'test.md',
+    });
   });
 
   it('should skip inline code blocks in a Markdown file', () => {
-    const document = '`tset`';
-    const misspellings = ['tset'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = { tset: ['test'] };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.md').should.eventually.deep.equal([]);
+    return testSpellcheck({
+      document: '`tset`',
+      misspellings: ['tset'],
+      corrections: { tset: ['test'] },
+      expectedMisspellings: [],
+      fileName: 'test.md',
+    });
   });
 
   it('should spellcheck lines between triple backticks in a text file', () => {
-    const document = '```\ntset\n```';
-    const misspellings = ['tset'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = { tset: ['test'] };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.txt').should.eventually.deep.equal([
-      {
-        index: _.first(indices),
-        misspelling: 'tset',
-        suggestions: corrections['tset'],
-      },
-    ]);
+    return testSpellcheck({
+      document: '```\ntset\n```',
+      misspellings: ['tset'],
+      corrections: { tset: ['test'] },
+      expectedMisspellings: [0],
+      fileName: 'test.txt',
+    });
   });
 
   it('should skip Markdown link URLs but not link text', () => {
-    const document = '[My awesoem project](/github)';
-    const misspellings = ['awesoem', 'github'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = {
-      awesoem: ['awesome'],
-      github: ['gilt'],
-    };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.md').should.eventually.deep.equal([
-      {
-        index: _.first(indices),
-        misspelling: 'awesoem',
-        suggestions: corrections['awesoem'],
+    return testSpellcheck({
+      document: '[My awesoem project](/github)',
+      misspellings: ['awesoem', 'github'],
+      corrections: {
+        awesoem: ['awesome'],
+        github: ['gilt'],
       },
-    ]);
+      expectedMisspellings: [0],
+      fileName: 'test.md',
+    });
   });
 
   it('should skip Markdown image URLs but not alt text', () => {
-    const document = '![Alt text with errror](/my-awesome-image.png)';
-    const misspellings = ['errror', 'png'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = {
-      errror: ['error'],
-      png: ['pang'],
-    };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.md').should.eventually.deep.equal([
-      {
-        index: _.first(indices),
-        misspelling: 'errror',
-        suggestions: corrections['errror'],
-      }
-    ]);
+    return testSpellcheck({
+      document: '![Alt text with errror](/my-awesome-image.png)',
+      misspellings: ['errror', 'png'],
+      corrections: {
+        errror: ['error'],
+        png: ['pang'],
+      },
+      expectedMisspellings: [0],
+      fileName: 'test.md',
+    });
   });
 
   it('should handle a Markdown image in a link', () => {
-    const document = '[![Alt text with errror](/my-awesome-image.png)](/github)';
-    const misspellings = ['errror', 'png', 'github'];
-    const indices = buildIndicesFromWords(document, misspellings);
-    const corrections = {
-      errror: ['error'],
-      png: ['pang'],
-      github: ['gilt'],
-    };
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
-    return getMisspellings(document, 'test.md').should.eventually.deep.equal([
-      {
-        index: _.first(indices),
-        misspelling: 'errror',
-        suggestions: corrections['errror'],
-      }
-    ]);
+    return testSpellcheck({
+      document: '[![Alt text with errror](/my-awesome-image.png)](/github)',
+      misspellings: ['errror', 'png', 'github'],
+      corrections: {
+        errror: ['error'],
+        png: ['pang'],
+        github: ['gilt'],
+      },
+      expectedMisspellings: [0],
+      fileName: 'test.md',
+    });
   });
 });
