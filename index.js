@@ -22,6 +22,7 @@ const { respondToUserInput } = require('./lib/user-input');
 let isNewFork = false;
 let repoUser;
 let repoName;
+let clonePath;
 
 function parseRepo(repo) {
   const regexes = [
@@ -98,7 +99,7 @@ async function go() {
   };
 
   console.log(`Checking if ${repoUser}/${repoName} has already been cloned...`);
-  const clonePath = path.join(__dirname, `/tmp/${repoUser}/${repoName}`);
+  clonePath = path.join(__dirname, `/tmp/${repoUser}/${repoName}`);
   const exists = await fs.pathExists(clonePath);
 
   let repo;
@@ -233,6 +234,7 @@ async function go() {
     console.log(chalk.red('No corrections added.'));
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
+    await fs.remove(clonePath);
     console.log(chalk.red('Exiting...'));
   } else {
     console.log(chalk.red('No corrections added. Exiting...'));
@@ -244,9 +246,12 @@ async function go() {
 go().catch(async error => {
   console.error(chalk.red(`Error: ${error}`));
 
-  if (isNewFork) {
+  if (isNewFork && repoUser && repoName) {
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
+    if (clonePath) {
+      await fs.remove(clonePath);
+    }
   }
 
   console.log(chalk.red('Exiting...'));
