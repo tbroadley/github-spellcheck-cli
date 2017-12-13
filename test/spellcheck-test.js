@@ -94,4 +94,22 @@ describe('getMisspellings', () => {
       },
     ]);
   });
+
+  it('should skip Markdown link URLs but not link text', () => {
+    const document = '[My awesoem project](/github)';
+    const misspellings = ['awesoem', 'github'];
+    const indices = buildIndicesFromWords(document, misspellings);
+    const corrections = {
+      awesoem: ['awesome'],
+      github: ['gilt'],
+    };
+    const { getMisspellings } = mockSpellchecker(indices, corrections);
+    return getMisspellings(document, 'test.md').should.eventually.deep.equal([
+      {
+        index: _.first(indices),
+        misspelling: 'awesoem',
+        suggestions: corrections['awesoem'],
+      },
+    ]);
+  });
 });
