@@ -208,13 +208,13 @@ async function go() {
 
             console.log('Creating a pull request...');
             const [sourceRepoUser, sourceRepoName] = await parseRepo(userAndRepo);
-            const pullRequest = await h(createPullRequest(
+            const pullRequest = await createPullRequest(
               sourceRepoUser,
               sourceRepoName,
               `${repoUser}:${branchName}`,
               `Fix typo${changeCount === 1 ? '' : 's'}`,
               'PR created using https://github.com/tbroadley/github-spellcheck.'
-            ));
+            );
 
             console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
             await opn(pullRequest.html_url);
