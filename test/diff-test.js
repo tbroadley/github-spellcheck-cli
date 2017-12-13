@@ -48,4 +48,28 @@ the lazy dog.
 
     generateWordDiff(before, after).should.equal(expected);
   });
+
+  it('works correctly with a Markdown multiline blockquote', () => {
+    const before = '> Line Line 1\n> Line Line 1';
+    const after = '> Line Lien 1\n> Line Line 1';
+    const expected = `-> Line ${chalk.red('Line')} 1\n+> Line ${chalk.green('Lien')} 1`;
+
+    generateWordDiff(before, after).should.equal(expected);
+  });
+
+  it('works correctly with a Markdown multiline blockquote', () => {
+    const before = '> Line Line 1\n> Line Line 1';
+    const after = '> Line Lien 1\n> Line Line 1';
+    const expected = `-> Line ${chalk.red('Line')} 1\n+> Line ${chalk.green('Lien')} 1`;
+
+    generateWordDiff(before, after).should.equal(expected);
+  });
+
+  it('works correctly with a long long Markdown multiline blockquote', () => {
+    const before = '> This is a long long long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n';
+    const after = '> This is a long lung long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n';
+    const expected = `-> This is a long ${chalk.red('long')} long long long long long long long long long long long long long paragraph.\n+> This is a long ${chalk.green('lung')} long long long long long long long long long long long long long paragraph.`;
+
+    generateWordDiff(before, after).should.equal(expected);
+  });
 });
