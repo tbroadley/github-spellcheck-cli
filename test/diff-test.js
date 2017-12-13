@@ -44,7 +44,7 @@ the lazy dog.
   it('works correctly on a text with a hyphenated word removed', () => {
     const before = 'The quick-brown fox';
     const after = 'The  fox';
-    const expected = `-The ${chalk.red('quick-brown')} fox\n+The ${chalk.green('')} fox`;
+    const expected = `-The${chalk.red(' quick-brown ')}fox\n+The${chalk.green('  ')}fox`;
 
     generateWordDiff(before, after).should.equal(expected);
   });
@@ -61,6 +61,14 @@ the lazy dog.
     const before = '> This is a long long long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n';
     const after = '> This is a long lung long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n';
     const expected = `-> This is a long ${chalk.red('long')} long long long long long long long long long long long long long paragraph.\n+> This is a long ${chalk.green('lung')} long long long long long long long long long long long long long paragraph.`;
+
+    generateWordDiff(before, after).should.equal(expected);
+  });
+
+  it('works correctly with an unknown word', () => {
+    const before = 'I wonder why NobodyKnowsThisWord huh';
+    const after = 'I wonder why [unknown word] huh';
+    const expected = `-I wonder why ${chalk.red('NobodyKnowsThisWord')} huh\n+I wonder why ${chalk.green('[unknown')} ${chalk.green('word] ')}huh`;
 
     generateWordDiff(before, after).should.equal(expected);
   });
