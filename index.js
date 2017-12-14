@@ -143,6 +143,7 @@ async function go() {
     walker.on('error', reject);
     walker.start();
   });
+  const originalTreeEntries = treeEntries;
 
   function matchSomeRegex(regexes) {
     return treeEntry => _(regexes).some(re => new RegExp(re).test(treeEntry.path()));
@@ -175,6 +176,12 @@ async function go() {
   console.log();
 
   if (changeCount > 0) {
+    if (_(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
+      console.log('Opening CONTRIBUTING.md...');
+      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/CONTRIBUTING.md`);
+      console.log();
+    }
+
     const diff = await Diff.treeToWorkdir(repo, tree);
     const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
 
