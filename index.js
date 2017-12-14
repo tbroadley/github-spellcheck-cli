@@ -190,6 +190,7 @@ async function go() {
       console.log();
     }
 
+    console.log();
     console.log(formatDiffs(diffs));
     console.log();
 
