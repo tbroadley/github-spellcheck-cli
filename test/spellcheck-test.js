@@ -178,9 +178,44 @@ describe('getMisspellings', () => {
 </table>
       `,
       misspellings: ['th', 'td', 'Colunm', 'tr', 'colspan', 'Wiide'],
-      corrections: {},
+      corrections: {
+        th: ['the'],
+        td: ['the'],
+        Colunm: ['Column'],
+        tr: ['try'],
+        colspan: ['column'],
+        Wiide: ['Wide'],
+      },
       expectedMisspellings: [2, 5],
       fileName: 'test.md',
+    });
+  });
+
+  it('should ignore capitalization changes', () => {
+    return testSpellcheck({
+      document: 'tHiS hAs some CAPitalization issues, github.',
+      misspellings: ['tHiS', 'hAs', 'CAPitalization', 'github'],
+      corrections: {
+        tHiS: ['This'],
+        hAs: ['has'],
+        CAPitalization: ['capitalization'],
+        github: ['GitHub'],
+      },
+      expectedMisspellings: [],
+      fileName: 'test.txt',
+    });
+  });
+
+  it('should ignore abbreviation corrections', () => {
+    return testSpellcheck({
+      document: 'ie etc',
+      misspellings: ['ie', 'etc'],
+      corrections: {
+        ie: ['i.e.'],
+        etc: ['etc.'],
+      },
+      expectedMisspellings: [],
+      fileName: 'test.txt',
     });
   });
 });
