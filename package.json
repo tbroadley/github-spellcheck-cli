@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint \"index.js\" \"lib/*.js\" \"test/*.js\"",
-    "lint-fix": "eslint \"index.js\" \"lib/*.js\" \"test/*.js\" --fix",
+    "lint": "eslint \"index.js\" \"{lib,test}/*.js\"",
+    "lint-fix": "eslint \"index.js\" \"{lib,test}/*.js\" --fix",
     "test": "mocha"
   },
   "author": "",
