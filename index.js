@@ -191,7 +191,7 @@ async function go() {
     await repo.mergeBranches(baseBranchName, `origin/${baseBranchName}`);
   } else {
     console.log('Creating a temporary directory...');
-    await fs.ensureDir(`tmp/${repoUser}/${repoName}`);
+    await fs.ensureDir(clonePath);
 
     const url = `https://github.com/${repoUser}/${repoName}.git`;
     console.log(`Cloning ${url} into the temporary directory...`);
