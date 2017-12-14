@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
+const getUsage = require('command-line-usage');
 const fs = require('fs-extra');
 const glob = require('globby');
 const _ = require('lodash');
@@ -25,7 +26,11 @@ let repoUser;
 let repoName;
 let clonePath;
 
-function parseRepo(repo) {
+async function parseRepo(repo) {
+  if (!repo) {
+    return Promise.reject('No repository name specified.');
+  }
+
   const regexes = [
     /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w\.]+)$/,
     /^([-\w]+)\/([-_\w\.]+)$/,
@@ -39,17 +44,50 @@ function parseRepo(repo) {
   }
 }
 
+const optionDefinitions = [
+  { name: 'help', alias: 'h', type: Boolean, description: 'Print this usage guide.' },
+  { name: 'token', alias: 't', typeLabel: '<token>', description: 'GitHub personal access token. You only need to provide the token when you start using github-spellcheck, and again if you have a new token.' },
+  { name: 'repository', alias: 'r', typeLabel: '<username/repository or URL>', description: 'The repository to spellcheck.' },
+  { name: 'branch', defaultValue: 'fix-typos', typeLabel: '<branch name>', description: 'The name of the branch to commit corrections to.' },
+  { name: 'base', defaultValue: 'master', typeLabel: '<branch name>', description: 'The name of the branch to create the pull request against.' },
+  { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'], typeLabel: '<extension> [<extension>] ...', description: 'Only spellcheck files with these extensions for spelling mistakes.' },
+  { name: 'include', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Only spellcheck files that match at least one of these globs.' },
+  { name: 'exclude', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Do not spellcheck files that match one of these globs.' },
+];
+
+const usageSections = [
+  {
+    header: 'github-spellcheck',
+    content: 'A tool for checking GitHub repositories for spelling errors and submitting PRs to fix them.',
+  },
+  {
+    header: 'Options',
+    optionList: optionDefinitions,
+  },
+];
+
+function printUsage() {
+  console.log(getUsage(usageSections));
+}
+
 async function go() {
-  const optionDefinitions = [
-    { name: 'token', alias: 't' },
-    { name: 'repository', alias: 'r', defaultOption: true },
-    { name: 'branch', defaultValue: 'fix-typos' },
-    { name: 'base', defaultValue: 'master' },
-    { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'] },
-    { name: 'include', multiple: true, defaultValue: [] },
-    { name: 'exclude', multiple: true, defaultValue: [] },
-  ];
+  let commandLineArguments;
+
+  try {
+    commandLineArguments = commandLineArgs(optionDefinitions);
+  } catch (error) {
+    if (error.name === 'UNKNOWN_OPTION') {
+      console.error(chalk.red(error.message));
+      printUsage();
+    } else {
+      console.error(chalk.red('An unknown error occurred.'));
+    }
+
+    process.exit(1);
+  }
+
   const {
+    help,
     token,
     repository,
     branch: branchName,
@@ -57,14 +95,29 @@ async function go() {
     extensions,
     include,
     exclude,
-  } = commandLineArgs(optionDefinitions);
+  } = commandLineArguments;
+
+  if (help) {
+    printUsage();
+    process.exit(0);
+  }
+
+  if (extensions.length === 0) {
+    console.error(chalk.red('Provide at least one extension.'));
+    printUsage();
+    process.exit(1);
+  }
 
   if (token) {
     await fs.writeFile('.env', `GITHUB_TOKEN=${token}`);
   }
   require('dotenv').config();
 
-  [repoUser, repoName] = await parseRepo(repository);
+  [repoUser, repoName] = await parseRepo(repository).catch(error => {
+    console.error(chalk.red(error));
+    printUsage();
+    process.exit(1);
+  });
   const userAndRepo = `${repoUser}/${repoName}`;
   const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
