@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "github-spellcheck": "index.js"
+  },
   "scripts": {
     "lint": "eslint \"index.js\" \"{lib,test}/*.js\"",
     "lint-fix": "eslint \"index.js\" \"{lib,test}/*.js\" --fix",

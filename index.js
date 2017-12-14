@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const chalk = require('chalk');
 const dotenv = require('dotenv');
 const commandLineArgs = require('command-line-args');
