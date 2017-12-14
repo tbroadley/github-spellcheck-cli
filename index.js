@@ -252,10 +252,11 @@ async function go() {
     console.log();
 
     await respondToUserInput(
-      'Are you sure you want to create a pull request with these corrections? y(es), n(o): ',
+      'Are you sure you want to create a pull request with these corrections?',
       [
         {
-          regex: /^y(es)?$/,
+          command: 'yes',
+          description: 'Create a pull request with the specified changes.',
           responseFunction: async () => {
             console.log(`Creating a new branch "${branchName}"...`);
             const newBranchRef = await repo.createBranch('fix-typos', commit, false);
@@ -304,7 +305,8 @@ async function go() {
           },
         },
         {
-          regex: /^n(o)?$/,
+          command: 'no',
+          description: 'Exit the program.',
           responseFunction: _.noop,
         }
       ]
