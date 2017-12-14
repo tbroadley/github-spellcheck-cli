@@ -15,6 +15,7 @@
     "es6-promisify": "^5.0.0",
     "fs-extra": "^4.0.3",
     "github": "^13.0.1",
+    "globby": "^7.1.1",
     "lodash": "^4.17.4",
     "nodegit": "^0.20.3",
     "opn": "^5.1.0",

@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const fs = require('fs-extra');
+const glob = require('globby');
 const _ = require('lodash');
 const { Clone, Cred, Diff, Index, Remote, Repository, Reset } = require('nodegit');
 const opn = require('opn');
@@ -145,18 +146,26 @@ async function go() {
   });
   const originalTreeEntries = treeEntries;
 
-  function matchSomeRegex(regexes) {
-    return treeEntry => _(regexes).some(re => new RegExp(re).test(treeEntry.path()));
+  async function getPathsToIncludeOrExclude(includeOrExclude) {
+    return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
+  }
+
+  function includesPath(pathsToTestAgainst) {
+    return treeEntry => _.includes(pathsToTestAgainst, treeEntry.path().replace(/\\/g, '/'));
   }
 
   if (!_.isEmpty(include)) {
     console.log('Filtering the list to only include files that match the regexes specified with the --include option...');
-    treeEntries = _.filter(treeEntries, matchSomeRegex(include));
+    const pathsToInclude = await getPathsToIncludeOrExclude(include);
+  console.log(pathsToInclude);
+    treeEntries = _.filter(treeEntries, includesPath(pathsToInclude));
   }
 
   if (!_.isEmpty(exclude)) {
     console.log('Excluding files that match the regexes specified with the --exclude option...');
-    treeEntries = _.reject(treeEntries, matchSomeRegex(exclude));
+    const pathsToExclude = await getPathsToIncludeOrExclude(exclude);
+    console.log(pathsToExclude);
+    treeEntries = _.reject(treeEntries, includesPath(pathsToExclude));
   }
 
   console.log(`Filtering the list to only include files with extensions '${extensions.join(', ')}'...`);
