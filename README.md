@@ -42,7 +42,7 @@ Instructions for generating a personal access token are [here](https://help.gith
 
 ## Development
 
-Clone this repository, then run `npm install`.
+Fork this repository, clone your fork, then run `npm install`.
 
 You can run `node index.js` to start the CLI or `npm test` to run the tests.
 
