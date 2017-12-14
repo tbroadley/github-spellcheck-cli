@@ -13,7 +13,7 @@ lazyy dgo.
 The quick brown fpx
 jumps over the
 lazyy dgo.
-    `
+    `;
     const expected = `-jumps over ${chalk.red('teh')}\n+jumps over ${chalk.green('the')}`;
 
     generateWordDiff(before, after).should.equal(expected);
@@ -94,16 +94,16 @@ describe('chunkByFileName', () => {
       { path: 'a', diff: 'd' },
     ]).should.deep.equal([
       { path: 'a', diffs: ['b', 'c', 'd'] },
-    ])
+    ]);
   });
 
   it('correctly chunks an array with two groups of paths', () => {
     chunkByFileName([
-      { path: 'a', diff: '1', },
-      { path: 'a', diff: '2', },
-      { path: 'b', diff: '3', },
-      { path: 'b', diff: '4', },
-      { path: 'b', diff: '5', },
+      { path: 'a', diff: '1' },
+      { path: 'a', diff: '2' },
+      { path: 'b', diff: '3' },
+      { path: 'b', diff: '4' },
+      { path: 'b', diff: '5' },
     ]).should.deep.equal([
       { path: 'a', diffs: ['1', '2'] },
       { path: 'b', diffs: ['3', '4', '5'] },
@@ -127,6 +127,6 @@ describe('chunkByFileName', () => {
       { path: 'c', diffs: ['5', '6'] },
       { path: 'a', diffs: ['7'] },
       { path: 'c', diffs: ['8'] },
-    ])
+    ]);
   });
 });

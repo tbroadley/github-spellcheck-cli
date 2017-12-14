@@ -1,10 +1,13 @@
 const chalk = require('chalk');
+const dotenv = require('dotenv');
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const fs = require('fs-extra');
 const glob = require('globby');
 const _ = require('lodash');
-const { Clone, Cred, Diff, Index, Remote, Repository, Reset } = require('nodegit');
+const {
+  Clone, Cred, Index, Remote, Repository, Reset,
+} = require('nodegit');
 const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt-promise');
@@ -17,7 +20,7 @@ const {
   findForkOfRepo,
   forkRepo,
   getAllReposForAuthenticatedUser,
-} = require ('./lib/github');
+} = require('./lib/github');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
@@ -28,31 +31,46 @@ let clonePath;
 
 async function parseRepo(repo) {
   if (!repo) {
-    return Promise.reject('No repository name specified.');
+    return Promise.reject(new Error('No repository name specified.'));
   }
 
   const regexes = [
-    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w\.]+)$/,
-    /^([-\w]+)\/([-_\w\.]+)$/,
+    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w.]+)$/,
+    /^([-\w]+)\/([-_\w.]+)$/,
   ];
   const matchingRegex = _.find(regexes, re => re.test(repo));
   if (matchingRegex) {
     const result = matchingRegex.exec(repo);
     return [result[1], result[2]];
-  } else {
-    return Promise.reject('Repository name is invalid.');
   }
+  return Promise.reject(new Error('Repository name is invalid.'));
 }
 
 const optionDefinitions = [
-  { name: 'help', alias: 'h', type: Boolean, description: 'Print this usage guide.' },
-  { name: 'token', alias: 't', typeLabel: '<token>', description: 'GitHub personal access token. You only need to provide the token when you start using github-spellcheck, and again if you have a new token.' },
-  { name: 'repository', alias: 'r', typeLabel: '<username/repository or URL>', description: 'The repository to spellcheck.' },
-  { name: 'branch', defaultValue: 'fix-typos', typeLabel: '<branch name>', description: 'The name of the branch to commit corrections to.' },
-  { name: 'base', defaultValue: 'master', typeLabel: '<branch name>', description: 'The name of the branch to create the pull request against.' },
-  { name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'], typeLabel: '<extension> [<extension>] ...', description: 'Only spellcheck files with these extensions for spelling mistakes.' },
-  { name: 'include', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Only spellcheck files that match at least one of these globs.' },
-  { name: 'exclude', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Do not spellcheck files that match one of these globs.' },
+  {
+    name: 'help', alias: 'h', type: Boolean, description: 'Print this usage guide.',
+  },
+  {
+    name: 'token', alias: 't', typeLabel: '<token>', description: 'GitHub personal access token. You only need to provide the token when you start using github-spellcheck, and again if you have a new token.',
+  },
+  {
+    name: 'repository', alias: 'r', typeLabel: '<username/repository or URL>', description: 'The repository to spellcheck.',
+  },
+  {
+    name: 'branch', defaultValue: 'fix-typos', typeLabel: '<branch name>', description: 'The name of the branch to commit corrections to.',
+  },
+  {
+    name: 'base', defaultValue: 'master', typeLabel: '<branch name>', description: 'The name of the branch to create the pull request against.',
+  },
+  {
+    name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'], typeLabel: '<extension> [<extension>] ...', description: 'Only spellcheck files with these extensions for spelling mistakes.',
+  },
+  {
+    name: 'include', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Only spellcheck files that match at least one of these globs.',
+  },
+  {
+    name: 'exclude', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Do not spellcheck files that match one of these globs.',
+  },
 ];
 
 const usageSections = [
@@ -111,9 +129,9 @@ async function go() {
   if (token) {
     await fs.writeFile('.env', `GITHUB_TOKEN=${token}`);
   }
-  require('dotenv').config();
+  dotenv.config();
 
-  [repoUser, repoName] = await parseRepo(repository).catch(error => {
+  [repoUser, repoName] = await parseRepo(repository).catch((error) => {
     console.error(chalk.red(error));
     printUsage();
     process.exit(1);
@@ -128,7 +146,7 @@ async function go() {
   if (repoWithSameFullName) {
     console.log(`You already have access to ${userAndRepo}.`);
   } else {
-    console.log(`You don\'t have access to ${userAndRepo}.`);
+    console.log(`You don't have access to ${userAndRepo}.`);
     console.log(`Looking for a fork of ${userAndRepo} that you have access to...`);
     const fork = await findForkOfRepo(userAndRepo, userRepos);
     if (fork) {
@@ -136,10 +154,10 @@ async function go() {
       repoUser = fork.owner.login;
       repoName = fork.name;
     } else {
-      console.log(`You don\'t have access to ${userAndRepo} or any of its forks.`);
+      console.log(`You don't have access to ${userAndRepo} or any of its forks.`);
       console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
       const newFork = await forkRepo(repoUser, repoName);
-      console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`)
+      console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`);
       isNewFork = true;
       repoUser = newFork.owner.login;
       repoName = newFork.name;
@@ -221,10 +239,10 @@ async function go() {
   }
 
   console.log(`Filtering the list to only include files with extensions '${extensions.join(', ')}'...`);
-  treeEntries = _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()))
+  treeEntries = _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()));
 
   console.log('Spell-checking the remaining files...');
-  const misspellingsByFile = await Promise.all(_.map(treeEntries, async entry => {
+  const misspellingsByFile = await Promise.all(_.map(treeEntries, async (entry) => {
     const blob = await entry.getBlob();
     const misspellings = await getMisspellings(blob.toString().replace(/\r\n/g, '\n'), entry.path());
     return _.map(misspellings, misspelling => _.assign({}, misspelling, {
@@ -308,7 +326,7 @@ async function go() {
           command: 'no',
           description: 'Exit the program.',
           responseFunction: _.noop,
-        }
+        },
       ]
     );
   } else if (isNewFork) {
@@ -324,7 +342,7 @@ async function go() {
   prompt.finish();
 }
 
-go().catch(async error => {
+go().catch(async (error) => {
   console.error(chalk.red(`Error: ${error}`));
 
   if (isNewFork && repoUser && repoName) {
