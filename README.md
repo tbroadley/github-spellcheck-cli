@@ -1,8 +1,10 @@
 # GitHub Spellcheck
 
-[![Build Status](https://travis-ci.org/tbroadley/github-spellcheck-cli.svg?branch=master)](https://travis-ci.org/tbroadley/github-spellcheck-cli)
 
 A tool for checking GitHub repositories for spelling errors and submitting PRs to fix them.
+
+[![npm](https://img.shields.io/npm/v/github-spellcheck-cli.svg)]()
+[![Build Status](https://travis-ci.org/tbroadley/github-spellcheck-cli.svg?branch=master)](https://travis-ci.org/tbroadley/github-spellcheck-cli)
 
 ## Inspiration
 
