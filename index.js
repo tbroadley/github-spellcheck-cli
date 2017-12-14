@@ -9,6 +9,7 @@ const path = require('path');
 const prompt = require('prompt-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
+const { formatDiffs } = require('./lib/diff');
 const {
   createPullRequest,
   deleteRepo,
@@ -16,7 +17,6 @@ const {
   forkRepo,
   getAllReposForAuthenticatedUser,
 } = require ('./lib/github');
-const { highlightDiff } = require('./lib/highlighting');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
@@ -157,7 +157,6 @@ async function go() {
   if (!_.isEmpty(include)) {
     console.log('Filtering the list to only include files that match the regexes specified with the --include option...');
     const pathsToInclude = await getPathsToIncludeOrExclude(include);
-  console.log(pathsToInclude);
     treeEntries = _.filter(treeEntries, includesPath(pathsToInclude));
   }
 
@@ -180,7 +179,7 @@ async function go() {
     }));
   }));
 
-  const changeCount = await addByUserSelection(_.flatten(misspellingsByFile), repo);
+  const { changeCount, diffs } = await addByUserSelection(_.flatten(misspellingsByFile), repo);
 
   console.log();
 
@@ -191,10 +190,8 @@ async function go() {
       console.log();
     }
 
-    const diff = await Diff.treeToWorkdir(repo, tree);
-    const diffBuf = await diff.toBuf(Diff.FORMAT.PATCH);
-
-    console.log(highlightDiff(diffBuf));
+    console.log(formatDiffs(diffs));
+    console.log();
 
     await respondToUserInput(
       'Are you sure you want to create a pull request with these corrections? y(es), n(o): ',

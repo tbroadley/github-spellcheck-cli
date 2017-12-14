@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-const { generateWordDiff } = require('../lib/diff');
+const { chunkByFileName, generateWordDiff } = require('../lib/diff');
 
 describe('generateWordDiff', () => {
   it('works correctly on a multiline text with a misspelling', () => {
@@ -71,5 +71,62 @@ the lazy dog.
     const expected = `-I wonder why ${chalk.red('NobodyKnowsThisWord')} huh\n+I wonder why ${chalk.green('[unknown')} ${chalk.green('word] ')}huh`;
 
     generateWordDiff(before, after).should.equal(expected);
+  });
+});
+
+describe('chunkByFileName', () => {
+  it('correctly chunks an empty array', () => {
+    chunkByFileName([]).should.deep.equal([]);
+  });
+
+  it('correctly chunks an array with one element', () => {
+    chunkByFileName([
+      { path: 'a', diff: 'b' },
+    ]).should.deep.equal([
+      { path: 'a', diffs: ['b'] },
+    ]);
+  });
+
+  it('correctly chunks an array with multiple elements with the same path', () => {
+    chunkByFileName([
+      { path: 'a', diff: 'b' },
+      { path: 'a', diff: 'c' },
+      { path: 'a', diff: 'd' },
+    ]).should.deep.equal([
+      { path: 'a', diffs: ['b', 'c', 'd'] },
+    ])
+  });
+
+  it('correctly chunks an array with two groups of paths', () => {
+    chunkByFileName([
+      { path: 'a', diff: '1', },
+      { path: 'a', diff: '2', },
+      { path: 'b', diff: '3', },
+      { path: 'b', diff: '4', },
+      { path: 'b', diff: '5', },
+    ]).should.deep.equal([
+      { path: 'a', diffs: ['1', '2'] },
+      { path: 'b', diffs: ['3', '4', '5'] },
+    ]);
+  });
+
+  it('correctly chunks a complicated case', () => {
+    chunkByFileName([
+      { path: 'a', diff: '1' },
+      { path: 'b', diff: '2' },
+      { path: 'a', diff: '3' },
+      { path: 'a', diff: '4' },
+      { path: 'c', diff: '5' },
+      { path: 'c', diff: '6' },
+      { path: 'a', diff: '7' },
+      { path: 'c', diff: '8' },
+    ]).should.deep.equal([
+      { path: 'a', diffs: ['1'] },
+      { path: 'b', diffs: ['2'] },
+      { path: 'a', diffs: ['3', '4'] },
+      { path: 'c', diffs: ['5', '6'] },
+      { path: 'a', diffs: ['7'] },
+      { path: 'c', diffs: ['8'] },
+    ])
   });
 });
