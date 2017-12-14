@@ -191,6 +191,10 @@ async function go() {
     }
 
     console.log();
+    console.log();
+    console.log(chalk.blue('Overview of corrections'));
+    console.log(chalk.blue('-----------------------'));
+    console.log();
     console.log(formatDiffs(diffs));
     console.log();
 
