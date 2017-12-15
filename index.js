@@ -334,7 +334,6 @@ async function go() {
     console.log(chalk.red('No corrections added.'));
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
-    await fs.remove(clonePath);
     console.log(chalk.red('Exiting...'));
   } else {
     console.log(chalk.red('No corrections added. Exiting...'));
@@ -349,9 +348,6 @@ go().catch(async (error) => {
   if (isNewFork && repoUser && repoName) {
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
-    if (clonePath) {
-      await fs.remove(clonePath);
-    }
   }
 
   console.log(chalk.red('Exiting...'));
