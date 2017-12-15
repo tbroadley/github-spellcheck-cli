@@ -14,7 +14,6 @@ const path = require('path');
 const prompt = require('prompt-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
-const { formatDiffs } = require('./lib/diff');
 const {
   createPullRequest,
   deleteRepo,
@@ -251,7 +250,7 @@ async function go() {
     }));
   }));
 
-  const { changeCount, diffs } = await addByUserSelection(_.flatten(misspellingsByFile), repo);
+  const { changeCount, finalDiff } = await addByUserSelection(_.flatten(misspellingsByFile), repo);
 
   console.log();
 
@@ -267,7 +266,7 @@ async function go() {
     console.log(chalk.blue('Overview of corrections'));
     console.log(chalk.blue('-----------------------'));
     console.log();
-    console.log(formatDiffs(diffs));
+    console.log(finalDiff);
     console.log();
 
     await respondToUserInput(
