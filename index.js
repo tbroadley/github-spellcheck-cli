@@ -322,9 +322,10 @@ async function go() {
               'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
             );
 
-            console.log(`Pull request #${pullRequest.number} created.`);
-            if (!quiet) {
-              console.log('Opening in your browser...');
+            if (quiet) {
+              console.log(`Pull request #${pullRequest.number} created.`);
+            } else {
+              console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
               await opn(pullRequest.html_url);
             }
           },
