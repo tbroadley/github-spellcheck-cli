@@ -71,6 +71,9 @@ const optionDefinitions = [
   {
     name: 'exclude', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Do not spellcheck files that match one of these globs.',
   },
+  {
+    name: 'quiet', alias: 'q', type: Boolean, description: 'Do not open CONTRIBUTING.md or the new pull request in a browser.',
+  },
 ];
 
 const usageSections = [
@@ -113,6 +116,7 @@ async function go() {
     extensions,
     include,
     exclude,
+    quiet,
   } = commandLineArguments;
 
   if (help) {
@@ -255,7 +259,7 @@ async function go() {
   console.log();
 
   if (changeCount > 0) {
-    if (_(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
+    if (!quiet && _(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
       console.log('Opening CONTRIBUTING.md...');
       await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/CONTRIBUTING.md`);
       console.log();
@@ -318,8 +322,11 @@ async function go() {
               'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
             );
 
-            console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
-            await opn(pullRequest.html_url);
+            console.log(`Pull request #${pullRequest.number} created.`);
+            if (!quiet) {
+              console.log('Opening in your browser...');
+              await opn(pullRequest.html_url);
+            }
           },
         },
         {
