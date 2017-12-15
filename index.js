@@ -30,6 +30,21 @@ let repoUser;
 let repoName;
 let clonePath;
 
+let remoteRepoDeleted = false;
+
+async function cleanUp() {
+  if (isNewFork && repoUser && repoName) {
+    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
+    if (!remoteRepoDeleted) {
+      await deleteRepo(repoUser, repoName);
+      remoteRepoDeleted = true;
+    }
+    if (clonePath) {
+      await fs.remove(clonePath);
+    }
+  }
+}
+
 async function parseRepo(repo) {
   if (!repo) {
     return Promise.reject(new Error('No repository name specified.'));
@@ -332,9 +347,7 @@ async function go() {
     );
   } else if (isNewFork) {
     console.log(chalk.red('No corrections added.'));
-    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
-    await deleteRepo(repoUser, repoName);
-    await fs.remove(clonePath);
+    await cleanUp();
     console.log(chalk.red('Exiting...'));
   } else {
     console.log(chalk.red('No corrections added. Exiting...'));
@@ -345,15 +358,7 @@ async function go() {
 
 go().catch(async (error) => {
   console.error(chalk.red(`Error: ${error}`));
-
-  if (isNewFork && repoUser && repoName) {
-    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
-    await deleteRepo(repoUser, repoName);
-    if (clonePath) {
-      await fs.remove(clonePath);
-    }
-  }
-
+  await cleanUp();
   console.log(chalk.red('Exiting...'));
   process.exit(1);
 });
