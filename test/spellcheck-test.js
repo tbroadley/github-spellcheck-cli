@@ -195,4 +195,36 @@ describe('getMisspellings', () => {
     expectedMisspellings: [],
     fileName: 'test.txt',
   }));
+
+  it('ignores HTML list elements', () => testSpellcheck({
+    document: `
+## Overview
+
+*Static Methods*
+
+<ul class="apiIndex">
+  <li>
+    <a href="#create">
+      <pre>static create(...): CharacterMetadata</pre>
+    </a>
+  </li>
+</ul>
+<ol>
+  <li>
+    Test
+  </li>
+</ol>
+    `,
+    misspellings: ['ul', 'apiIndex', 'li', 'href', 'pre', 'CharacterMetadata', 'ol'],
+    corrections: {
+      ul: ['um'],
+      apiIndex: [],
+      li: ['lie'],
+      href: ['here'],
+      pre: ['pref'],
+      CharacterMetadata: [],
+    },
+    expectedMisspellings: [1, 5],
+    fileName: 'APIReference-CharacterMetadata.md',
+  }));
 });
