@@ -235,7 +235,6 @@ async function go() {
   if (!_.isEmpty(exclude)) {
     console.log('Excluding files that match the regexes specified with the --exclude option...');
     const pathsToExclude = await getPathsToIncludeOrExclude(exclude);
-    console.log(pathsToExclude);
     treeEntries = _.reject(treeEntries, includesPath(pathsToExclude));
   }
 
