@@ -48,7 +48,7 @@ describe('getMisspellings', () => {
       })));
   }
 
-  it('should return an empty array given a sentence with no misspellings', () => testSpellcheck({
+  it('returns an empty array given a sentence with no misspellings', () => testSpellcheck({
     document: 'Test sentence',
     misspellings: [],
     corrections: [],
@@ -56,7 +56,7 @@ describe('getMisspellings', () => {
     fileName: 'test.txt',
   }));
 
-  it('should return a single misspelling given a sentence with one misspelling', () => testSpellcheck({
+  it('returns a single misspelling given a sentence with one misspelling', () => testSpellcheck({
     document: 'Test sentenc',
     misspellings: ['sentenc'],
     corrections: { sentenc: ['sentence'] },
@@ -64,7 +64,7 @@ describe('getMisspellings', () => {
     fileName: 'test.txt',
   }));
 
-  it('should skip lines between triple backticks in a Markdown file', () => testSpellcheck({
+  it('skips lines between triple backticks in a Markdown file', () => testSpellcheck({
     document: '```\ntset\n```',
     misspellings: ['tset'],
     corrections: { tset: ['test'] },
@@ -72,7 +72,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should skip code blocks specified with four-space indent in a Markdown file', () => testSpellcheck({
+  it('skips code blocks specified with four-space indent in a Markdown file', () => testSpellcheck({
     document: '# Heading\n\n    tset\n\ntest',
     misspellings: ['tset'],
     corrections: { tset: ['test'] },
@@ -80,7 +80,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should skip inline code blocks in a Markdown file', () => testSpellcheck({
+  it('skips inline code blocks in a Markdown file', () => testSpellcheck({
     document: '`tset`',
     misspellings: ['tset'],
     corrections: { tset: ['test'] },
@@ -88,7 +88,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should spellcheck lines between triple backticks in a text file', () => testSpellcheck({
+  it('spellchecks lines between triple backticks in a text file', () => testSpellcheck({
     document: '```\ntset\n```',
     misspellings: ['tset'],
     corrections: { tset: ['test'] },
@@ -96,7 +96,7 @@ describe('getMisspellings', () => {
     fileName: 'test.txt',
   }));
 
-  it('should skip Markdown link URLs but not link text', () => testSpellcheck({
+  it('skips Markdown link URLs but not link text', () => testSpellcheck({
     document: '[My awesoem project](/github)',
     misspellings: ['awesoem', 'github'],
     corrections: {
@@ -107,7 +107,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should skip Markdown image URLs but not alt text', () => testSpellcheck({
+  it('skips Markdown image URLs but not alt text', () => testSpellcheck({
     document: '![Alt text with errror](/my-awesome-image.png)',
     misspellings: ['errror', 'png'],
     corrections: {
@@ -118,7 +118,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should handle a Markdown image in a link', () => testSpellcheck({
+  it('handles a Markdown image in a link', () => testSpellcheck({
     document: '[![Alt text with errror](/my-awesome-image.png)](/github)',
     misspellings: ['errror', 'png', 'github'],
     corrections: {
@@ -130,7 +130,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should handle an HTML img tag in a Markdown file', () => testSpellcheck({
+  it('handles an HTML img tag in a Markdown file', () => testSpellcheck({
     document: '# Heading\n\n<img src="/test.png">',
     misspellings: ['img', 'src'],
     corrections: {
@@ -141,7 +141,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should handle an HTML table in a Markdown file', () => testSpellcheck({
+  it('handles an HTML table in a Markdown file', () => testSpellcheck({
     document: `
 # Heading
 
@@ -172,7 +172,7 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
-  it('should ignore capitalization changes', () => testSpellcheck({
+  it('ignores capitalization changes', () => testSpellcheck({
     document: 'tHiS hAs some CAPitalization issues, github.',
     misspellings: ['tHiS', 'hAs', 'CAPitalization', 'github'],
     corrections: {
@@ -185,7 +185,7 @@ describe('getMisspellings', () => {
     fileName: 'test.txt',
   }));
 
-  it('should ignore abbreviation corrections', () => testSpellcheck({
+  it('ignores abbreviation corrections', () => testSpellcheck({
     document: 'ie etc',
     misspellings: ['ie', 'etc'],
     corrections: {

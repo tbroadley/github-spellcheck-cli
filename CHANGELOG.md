@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Demo GIF in README.md.
 
+### Changed
+- Names of tests for `getMisspellings` and `formatPrompt`.
+
 ## [1.1.0] - 2017-12-15
 ### Added
 - Quiet mode.
