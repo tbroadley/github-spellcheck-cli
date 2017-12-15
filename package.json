@@ -13,6 +13,9 @@
   },
   "author": "",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "chalk": "^2.3.0",
     "command-line-args": "^4.0.7",

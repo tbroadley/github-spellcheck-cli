@@ -1,7 +1,14 @@
 language: node_js
 node_js:
-  - '7'
+- '7'
 script: npm run lint && npm test
 cache:
   directories:
   - node_modules
+deploy:
+  provider: npm
+  email: buriedunderbooks@hotmail.com
+  on:
+    tags: true
+  api_key:
+    secure: kxl1dUyIBvS8z0kk9rfFGPjnwEpJYb5uEGORwjTjL7RLyrUuWWk/CIitgR2eV6neOQPzXSGLP6sdRWo2ihALykURXp74a5VX1SvDoTmI0GEy67xnJwHhqdTdVIaycPqilivVQHXvwUFXs+F9mLDbBAS1RIhACFaZFL04sqyMPFy4PyzwtiRg5LXpamk+C8d3YNAFjijbAPQq1ePNr6QmCYu25LwW+eJ5Lk3ATE0LHBrG1d3cfL5CHu8BVBLacijOp3fa4+bmQ41w2KgxKWmL+a+2Qny2JiOFxVe/kyLcoj5W10oNjhGeTHChprSJaFlo9r7dnxC9K3NtYpG/81k35Ua3xL+GYXuTcmVvcsBVTNlTEHa4E12RvtQ4c9v8YztJAGZYqL+z2Fir9G1UwVA5me/HAWR7ZMO522aKEqO9FanxE/9Axj9bSgfVVRyHbclD3g2YvKJy/oYyl0tow1qIlHp35W1ICI9q5Dh5drMyIuOWBiGjK2BeSSOzJIGskCbhlMS7/jzrkRedEsvlyDHK/ybBgYev+R9SwKmBoCmg+iOsV6OUL6JFzzSKSO2QMCVtLFvqt5Pigg7OBKOG5tXxSORXXDqLYk+p5S3zgdNcsiKFD6BU0VJ39NXNm6H8HMagVpQExwFBkF4o5lirJK9ARRxOf9uJEPzbd1RY2/8Bq8A=
