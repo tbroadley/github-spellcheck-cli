@@ -6,6 +6,10 @@ A tool for checking GitHub repositories for spelling errors and submitting PRs t
 [![npm](https://img.shields.io/npm/v/github-spellcheck-cli.svg)]()
 [![Build Status](https://travis-ci.org/tbroadley/github-spellcheck-cli.svg?branch=master)](https://travis-ci.org/tbroadley/github-spellcheck-cli)
 
+## Demo
+
+![Github Spellcheck demo](docs/demo.gif)
+
 ## Inspiration
 
 When I'm looking through the documentation of an open-source software project, I sometimes notice a typo. When I do, I usually create a pull request to fix it. I wanted to streamline this process.
