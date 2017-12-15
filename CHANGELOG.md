@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.1.0] - 2017-12-15
 ### Added
 - Quiet mode.
 
@@ -43,7 +45,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.6...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.3...v1.0.4
