@@ -50,4 +50,4 @@ You can run `node index.js` to start the CLI or `npm test` to run the tests.
 
 ### Linting
 
-Run `npm run lint` to run ESLint or `npm run lint:fix` to automatically fix problems.
+Run `npm run lint` to run ESLint or `npm run lint-fix` to automatically fix problems.
