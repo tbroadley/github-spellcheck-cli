@@ -315,7 +315,7 @@ async function go() {
               'HEAD',
               signature,
               signature,
-              'Fix typos',
+              `docs: fix typo${changeCount === 1 ? '' : 's'}`,
               indexOid,
               [commit]
             );
