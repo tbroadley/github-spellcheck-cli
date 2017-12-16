@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - `li`
   - `pre`
 - Now ignores link and image references as well as URLs.
+- A count of misspellings left to correct.
 
 ### Changed
 - Merge the latest from the source repository's base branch before checking for spelling mistakes.
