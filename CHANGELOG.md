@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Create PR against specified base branch instead of always creating it against `master`.
 
 ## [1.1.3] - 2017-12-16
 ### Changed

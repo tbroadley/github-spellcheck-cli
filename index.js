@@ -317,6 +317,7 @@ async function go() {
               sourceRepoUser,
               sourceRepoName,
               `${repoUser}:${branchName}`,
+              baseBranchName,
               `Fix typo${changeCount === 1 ? '' : 's'}`,
               'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
             );
