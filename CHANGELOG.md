@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Merge the latest from the source repository's base branch before checking for spelling mistakes.
 - Store local clones and whitelist in `~/.github-spellcheck`.
 - Search for contribution guidelines according to [GitHub's instructions](https://help.github.com/articles/setting-guidelines-for-repository-contributors/).
+- If the target repository has a `PULL_REQUEST_TEMPLATE` file, open a PR creation page in the browser instead of automatically creating a PR.
 
 ### Removed
 - Local clone deletion when a new fork is deleted.
