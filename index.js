@@ -48,6 +48,13 @@ async function parseRepo(repo) {
   return Promise.reject(new Error('Repository name is invalid.'));
 }
 
+async function findGithubFile(name) {
+  return _.first(glob(
+    `{${name}*,{.github,docs}/${name}*}`,
+    { cwd: clonePath, gitignore: true, nocase: true }
+  ));
+}
+
 const optionDefinitions = [
   {
     name: 'help', alias: 'h', type: Boolean, description: 'Print this usage guide.',
@@ -267,13 +274,10 @@ async function go() {
   console.log();
 
   if (changeCount > 0) {
-    const contributingGuidelines = await glob(
-      '{CONTRIBUTING*,{.github,docs}/CONTRIBUTING*}',
-      { cwd: clonePath, gitignore: true, nocase: true }
-    );
-    if (!quiet && !_.isEmpty(contributingGuidelines)) {
+    const contributingGuidelines = await findGithubFile('CONTRIBUTING');
+    if (!quiet && contributingGuidelines) {
       console.log('Opening CONTRIBUTING.md...');
-      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/${_.first(contributingGuidelines)}`);
+      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/${contributingGuidelines}`);
       console.log();
     }
 
