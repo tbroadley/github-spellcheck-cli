@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Now checks if the temporary directory actually contains a Git repository before trying to interact with it.
+- Move bugfixes under Fixed headers in this document.
 
 ### Fixed
 - Handle case where a word is replaced with itself.
@@ -32,8 +33,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Quiet mode.
 
 ## [1.0.6] - 2017-12-14
-### Changed
-- Fixed a typo in README.md.
+### Fixed
+- Typo in README.md.
 
 ## [1.0.5] - 2017-12-14
 ### Added
@@ -52,7 +53,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Automatic deploys to the NPM registry from Travis.
 
 ## [1.0.2] - 2017-12-14
-### Changed
+### Fixed
 - Fixed a bug where the temporary directory into which the repository would be cloned was being created relative to the current working directory.
 
 ## [1.0.1] - 2017-12-14
