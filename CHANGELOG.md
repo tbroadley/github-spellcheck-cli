@@ -17,8 +17,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Local clone deletion when a new fork is deleted.
 
 ## [Unreleased]
+
+## [1.1.3] - 2017-12-16
+### Changed
+- Move bugfixes under Fixed headers in this document.
+
+### Fixed
+- Now checks if the temporary directory actually contains a Git repository before trying to interact with it.
+- Handle case where a word is replaced with itself.
+
+## [1.1.2] - 2017-12-16
+### Added
+- A test for `getMisspellings`.
+- Exponential backoff while trying to clone the repository.
+
+### Removed
+- One-second gap between forking and cloning the fork.
+
+## [1.1.1] - 2017-12-15
 ### Added
 - Demo GIF in README.md.
+- One-second gap between forking and cloning the fork.
 
 ### Changed
 - Names of tests for `getMisspellings` and `formatPrompt`.
@@ -28,8 +47,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Quiet mode.
 
 ## [1.0.6] - 2017-12-14
-### Changed
-- Fixed a typo in README.md.
+### Fixed
+- Typo in README.md.
 
 ## [1.0.5] - 2017-12-14
 ### Added
@@ -48,7 +67,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Automatic deploys to the NPM registry from Travis.
 
 ## [1.0.2] - 2017-12-14
-### Changed
+### Fixed
 - Fixed a bug where the temporary directory into which the repository would be cloned was being created relative to the current working directory.
 
 ## [1.0.1] - 2017-12-14

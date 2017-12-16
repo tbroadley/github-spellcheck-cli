@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 const glob = require('globby');
 const _ = require('lodash');
 const {
-  Clone, Cred, Index, Remote, Repository, Reset,
+  Cred, Index, Remote, Repository, Reset,
 } = require('nodegit');
 const opn = require('opn');
 const path = require('path');
@@ -21,6 +21,7 @@ const {
   forkRepo,
   getAllReposForAuthenticatedUser,
 } = require('./lib/github');
+const { cloneWithRetry } = require('./lib/retry');
 const { getMisspellings } = require('./lib/spellcheck');
 const { respondToUserInput } = require('./lib/user-input');
 
@@ -183,7 +184,7 @@ async function go() {
     exists = false;
   } else {
     console.log(`Checking if ${repoUser}/${repoName} has already been cloned...`);
-    exists = await fs.pathExists(clonePath);
+    exists = (await fs.pathExists(clonePath)) && (await fs.pathExists(path.join(clonePath, '/.git')));
   }
 
   let repo;
@@ -198,9 +199,7 @@ async function go() {
 
     const url = `https://github.com/${repoUser}/${repoName}.git`;
     console.log(`Cloning ${url} into the temporary directory...`);
-    repo = await Clone(url, clonePath, {
-      fetchOpts: githubCredentialsOptions,
-    });
+    repo = await cloneWithRetry(url, clonePath, githubCredentialsOptions);
   }
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
