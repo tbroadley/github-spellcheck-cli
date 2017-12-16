@@ -227,4 +227,16 @@ describe('getMisspellings', () => {
     expectedMisspellings: [1, 5],
     fileName: 'APIReference-CharacterMetadata.md',
   }));
+
+  it('does something', () => testSpellcheck({
+    document: '## [![npm][npmjs-img]][npmjs-url]',
+    misspellings: ['npm', 'npmjs-img', 'npmjs-url'],
+    corrections: {
+      npm: [],
+      'npmjs-img': [],
+      'npmjs-url': [],
+    },
+    expectedMisspellings: [0],
+    fileName: 'readme.md',
+  }));
 });
