@@ -189,10 +189,7 @@ async function go() {
 
   let repo;
   if (exists) {
-    console.log(`Pulling the latest on the branch '${baseBranchName}'...`);
     repo = await Repository.open(clonePath);
-    await repo.fetchAll(githubCredentialsOptions);
-    await repo.mergeBranches(baseBranchName, `origin/${baseBranchName}`);
   } else {
     console.log('Creating a temporary directory...');
     await fs.ensureDir(clonePath);
@@ -201,6 +198,19 @@ async function go() {
     console.log(`Cloning ${url} into the temporary directory...`);
     repo = await cloneWithRetry(url, clonePath, githubCredentialsOptions);
   }
+
+  console.log(`Fetching the latest on the branch '${baseBranchName}' from the source repository...`);
+  if (!await Remote.lookup(repo, 'source').catch(() => false)) {
+    await Remote.create(repo, 'source', `https://github.com/${userAndRepo}`);
+  }
+  await repo.fetchAll(githubCredentialsOptions);
+
+  console.log(`Merging the latest from the source repository into '${baseBranchName}'...`);
+  await repo.mergeBranches(baseBranchName, `source/${baseBranchName}`);
+
+  console.log('Pushing...');
+  const remote = await Remote.lookup(repo, 'origin');
+  await remote.push([`refs/heads/${baseBranchName}`], githubCredentialsOptions);
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
   const commit = await repo.getBranchCommit(baseBranchName);
@@ -303,11 +313,7 @@ async function go() {
             );
 
             console.log(`Commit ${newCommit} created.`);
-
-            const [remoteName] = await Remote.list(repo);
-            const remote = await Remote.lookup(repo, remoteName);
-
-            console.log(`Pushing to remote "${remoteName}"...`);
+            console.log('Pushing to remote "origin"...');
             await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
             console.log('Creating a pull request...');
