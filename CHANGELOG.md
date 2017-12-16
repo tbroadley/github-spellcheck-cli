@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.1.4] - 2017-12-16
 ### Fixed
 - Create PR against specified base branch instead of always creating it against `master`.
 
@@ -71,7 +73,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.4...HEAD
+[1.1.4]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.3...v1.1.4
+[1.1.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.2...v1.1.3
+[1.1.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.1...v1.1.2
+[1.1.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.0.4...v1.0.5
