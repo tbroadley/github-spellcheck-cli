@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Now checks if the temporary directory actually contains a Git repository before trying to interact with it.
 
+### Fixed
+- Handle case where a word is replaced with itself.
+
 ## [1.1.2] - 2017-12-16
 ### Added
 - A test for `getMisspellings`.

@@ -72,6 +72,21 @@ the lazy dog.
 
     generateWordDiff(before, after).should.equal(expected);
   });
+
+  it('works correctly on a deleted duplicate word', () => {
+    const before = 'This word word is duplicated';
+    const after = 'This word is duplicated';
+    const expected = `-This word ${chalk.red('word ')}is duplicated\n+This word is duplicated`;
+
+    generateWordDiff(before, after).should.equal(expected);
+  });
+
+  it('works correctly on identical sentences', () => {
+    const sentence = 'These sentences are identical.';
+    const expected = `-${sentence}\n+${sentence}`;
+
+    generateWordDiff(sentence, sentence).should.equal(expected);
+  });
 });
 
 describe('chunkByFileName', () => {
