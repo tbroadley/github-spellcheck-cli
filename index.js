@@ -12,6 +12,7 @@ const {
 const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt-promise');
+const userHome = require('user-home');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
 const {
@@ -175,7 +176,7 @@ async function go() {
     },
   };
 
-  clonePath = path.join(__dirname, `/tmp/${repoUser}/${repoName}`);
+  clonePath = path.join(userHome, `/.github-spellcheck/${repoUser}/${repoName}`);
 
   let exists;
   if (isNewFork) {

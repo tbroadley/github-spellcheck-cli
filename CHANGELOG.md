@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Merge the latest from the source repository's base branch before checking for spelling mistakes.
+- Store local clones and whitelist in `~/.github-spellcheck`.
 
 ### Removed
 - Local clone deletion when a new fork is deleted.
