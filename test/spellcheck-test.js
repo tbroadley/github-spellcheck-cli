@@ -107,6 +107,16 @@ describe('getMisspellings', () => {
     fileName: 'test.md',
   }));
 
+  it('spellchecks a Markdown link with one misspelled word', () => testSpellcheck({
+    document: '[Testerino](/test)',
+    misspellings: ['Testerino'],
+    corrections: {
+      Testerino: [],
+    },
+    expectedMisspellings: [0],
+    fileName: 'testerino.md',
+  }));
+
   it('skips Markdown image URLs but not alt text', () => testSpellcheck({
     document: '![Alt text with errror](/my-awesome-image.png)',
     misspellings: ['errror', 'png'],
