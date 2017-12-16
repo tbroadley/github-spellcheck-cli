@@ -229,7 +229,6 @@ async function go() {
     walker.on('error', reject);
     walker.start();
   });
-  const originalTreeEntries = treeEntries;
 
   async function getPathsToIncludeOrExclude(includeOrExclude) {
     return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
@@ -268,9 +267,13 @@ async function go() {
   console.log();
 
   if (changeCount > 0) {
-    if (!quiet && _(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
+    const contributingGuidelines = await glob(
+      '{CONTRIBUTING*,{.github,docs}/CONTRIBUTING*}',
+      { cwd: clonePath, gitignore: true, nocase: true }
+    );
+    if (!quiet && !_.isEmpty(contributingGuidelines)) {
       console.log('Opening CONTRIBUTING.md...');
-      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/CONTRIBUTING.md`);
+      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/${_.first(contributingGuidelines)}`);
       console.log();
     }
 
