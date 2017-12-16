@@ -48,6 +48,13 @@ async function parseRepo(repo) {
   return Promise.reject(new Error('Repository name is invalid.'));
 }
 
+async function findGithubFile(name) {
+  return _.first(glob(
+    `{${name}*,{.github,docs}/${name}*}`,
+    { cwd: clonePath, gitignore: true, nocase: true }
+  ));
+}
+
 const optionDefinitions = [
   {
     name: 'help', alias: 'h', type: Boolean, description: 'Print this usage guide.',
@@ -267,13 +274,10 @@ async function go() {
   console.log();
 
   if (changeCount > 0) {
-    const contributingGuidelines = await glob(
-      '{CONTRIBUTING*,{.github,docs}/CONTRIBUTING*}',
-      { cwd: clonePath, gitignore: true, nocase: true }
-    );
-    if (!quiet && !_.isEmpty(contributingGuidelines)) {
+    const contributingGuidelines = await findGithubFile('CONTRIBUTING');
+    if (!quiet && contributingGuidelines) {
       console.log('Opening CONTRIBUTING.md...');
-      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/${_.first(contributingGuidelines)}`);
+      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/${contributingGuidelines}`);
       console.log();
     }
 
@@ -320,22 +324,27 @@ async function go() {
             console.log('Pushing to remote "origin"...');
             await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
-            console.log('Creating a pull request...');
-            const [sourceRepoUser, sourceRepoName] = await parseRepo(userAndRepo);
-            const pullRequest = await createPullRequest(
-              sourceRepoUser,
-              sourceRepoName,
-              `${repoUser}:${branchName}`,
-              baseBranchName,
-              `Fix typo${changeCount === 1 ? '' : 's'}`,
-              'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
-            );
-
-            if (quiet) {
-              console.log(`Pull request #${pullRequest.number} created.`);
+            if (findGithubFile('PULL_REQUEST_TEMPLATE')) {
+              console.log('Opening the pull request creation page...');
+              await opn(`https://github.com/${userAndRepo}/compare/${baseBranchName}...${repoUser}:${branchName}`);
             } else {
-              console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
-              await opn(pullRequest.html_url);
+              console.log('Creating a pull request...');
+              const [sourceRepoUser, sourceRepoName] = await parseRepo(userAndRepo);
+              const pullRequest = await createPullRequest(
+                sourceRepoUser,
+                sourceRepoName,
+                `${repoUser}:${branchName}`,
+                baseBranchName,
+                `Fix typo${changeCount === 1 ? '' : 's'}`,
+                'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
+              );
+
+              if (quiet) {
+                console.log(`Pull request #${pullRequest.number} created.`);
+              } else {
+                console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
+                await opn(pullRequest.html_url);
+              }
             }
           },
         },
