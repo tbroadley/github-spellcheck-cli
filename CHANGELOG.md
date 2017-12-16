@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - `pre`
 - Now ignores link and image references as well as URLs.
 
+### Changed
+- Merge the latest from the source repository's base branch before checking for spelling mistakes.
+
 ### Removed
 - Local clone deletion when a new fork is deleted.
 
