@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Store local clones and whitelist in `~/.github-spellcheck`.
 - Search for contribution guidelines according to [GitHub's instructions](https://help.github.com/articles/setting-guidelines-for-repository-contributors/).
 - If the target repository has a `PULL_REQUEST_TEMPLATE` file, open a PR creation page in the browser instead of automatically creating a PR.
+- Generated commits now have messages that are pluralized according to the number of changes made and that comply with [Conventional Commits 1.0.0-beta.1](https://conventionalcommits.org/spec/v1.0.0-beta.1.html).
 
 ### Removed
 - Local clone deletion when a new fork is deleted.
