@@ -14,7 +14,6 @@ const path = require('path');
 const prompt = require('prompt-promise');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
-const { formatDiffs } = require('./lib/diff');
 const {
   createPullRequest,
   deleteRepo,
@@ -72,6 +71,9 @@ const optionDefinitions = [
   {
     name: 'exclude', multiple: true, defaultValue: [], typeLabel: '<glob> ...', description: 'Do not spellcheck files that match one of these globs.',
   },
+  {
+    name: 'quiet', alias: 'q', type: Boolean, description: 'Do not open CONTRIBUTING.md or the new pull request in a browser.',
+  },
 ];
 
 const usageSections = [
@@ -114,6 +116,7 @@ async function go() {
     extensions,
     include,
     exclude,
+    quiet,
   } = commandLineArguments;
 
   if (help) {
@@ -250,12 +253,12 @@ async function go() {
     }));
   }));
 
-  const { changeCount, diffs } = await addByUserSelection(_.flatten(misspellingsByFile), repo);
+  const { changeCount, finalDiff } = await addByUserSelection(_.flatten(misspellingsByFile), repo);
 
   console.log();
 
   if (changeCount > 0) {
-    if (_(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
+    if (!quiet && _(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
       console.log('Opening CONTRIBUTING.md...');
       await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/CONTRIBUTING.md`);
       console.log();
@@ -266,7 +269,7 @@ async function go() {
     console.log(chalk.blue('Overview of corrections'));
     console.log(chalk.blue('-----------------------'));
     console.log();
-    console.log(formatDiffs(diffs));
+    console.log(finalDiff);
     console.log();
 
     await respondToUserInput(
@@ -318,8 +321,12 @@ async function go() {
               'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
             );
 
-            console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
-            await opn(pullRequest.html_url);
+            if (quiet) {
+              console.log(`Pull request #${pullRequest.number} created.`);
+            } else {
+              console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
+              await opn(pullRequest.html_url);
+            }
           },
         },
         {
