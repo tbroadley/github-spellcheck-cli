@@ -184,7 +184,7 @@ async function go() {
     exists = false;
   } else {
     console.log(`Checking if ${repoUser}/${repoName} has already been cloned...`);
-    exists = await fs.pathExists(clonePath);
+    exists = (await fs.pathExists(clonePath)) && (await fs.pathExists(path.join(clonePath, '/.git')));
   }
 
   let repo;
