@@ -324,7 +324,7 @@ async function go() {
             console.log('Pushing to remote "origin"...');
             await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
-            if (findGithubFile('PULL_REQUEST_TEMPLATE')) {
+            if (findGithubFile('PULL_REQUEST_TEMPLATE') && !quiet) {
               console.log('Opening the pull request creation page...');
               await opn(`https://github.com/${userAndRepo}/compare/${baseBranchName}...${repoUser}:${branchName}`);
             } else {
