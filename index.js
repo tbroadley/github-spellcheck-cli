@@ -293,7 +293,8 @@ async function go() {
       'Are you sure you want to create a pull request with these corrections?',
       [
         {
-          command: 'yes',
+          command: 'y',
+          meaning: 'yes',
           description: 'Create a pull request with the specified changes.',
           responseFunction: async () => {
             console.log(`Creating a new branch "${branchName}"...`);
@@ -349,7 +350,8 @@ async function go() {
           },
         },
         {
-          command: 'no',
+          command: 'n',
+          meaning: 'no',
           description: 'Exit the program.',
           responseFunction: _.noop,
         },
