@@ -31,7 +31,7 @@ let repoUser;
 let repoName;
 let clonePath;
 
-async function parseRepo(repo) {
+function parseRepo(repo) {
   if (!repo) {
     return Promise.reject(new Error('No repository name specified.'));
   }
@@ -43,13 +43,13 @@ async function parseRepo(repo) {
   const matchingRegex = _.find(regexes, re => re.test(repo));
   if (matchingRegex) {
     const result = matchingRegex.exec(repo);
-    return [result[1], result[2]];
+    return Promise.resolve([result[1], result[2]]);
   }
   return Promise.reject(new Error('Repository name is invalid.'));
 }
 
 async function findGithubFile(name) {
-  return _.first(glob(
+  return _.first(await glob(
     `{${name}*,{.github,docs}/${name}*}`,
     { cwd: clonePath, gitignore: true, nocase: true }
   ));
@@ -237,7 +237,7 @@ async function go() {
     walker.start();
   });
 
-  async function getPathsToIncludeOrExclude(includeOrExclude) {
+  function getPathsToIncludeOrExclude(includeOrExclude) {
     return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
   }
 
@@ -325,7 +325,7 @@ async function go() {
             console.log('Pushing to remote "origin"...');
             await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
-            if (findGithubFile('PULL_REQUEST_TEMPLATE')) {
+            if (findGithubFile('PULL_REQUEST_TEMPLATE') && !quiet) {
               console.log('Opening the pull request creation page...');
               await opn(`https://github.com/${userAndRepo}/compare/${baseBranchName}...${repoUser}:${branchName}`);
             } else {

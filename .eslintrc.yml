@@ -3,7 +3,6 @@ env:
   mocha: true
 extends: airbnb-base
 rules:
-  no-console: off
   comma-dangle:
     - error
     - arrays: always-multiline
@@ -11,3 +10,6 @@ rules:
       imports: always-multiline
       exports: always-multiline
       functions: never
+  no-console: off
+  no-return-await: error
+  require-await: error
