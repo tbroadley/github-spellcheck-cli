@@ -49,7 +49,7 @@ async function parseRepo(repo) {
 }
 
 async function findGithubFile(name) {
-  return _.first(glob(
+  return _.first(await glob(
     `{${name}*,{.github,docs}/${name}*}`,
     { cwd: clonePath, gitignore: true, nocase: true }
   ));
