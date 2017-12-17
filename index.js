@@ -31,7 +31,7 @@ let repoUser;
 let repoName;
 let clonePath;
 
-async function parseRepo(repo) {
+function parseRepo(repo) {
   if (!repo) {
     return Promise.reject(new Error('No repository name specified.'));
   }
@@ -43,7 +43,7 @@ async function parseRepo(repo) {
   const matchingRegex = _.find(regexes, re => re.test(repo));
   if (matchingRegex) {
     const result = matchingRegex.exec(repo);
-    return [result[1], result[2]];
+    return Promise.resolve([result[1], result[2]]);
   }
   return Promise.reject(new Error('Repository name is invalid.'));
 }
@@ -237,7 +237,7 @@ async function go() {
     walker.start();
   });
 
-  async function getPathsToIncludeOrExclude(includeOrExclude) {
+  function getPathsToIncludeOrExclude(includeOrExclude) {
     return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
   }
 
