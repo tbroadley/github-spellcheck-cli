@@ -249,4 +249,24 @@ describe('getMisspellings', () => {
     expectedMisspellings: [0],
     fileName: 'readme.md',
   }));
+
+  it('ignores gemoji', () => testSpellcheck({
+    document: `
+# Heading :check_mark:
+## Second heading :wonderful_stuff:
+
+Just some normal text with a :+1_emoji:
+
+  - Bullets and emoji :kpow:
+    `,
+    misspellings: ['check_mark', 'wonderful_stuff', '+1_emoji', 'kpow'],
+    corrections: {
+      check_mark: [],
+      wonderful_stuff: [],
+      '+1_emoji': [],
+      kpow: [],
+    },
+    expectedMisspellings: [],
+    fileName: 'readme.md',
+  }));
 });
