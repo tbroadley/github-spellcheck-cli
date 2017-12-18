@@ -37,7 +37,7 @@ function parseRepo(repo) {
   }
 
   const regexes = [
-    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w.]+)(?:\/[^\/]+)*$/,
+    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w.]+)(?:\/[^/]+)*$/,
     /^([-\w]+)\/([-_\w.]+)$/,
   ];
   const matchingRegex = _.find(regexes, re => re.test(repo));
