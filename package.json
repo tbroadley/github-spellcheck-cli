@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint \"index.js\" \"{lib,test}/*.js\"",
     "lint-fix": "eslint \"index.js\" \"{lib,test}/*.js\" --fix",
-    "test": "mocha"
+    "test": "mocha -C"
   },
   "author": "",
   "license": "MIT",
