@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - `li`
   - `pre`
 - Now ignores link and image references as well as URLs.
+- Now ignores Github emoji names :star: :+1:
+- The repository URL can now be any URL that refers to something within the repository, e.g. `/blob/master/README.md` or `/pulls`.
 - A count of misspellings left to correct.
 
 ### Changed
