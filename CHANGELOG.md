@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The spelling mistake editing prompt now only accepts the exact single-letter command (e.g. `y` but not `yes`).
 - The names of the columns in the spelling mistake editing prompt's help message.
 - Colours for highlighting and deleting changed words.
+- Diffs with spacing changes are highlighted correctly. For example, if "worldrecord" is replaced with "world record", the space inside "world record" will be highlighted as added, instead of the space after it.
 
 ### Removed
 - Local clone deletion when a new fork is deleted.
