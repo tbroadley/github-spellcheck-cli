@@ -283,8 +283,8 @@ async function go() {
 
     console.log();
     console.log();
-    console.log(chalk.blue('Overview of corrections'));
-    console.log(chalk.blue('-----------------------'));
+    console.log(chalk.yellow('Overview of corrections'));
+    console.log(chalk.yellow('-----------------------'));
     console.log();
     console.log(finalDiff);
     console.log();
