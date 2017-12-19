@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The names of the columns in the spelling mistake editing prompt's help message.
 - Colours for highlighting and deleting changed words.
 - Diffs with spacing changes are highlighted correctly. For example, if "worldrecord" is replaced with "world record", the space inside "world record" will be highlighted as added, instead of the space after it.
+- Create a pull request against the parent repository instead of the source. This only changes the tool's behaviour when the target repo is itself a fork. The PR will now be made against the target repo, rather than against the target repo's parent/grandparent/...
 
 ### Removed
 - Local clone deletion when a new fork is deleted.

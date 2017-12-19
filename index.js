@@ -207,14 +207,14 @@ async function go() {
     repo = await cloneWithRetry(url, clonePath, githubCredentialsOptions);
   }
 
-  console.log(`Fetching the latest on the branch '${baseBranchName}' from the source repository...`);
-  if (!await Remote.lookup(repo, 'source').catch(() => false)) {
-    await Remote.create(repo, 'source', `https://github.com/${userAndRepo}`);
+  console.log(`Fetching the latest on the branch '${baseBranchName}' from the parent repository...`);
+  if (!await Remote.lookup(repo, 'parent').catch(() => false)) {
+    await Remote.create(repo, 'parent', `https://github.com/${userAndRepo}`);
   }
   await repo.fetchAll(githubCredentialsOptions);
 
-  console.log(`Merging the latest from the source repository into '${baseBranchName}'...`);
-  await repo.mergeBranches(baseBranchName, `source/${baseBranchName}`);
+  console.log(`Merging the latest from the parent repository into '${baseBranchName}'...`);
+  await repo.mergeBranches(baseBranchName, `parent/${baseBranchName}`);
 
   console.log('Pushing...');
   const remote = await Remote.lookup(repo, 'origin');
@@ -330,10 +330,10 @@ async function go() {
               await opn(`https://github.com/${userAndRepo}/compare/${baseBranchName}...${repoUser}:${branchName}`);
             } else {
               console.log('Creating a pull request...');
-              const [sourceRepoUser, sourceRepoName] = await parseRepo(userAndRepo);
+              const [parentRepoUser, parentRepoName] = await parseRepo(userAndRepo);
               const pullRequest = await createPullRequest(
-                sourceRepoUser,
-                sourceRepoName,
+                parentRepoUser,
+                parentRepoName,
                 `${repoUser}:${branchName}`,
                 baseBranchName,
                 `Fix typo${changeCount === 1 ? '' : 's'}`,
