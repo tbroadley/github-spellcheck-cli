@@ -6,11 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased (2.0)]
 ### Added
-- More HTML elements to the blacklist:
-  - `ol`
-  - `ul`
-  - `li`
-  - `pre`
+- All HTML tags, attributes, and entities to the blacklist.
 - Now ignores link and image references as well as URLs.
 - Now ignores Github emoji names :star: :+1:
 - The repository URL can now be any URL that refers to something within the repository, e.g. `/blob/master/README.md` or `/pulls`.

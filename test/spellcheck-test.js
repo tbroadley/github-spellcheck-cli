@@ -234,7 +234,7 @@ describe('getMisspellings', () => {
       pre: ['pref'],
       CharacterMetadata: [],
     },
-    expectedMisspellings: [1, 5],
+    expectedMisspellings: [5],
     fileName: 'APIReference-CharacterMetadata.md',
   }));
 
