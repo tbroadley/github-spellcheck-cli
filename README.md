@@ -3,12 +3,12 @@
 
 A tool for checking GitHub repositories for spelling errors and submitting PRs to fix them.
 
-[![npm](https://img.shields.io/npm/v/github-spellcheck-cli.svg)]()
+[![npm](https://img.shields.io/npm/v/github-spellcheck-cli.svg)](https://www.npmjs.com/package/github-spellcheck-cli)
 [![Build Status](https://travis-ci.org/tbroadley/github-spellcheck-cli.svg?branch=master)](https://travis-ci.org/tbroadley/github-spellcheck-cli)
 
 ## Demo
 
-![Github Spellcheck demo](docs/demo.gif)
+![Github Spellcheck demo](https://github.com/tbroadley/github-spellcheck-cli/blob/master/docs/demo.gif)
 
 ## Inspiration
 
