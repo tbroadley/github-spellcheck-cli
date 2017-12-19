@@ -103,6 +103,12 @@ the lazy dog.
     after: 'This sentence. Is a great sentence',
     expected: `-This sentence.${removed('is')} a great sentence\n+This sentence. ${added('Is ')}a great sentence`,
   }));
+
+  it('works correctly when an apostrophe is removed', () => testGenerateWordDiff({
+    before: 'I love React\'s components',
+    after: 'I love React components',
+    expected: `-I love React${removed('\'s')} components\n+I love React components`,
+  }));
 });
 
 describe('chunkByFileName', () => {

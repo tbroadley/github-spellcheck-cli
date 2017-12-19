@@ -238,7 +238,7 @@ describe('getMisspellings', () => {
     fileName: 'APIReference-CharacterMetadata.md',
   }));
 
-  it('does something', () => testSpellcheck({
+  it('ignores image and URL references', () => testSpellcheck({
     document: '## [![npm][npmjs-img]][npmjs-url]',
     misspellings: ['npm', 'npmjs-img', 'npmjs-url'],
     corrections: {
