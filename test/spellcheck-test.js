@@ -234,7 +234,7 @@ describe('getMisspellings', () => {
       pre: ['pref'],
       CharacterMetadata: [],
     },
-    expectedMisspellings: [5],
+    expectedMisspellings: [1, 5],
     fileName: 'APIReference-CharacterMetadata.md',
   }));
 
@@ -268,5 +268,15 @@ Just some normal text with a :+1_emoji:
     },
     expectedMisspellings: [],
     fileName: 'readme.md',
+  }));
+
+  it('correctly detects a misspelled HTML tag name', () => testSpellcheck({
+    document: '<tablete>',
+    misspellings: ['tablete'],
+    corrections: {
+      tablete: [],
+    },
+    expectedMisspellings: [0],
+    fileName: 'README.md',
   }));
 });
