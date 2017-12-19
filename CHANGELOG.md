@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - Local clone deletion when a new fork is deleted.
+- Pushing the merged base branch to the fork.
 
 ## [Unreleased]
 

@@ -216,10 +216,6 @@ async function go() {
   console.log(`Merging the latest from the parent repository into '${baseBranchName}'...`);
   await repo.mergeBranches(baseBranchName, `parent/${baseBranchName}`);
 
-  console.log('Pushing...');
-  const remote = await Remote.lookup(repo, 'origin');
-  await remote.push([`refs/heads/${baseBranchName}`], githubCredentialsOptions);
-
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
   const commit = await repo.getBranchCommit(baseBranchName);
 
@@ -323,6 +319,7 @@ async function go() {
 
             console.log(`Commit ${newCommit} created.`);
             console.log('Pushing to remote "origin"...');
+            const remote = await Remote.lookup(repo, 'origin');
             await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
             if (await findGithubFile('PULL_REQUEST_TEMPLATE') && !quiet) {
