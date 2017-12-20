@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.1] - 2017-12-19
+### Changed
+- Demo GIF in README.md. Bumped version so that NPM would update its link to the GIF.
+
 ## [2.0.0] - 2017-12-19
 ### Added
 - All HTML tags, attributes, and entities to the blacklist.
