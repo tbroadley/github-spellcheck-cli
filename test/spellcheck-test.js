@@ -321,4 +321,16 @@ if (thing.hasOwnProperty()) {
     expectedMisspellings: [],
     fileName: 'README.md',
   }));
+
+  it('ignores GitHub username mentions', () => testSpellcheck({
+    document: '@tbroadley is a GitHub user. [@persno](a.b/c) is on GitHub. @ hotmail',
+    misspellings: ['tbroadley', 'persno', 'hotmail'],
+    corrections: {
+      tbroadley: [],
+      persno: [],
+      hotmail: [],
+    },
+    expectedMisspellings: [2],
+    fileName: 'README.md',
+  }));
 });
