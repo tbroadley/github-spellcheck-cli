@@ -234,6 +234,8 @@ async function go() {
     walker.start();
   });
 
+  treeEntries = _.sortBy(treeEntries, treeEntry => treeEntry.path());
+
   function getPathsToIncludeOrExclude(includeOrExclude) {
     return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
   }
