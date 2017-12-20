@@ -279,4 +279,26 @@ Just some normal text with a :+1_emoji:
     expectedMisspellings: [0],
     fileName: 'README.md',
   }));
+
+  it('ignores an HTML code tag', () => testSpellcheck({
+    document: 'Here is a <code>docker</code> container',
+    misspellings: ['docker'],
+    corrections: {
+      docker: [],
+    },
+    expectedMisspellings: [],
+    fileName: 'README.md',
+  }));
+
+  it('ignores an HTML code tag containing multiple words', () => testSpellcheck({
+    document: 'Here is a <code>docker github codeship</code> container',
+    misspellings: ['docker', 'github', 'codeship'],
+    corrections: {
+      docker: [],
+      github: [],
+      codeship: [],
+    },
+    expectedMisspellings: [],
+    fileName: 'README.md',
+  }));
 });
