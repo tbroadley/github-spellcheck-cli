@@ -1,6 +1,5 @@
 # GitHub Spellcheck
 
-
 A tool for checking GitHub repositories for spelling errors and submitting PRs to fix them.
 
 [![npm](https://img.shields.io/npm/v/github-spellcheck-cli.svg)](https://www.npmjs.com/package/github-spellcheck-cli)
