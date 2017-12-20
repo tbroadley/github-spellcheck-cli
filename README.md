@@ -8,7 +8,7 @@ A tool for checking GitHub repositories for spelling errors and submitting PRs t
 
 ## Demo
 
-![Github Spellcheck demo](https://github.com/tbroadley/github-spellcheck-cli/blob/master/docs/demo.gif)
+![Github Spellcheck demo](https://raw.githubusercontent.com/tbroadley/github-spellcheck-cli/master/docs/demo.gif)
 
 ## Inspiration
 
