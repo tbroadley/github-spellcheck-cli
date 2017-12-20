@@ -333,4 +333,30 @@ if (thing.hasOwnProperty()) {
     expectedMisspellings: [2],
     fileName: 'README.md',
   }));
+
+  it('ignores Markdown image and link reference names and URLs', () => testSpellcheck({
+    document: `
+[This should be spellcecked](this-shouldnt-be)
+
+I'm a reference link, [chekc me please].
+
+![Reference image alt txet][ignor]
+
+[this-shouldnt-be]: https://github.com
+[chekc me please]: https://google.ca
+[ignor]: http://asdf.com/c.png
+    `,
+    misspellings: ['spellcecked', 'shouldnt', 'chekc', 'txet', 'ignor', 'github', 'google', 'asdf'],
+    corrections: {
+      spellcecked: [],
+      shouldnt: [],
+      chekc: [],
+      txet: [],
+      github: [],
+      google: [],
+      asdf: [],
+    },
+    expectedMisspellings: [0, 2, 3],
+    fileName: 'README.md',
+  }));
 });

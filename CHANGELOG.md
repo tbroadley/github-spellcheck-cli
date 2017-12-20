@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Now ignores code between `<code>` HTML tags.
 - Now ignores GitHub usernames, e.g. `@tbroadley`.
+- Now ignores Markdown image and URL references.
 
 ## [Unreleased]
 
