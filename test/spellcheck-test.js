@@ -39,19 +39,23 @@ describe('getMisspellings', () => {
     document, misspellings, corrections, expectedMisspellings, fileName,
   }) {
     const indices = buildIndicesFromWords(document, misspellings);
-    const { getMisspellings } = mockSpellchecker(indices, corrections);
+    const defaultCorrections = _.merge(
+      {},
+      ..._.map(misspellings, misspelling => ({ [misspelling]: [] })),
+      corrections
+    );
+    const { getMisspellings } = mockSpellchecker(indices, defaultCorrections);
     return getMisspellings(document, fileName)
       .should.eventually.deep.equal(_.map(expectedMisspellings, index => ({
         index: indices[index],
         misspelling: misspellings[index],
-        suggestions: corrections[misspellings[index]],
+        suggestions: defaultCorrections[misspellings[index]],
       })));
   }
 
   it('returns an empty array given a sentence with no misspellings', () => testSpellcheck({
     document: 'Test sentence',
     misspellings: [],
-    corrections: [],
     expectedMisspellings: [],
     fileName: 'test.txt',
   }));
@@ -110,9 +114,6 @@ describe('getMisspellings', () => {
   it('spellchecks a Markdown link with one misspelled word', () => testSpellcheck({
     document: '[Testerino](/test)',
     misspellings: ['Testerino'],
-    corrections: {
-      Testerino: [],
-    },
     expectedMisspellings: [0],
     fileName: 'testerino.md',
   }));
@@ -241,11 +242,6 @@ describe('getMisspellings', () => {
   it('ignores image and URL references', () => testSpellcheck({
     document: '## [![npm][npmjs-img]][npmjs-url]',
     misspellings: ['npm', 'npmjs-img', 'npmjs-url'],
-    corrections: {
-      npm: [],
-      'npmjs-img': [],
-      'npmjs-url': [],
-    },
     expectedMisspellings: [0],
     fileName: 'readme.md',
   }));
@@ -260,12 +256,6 @@ Just some normal text with a :+1_emoji:
   - Bullets and emoji :kpow:
     `,
     misspellings: ['check_mark', 'wonderful_stuff', '+1_emoji', 'kpow'],
-    corrections: {
-      check_mark: [],
-      wonderful_stuff: [],
-      '+1_emoji': [],
-      kpow: [],
-    },
     expectedMisspellings: [],
     fileName: 'readme.md',
   }));
@@ -273,9 +263,6 @@ Just some normal text with a :+1_emoji:
   it('correctly detects a misspelled HTML tag name', () => testSpellcheck({
     document: '<tablete>',
     misspellings: ['tablete'],
-    corrections: {
-      tablete: [],
-    },
     expectedMisspellings: [0],
     fileName: 'README.md',
   }));
@@ -283,9 +270,6 @@ Just some normal text with a :+1_emoji:
   it('ignores an HTML code tag', () => testSpellcheck({
     document: 'Here is a <code>docker</code> container',
     misspellings: ['docker'],
-    corrections: {
-      docker: [],
-    },
     expectedMisspellings: [],
     fileName: 'README.md',
   }));
@@ -293,11 +277,6 @@ Just some normal text with a :+1_emoji:
   it('ignores an HTML code tag containing multiple words', () => testSpellcheck({
     document: 'Here is a <code class="test">docker github codeship</code> container',
     misspellings: ['docker', 'github', 'codeship'],
-    corrections: {
-      docker: [],
-      github: [],
-      codeship: [],
-    },
     expectedMisspellings: [],
     fileName: 'README.md',
   }));
@@ -313,11 +292,6 @@ if (thing.hasOwnProperty()) {
 </code></pre>
     `,
     misspellings: ['pre', 'testThisStuff', 'hasOwnProperty'],
-    corrections: {
-      pre: [],
-      testThisStuff: [],
-      hasOwnProperty: [],
-    },
     expectedMisspellings: [],
     fileName: 'README.md',
   }));
@@ -325,11 +299,6 @@ if (thing.hasOwnProperty()) {
   it('ignores GitHub username mentions', () => testSpellcheck({
     document: '@tbroadley is a GitHub user. [@persno](a.b/c) is on GitHub. @ hotmail',
     misspellings: ['tbroadley', 'persno', 'hotmail'],
-    corrections: {
-      tbroadley: [],
-      persno: [],
-      hotmail: [],
-    },
     expectedMisspellings: [2],
     fileName: 'README.md',
   }));
@@ -347,15 +316,6 @@ I'm a reference link, [chekc me please].
 [ignor]: http://asdf.com/c.png
     `,
     misspellings: ['spellcecked', 'shouldnt', 'chekc', 'txet', 'ignor', 'github', 'google', 'asdf'],
-    corrections: {
-      spellcecked: [],
-      shouldnt: [],
-      chekc: [],
-      txet: [],
-      github: [],
-      google: [],
-      asdf: [],
-    },
     expectedMisspellings: [0, 2, 3],
     fileName: 'README.md',
   }));
