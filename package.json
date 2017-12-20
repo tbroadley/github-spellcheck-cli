@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint \"index.js\" \"{lib,test}/*.js\"",
     "lint-fix": "eslint \"index.js\" \"{lib,test}/*.js\" --fix",
-    "test": "mocha"
+    "test": "mocha -C"
   },
   "author": "",
   "license": "MIT",
@@ -31,8 +31,11 @@
     "opn": "^5.1.0",
     "promise-retry": "^1.1.1",
     "prompt-promise": "^1.0.3",
-    "remark": "^8.0.0",
-    "spellchecker": "^3.4.4"
+    "remark-gemoji": "^4.0.1",
+    "remark-parse": "^4.0.0",
+    "spellchecker": "^3.4.4",
+    "unified": "^6.1.6",
+    "user-home": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

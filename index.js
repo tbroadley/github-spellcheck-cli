@@ -12,6 +12,7 @@ const {
 const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt-promise');
+const userHome = require('user-home');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
 const {
@@ -30,21 +31,28 @@ let repoUser;
 let repoName;
 let clonePath;
 
-async function parseRepo(repo) {
+function parseRepo(repo) {
   if (!repo) {
     return Promise.reject(new Error('No repository name specified.'));
   }
 
   const regexes = [
-    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w.]+)$/,
+    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([-\w]+)\/([-_\w.]+)(?:\/[^/]+)*$/,
     /^([-\w]+)\/([-_\w.]+)$/,
   ];
   const matchingRegex = _.find(regexes, re => re.test(repo));
   if (matchingRegex) {
     const result = matchingRegex.exec(repo);
-    return [result[1], result[2]];
+    return Promise.resolve([result[1], result[2]]);
   }
   return Promise.reject(new Error('Repository name is invalid.'));
+}
+
+async function findGithubFile(name) {
+  return _.first(await glob(
+    `{${name}*,{.github,docs}/${name}*}`,
+    { cwd: clonePath, gitignore: true, nocase: true }
+  ));
 }
 
 const optionDefinitions = [
@@ -175,7 +183,7 @@ async function go() {
     },
   };
 
-  clonePath = path.join(__dirname, `/tmp/${repoUser}/${repoName}`);
+  clonePath = path.join(userHome, `/.github-spellcheck/${repoUser}/${repoName}`);
 
   let exists;
   if (isNewFork) {
@@ -189,10 +197,7 @@ async function go() {
 
   let repo;
   if (exists) {
-    console.log(`Pulling the latest on the branch '${baseBranchName}'...`);
     repo = await Repository.open(clonePath);
-    await repo.fetchAll(githubCredentialsOptions);
-    await repo.mergeBranches(baseBranchName, `origin/${baseBranchName}`);
   } else {
     console.log('Creating a temporary directory...');
     await fs.ensureDir(clonePath);
@@ -201,6 +206,15 @@ async function go() {
     console.log(`Cloning ${url} into the temporary directory...`);
     repo = await cloneWithRetry(url, clonePath, githubCredentialsOptions);
   }
+
+  console.log(`Fetching the latest on the branch '${baseBranchName}' from the parent repository...`);
+  if (!await Remote.lookup(repo, 'parent').catch(() => false)) {
+    await Remote.create(repo, 'parent', `https://github.com/${userAndRepo}`);
+  }
+  await repo.fetchAll(githubCredentialsOptions);
+
+  console.log(`Merging the latest from the parent repository into '${baseBranchName}'...`);
+  await repo.mergeBranches(baseBranchName, `parent/${baseBranchName}`);
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
   const commit = await repo.getBranchCommit(baseBranchName);
@@ -218,9 +232,8 @@ async function go() {
     walker.on('error', reject);
     walker.start();
   });
-  const originalTreeEntries = treeEntries;
 
-  async function getPathsToIncludeOrExclude(includeOrExclude) {
+  function getPathsToIncludeOrExclude(includeOrExclude) {
     return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
   }
 
@@ -237,7 +250,6 @@ async function go() {
   if (!_.isEmpty(exclude)) {
     console.log('Excluding files that match the regexes specified with the --exclude option...');
     const pathsToExclude = await getPathsToIncludeOrExclude(exclude);
-    console.log(pathsToExclude);
     treeEntries = _.reject(treeEntries, includesPath(pathsToExclude));
   }
 
@@ -258,16 +270,17 @@ async function go() {
   console.log();
 
   if (changeCount > 0) {
-    if (!quiet && _(originalTreeEntries).map(entry => entry.path()).includes('CONTRIBUTING.md')) {
+    const contributingGuidelines = await findGithubFile('CONTRIBUTING');
+    if (!quiet && contributingGuidelines) {
       console.log('Opening CONTRIBUTING.md...');
-      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/CONTRIBUTING.md`);
+      await opn(`https://github.com/${repoUser}/${repoName}/blob/${baseBranchName}/${contributingGuidelines}`);
       console.log();
     }
 
     console.log();
     console.log();
-    console.log(chalk.blue('Overview of corrections'));
-    console.log(chalk.blue('-----------------------'));
+    console.log(chalk.yellow('Overview of corrections'));
+    console.log(chalk.yellow('-----------------------'));
     console.log();
     console.log(finalDiff);
     console.log();
@@ -276,7 +289,8 @@ async function go() {
       'Are you sure you want to create a pull request with these corrections?',
       [
         {
-          command: 'yes',
+          command: 'y',
+          meaning: 'yes',
           description: 'Create a pull request with the specified changes.',
           responseFunction: async () => {
             console.log(`Creating a new branch "${branchName}"...`);
@@ -298,40 +312,43 @@ async function go() {
               'HEAD',
               signature,
               signature,
-              'Fix typos',
+              `docs: fix typo${changeCount === 1 ? '' : 's'}`,
               indexOid,
               [commit]
             );
 
             console.log(`Commit ${newCommit} created.`);
-
-            const [remoteName] = await Remote.list(repo);
-            const remote = await Remote.lookup(repo, remoteName);
-
-            console.log(`Pushing to remote "${remoteName}"...`);
+            console.log('Pushing to remote "origin"...');
+            const remote = await Remote.lookup(repo, 'origin');
             await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
 
-            console.log('Creating a pull request...');
-            const [sourceRepoUser, sourceRepoName] = await parseRepo(userAndRepo);
-            const pullRequest = await createPullRequest(
-              sourceRepoUser,
-              sourceRepoName,
-              `${repoUser}:${branchName}`,
-              baseBranchName,
-              `Fix typo${changeCount === 1 ? '' : 's'}`,
-              'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
-            );
-
-            if (quiet) {
-              console.log(`Pull request #${pullRequest.number} created.`);
+            if (await findGithubFile('PULL_REQUEST_TEMPLATE') && !quiet) {
+              console.log('Opening the pull request creation page...');
+              await opn(`https://github.com/${userAndRepo}/compare/${baseBranchName}...${repoUser}:${branchName}`);
             } else {
-              console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
-              await opn(pullRequest.html_url);
+              console.log('Creating a pull request...');
+              const [parentRepoUser, parentRepoName] = await parseRepo(userAndRepo);
+              const pullRequest = await createPullRequest(
+                parentRepoUser,
+                parentRepoName,
+                `${repoUser}:${branchName}`,
+                baseBranchName,
+                `Fix typo${changeCount === 1 ? '' : 's'}`,
+                'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
+              );
+
+              if (quiet) {
+                console.log(`Pull request #${pullRequest.number} created.`);
+              } else {
+                console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
+                await opn(pullRequest.html_url);
+              }
             }
           },
         },
         {
-          command: 'no',
+          command: 'n',
+          meaning: 'no',
           description: 'Exit the program.',
           responseFunction: _.noop,
         },
@@ -341,7 +358,6 @@ async function go() {
     console.log(chalk.red('No corrections added.'));
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
-    await fs.remove(clonePath);
     console.log(chalk.red('Exiting...'));
   } else {
     console.log(chalk.red('No corrections added. Exiting...'));
@@ -356,9 +372,6 @@ go().catch(async (error) => {
   if (isNewFork && repoUser && repoName) {
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
-    if (clonePath) {
-      await fs.remove(clonePath);
-    }
   }
 
   console.log(chalk.red('Exiting...'));

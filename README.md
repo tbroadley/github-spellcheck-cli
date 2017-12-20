@@ -40,7 +40,7 @@ The command is `github-spellcheck`. It takes the following options:
 
 ## Whitelist
 
-The whitelist is stored at `/path/to/global/npm/packages/github-spellcheck-cli/tmp/whitelist.txt`.
+The whitelist is stored at `~/.github-spellcheck/whitelist.txt`.
 
 ## GitHub personal access token
 

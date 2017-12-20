@@ -205,4 +205,78 @@ describe('getMisspellings', () => {
     expectedMisspellings: [],
     fileName: 'test.txt',
   }));
+
+  it('ignores HTML list elements', () => testSpellcheck({
+    document: `
+## Overview
+
+*Static Methods*
+
+<ul class="apiIndex">
+  <li>
+    <a href="#create">
+      <pre>static create(...): CharacterMetadata</pre>
+    </a>
+  </li>
+</ul>
+<ol>
+  <li>
+    Test
+  </li>
+</ol>
+    `,
+    misspellings: ['ul', 'apiIndex', 'li', 'href', 'pre', 'CharacterMetadata', 'ol'],
+    corrections: {
+      ul: ['um'],
+      apiIndex: [],
+      li: ['lie'],
+      href: ['here'],
+      pre: ['pref'],
+      CharacterMetadata: [],
+    },
+    expectedMisspellings: [1, 5],
+    fileName: 'APIReference-CharacterMetadata.md',
+  }));
+
+  it('ignores image and URL references', () => testSpellcheck({
+    document: '## [![npm][npmjs-img]][npmjs-url]',
+    misspellings: ['npm', 'npmjs-img', 'npmjs-url'],
+    corrections: {
+      npm: [],
+      'npmjs-img': [],
+      'npmjs-url': [],
+    },
+    expectedMisspellings: [0],
+    fileName: 'readme.md',
+  }));
+
+  it('ignores gemoji', () => testSpellcheck({
+    document: `
+# Heading :check_mark:
+## Second heading :wonderful_stuff:
+
+Just some normal text with a :+1_emoji:
+
+  - Bullets and emoji :kpow:
+    `,
+    misspellings: ['check_mark', 'wonderful_stuff', '+1_emoji', 'kpow'],
+    corrections: {
+      check_mark: [],
+      wonderful_stuff: [],
+      '+1_emoji': [],
+      kpow: [],
+    },
+    expectedMisspellings: [],
+    fileName: 'readme.md',
+  }));
+
+  it('correctly detects a misspelled HTML tag name', () => testSpellcheck({
+    document: '<tablete>',
+    misspellings: ['tablete'],
+    corrections: {
+      tablete: [],
+    },
+    expectedMisspellings: [0],
+    fileName: 'README.md',
+  }));
 });

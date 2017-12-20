@@ -2,91 +2,113 @@ const chalk = require('chalk');
 
 const { chunkByFileName, generateWordDiff } = require('../lib/diff');
 
+const removed = chalk.bgRed.white;
+const added = chalk.bgGreen.white;
+
+function testGenerateWordDiff({ before, after, expected }) {
+  generateWordDiff(before, after).should.equal(expected);
+}
+
 describe('generateWordDiff', () => {
-  it('works correctly on a multiline text with a misspelling', () => {
-    const before = `
+  it('works correctly on a multiline text with a misspelling', () => testGenerateWordDiff({
+    before: `
 The quick brown fpx
 jumps over teh
 lazyy dgo.
-    `;
-    const after = `
+    `,
+    after: `
 The quick brown fpx
 jumps over the
 lazyy dgo.
-    `;
-    const expected = `-jumps over ${chalk.red('teh')}\n+jumps over ${chalk.green('the')}`;
+    `,
+    expected: `-jumps over ${removed('teh')}\n+jumps over ${added('the')}`,
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
-
-  it('works correctly on a text with multiple consecutive newlines', () => {
-    const before = `
+  it('works correctly on a text with multiple consecutive newlines', () => testGenerateWordDiff({
+    before: `
 The quick brown fox
 
 jumps ver
 
 
 the lazy dog.
-    `;
-    const after = `
+    `,
+    after: `
 The quick brown fox
 
 jumps over
 
 
 the lazy dog.
-    `;
-    const expected = `-jumps ${chalk.red('ver')}\n+jumps ${chalk.green('over')}`;
+    `,
+    expected: `-jumps ${removed('ver')}\n+jumps ${added('over')}`,
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
+  it('works correctly on a text with a hyphenated word removed', () => testGenerateWordDiff({
+    before: 'The quick-brown fox',
+    after: 'The fox',
+    expected: `-The ${removed('quick-brown ')}fox\n+The fox`,
+  }));
 
-  it('works correctly on a text with a hyphenated word removed', () => {
-    const before = 'The quick-brown fox';
-    const after = 'The  fox';
-    const expected = `-The${chalk.red(' quick-brown ')}fox\n+The${chalk.green('  ')}fox`;
+  it('works correctly with a Markdown multiline blockquote', () => testGenerateWordDiff({
+    before: '> Line Line 1\n> Line Line 1',
+    after: '> Line Lien 1\n> Line Line 1',
+    expected: `-> Line ${removed('Line')} 1\n+> Line ${added('Lien')} 1`,
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
+  it('works correctly with a long long Markdown multiline blockquote', () => testGenerateWordDiff({
+    before: '> This is a long long long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n',
+    after: '> This is a long lung long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n',
+    expected: `-> This is a long ${removed('long')} long long long long long long long long long long long long long paragraph.\n+> This is a long ${added('lung')} long long long long long long long long long long long long long paragraph.`,
+  }));
 
-  it('works correctly with a Markdown multiline blockquote', () => {
-    const before = '> Line Line 1\n> Line Line 1';
-    const after = '> Line Lien 1\n> Line Line 1';
-    const expected = `-> Line ${chalk.red('Line')} 1\n+> Line ${chalk.green('Lien')} 1`;
+  it('works correctly with an unknown word', () => testGenerateWordDiff({
+    before: 'I wonder why NobodyKnowsThisWord huh',
+    after: 'I wonder why [unknown word] huh',
+    expected: `-I wonder why ${removed('NobodyKnowsThisWord')} huh\n+I wonder why ${added('[unknown word]')} huh`,
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
+  it('works correctly on a deleted duplicate word', () => testGenerateWordDiff({
+    before: 'This word word is duplicated',
+    after: 'This word is duplicated',
+    expected: `-This word ${removed('word ')}is duplicated\n+This word is duplicated`,
+  }));
 
-  it('works correctly with a long long Markdown multiline blockquote', () => {
-    const before = '> This is a long long long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n';
-    const after = '> This is a long lung long long long long long long long long long long long long long paragraph.\n> This is a long long long long long long long long long long long long long long long paragraph.\n';
-    const expected = `-> This is a long ${chalk.red('long')} long long long long long long long long long long long long long paragraph.\n+> This is a long ${chalk.green('lung')} long long long long long long long long long long long long long paragraph.`;
+  it('works correctly on identical sentences', () => testGenerateWordDiff({
+    before: 'These sentences are identical.',
+    after: 'These sentences are identical.',
+    expected: '-These sentences are identical.\n+These sentences are identical.',
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
+  it('works correctly on a sentence with two words combined into one', () => testGenerateWordDiff({
+    before: 'This sentence is a great sentence',
+    after: 'This sentence is agreat sentence',
+    expected: `-This sentence is ${removed('a great')} sentence\n+This sentence is ${added('agreat')} sentence`,
+  }));
 
-  it('works correctly with an unknown word', () => {
-    const before = 'I wonder why NobodyKnowsThisWord huh';
-    const after = 'I wonder why [unknown word] huh';
-    const expected = `-I wonder why ${chalk.red('NobodyKnowsThisWord')} huh\n+I wonder why ${chalk.green('[unknown')} ${chalk.green('word] ')}huh`;
+  it('works correctly on a sentence with one word broken into two', () => testGenerateWordDiff({
+    before: 'This sentence is agreat sentence',
+    after: 'This sentence is a great sentence',
+    expected: `-This sentence is ${removed('agreat')} sentence\n+This sentence is ${added('a great')} sentence`,
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
+  it('works correctly on a sentence with one word broken into three', () => testGenerateWordDiff({
+    before: 'This sentence isagreat sentence',
+    after: 'This sentence is a great sentence',
+    expected: `-This sentence ${removed('isagreat')} sentence\n+This sentence ${added('is a great')} sentence`,
+  }));
 
-  it('works correctly on a deleted duplicate word', () => {
-    const before = 'This word word is duplicated';
-    const after = 'This word is duplicated';
-    const expected = `-This word ${chalk.red('word ')}is duplicated\n+This word is duplicated`;
+  it('works correctly on a sentence with one word broken into two around a period', () => testGenerateWordDiff({
+    before: 'This sentence.is a great sentence',
+    after: 'This sentence. Is a great sentence',
+    expected: `-This sentence.${removed('is')} a great sentence\n+This sentence. ${added('Is ')}a great sentence`,
+  }));
 
-    generateWordDiff(before, after).should.equal(expected);
-  });
-
-  it('works correctly on identical sentences', () => {
-    const sentence = 'These sentences are identical.';
-    const expected = `-${sentence}\n+${sentence}`;
-
-    generateWordDiff(sentence, sentence).should.equal(expected);
-  });
+  it('works correctly when an apostrophe is removed', () => testGenerateWordDiff({
+    before: 'I love React\'s components',
+    after: 'I love React components',
+    expected: `-I love React${removed('\'s')} components\n+I love React components`,
+  }));
 });
 
 describe('chunkByFileName', () => {
