@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Now ignores GitHub usernames, e.g. `@tbroadley`.
 - Now ignores Markdown image and URL references.
 
+### Changed
+- Decode HTML entities before spellchecking.
+
 ## [Unreleased]
 
 ## [2.0.1] - 2017-12-19
