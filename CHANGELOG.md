@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0] - 2017-12-20
+### Added
+- Now ignores code between `<code>` HTML tags.
+- Now ignores GitHub usernames, e.g. `@tbroadley`.
+- Now ignores Markdown image and URL references.
+
+### Changed
+- Decode HTML entities before spellchecking.
+- Do an in-order traversal of the target repo's directory structure, instead of a level-order traversal (a.k.a. breadth-first search).
+
 ## [2.0.1] - 2017-12-19
 ### Changed
 - Demo GIF in README.md. Bumped version so that NPM would update its link to the GIF.
@@ -101,7 +111,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v2.0.1...v3.0.0
+[2.0.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.4...v2.0.0
 [1.1.4]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v1.1.2...v1.1.3

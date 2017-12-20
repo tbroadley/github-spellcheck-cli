@@ -29,6 +29,7 @@
     "lodash": "^4.17.4",
     "nodegit": "^0.20.3",
     "opn": "^5.1.0",
+    "parse-entities": "^1.1.1",
     "promise-retry": "^1.1.1",
     "prompt-promise": "^1.0.3",
     "remark-gemoji": "^4.0.1",
