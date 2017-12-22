@@ -10,7 +10,6 @@ const {
   Cred, Index, Remote, Repository, Reset,
 } = require('nodegit');
 const opn = require('opn');
-const decode = require('parse-entities');
 const path = require('path');
 const prompt = require('prompt-promise');
 const userHome = require('user-home');
@@ -262,7 +261,7 @@ async function go() {
   console.log('Spell-checking the remaining files...');
   const misspellingsByFile = await Promise.all(_.map(treeEntries, async (entry) => {
     const blob = await entry.getBlob();
-    const misspellings = await getMisspellings(decode(blob.toString().replace(/\r\n/g, '\n')), entry.path());
+    const misspellings = await getMisspellings(blob.toString().replace(/\r\n/g, '\n'), entry.path());
     return _.map(misspellings, misspelling => _.assign({}, misspelling, {
       path: entry.path(),
     }));
