@@ -319,4 +319,11 @@ I'm a reference link, [chekc me please].
     expectedMisspellings: [0, 2, 3],
     fileName: 'README.md',
   }));
+
+  it('spellchecks links to anchors within the same document', () => testSpellcheck({
+    document: '[Contributors](#contributers)',
+    misspellings: ['contributers'],
+    expectedMisspellings: [0],
+    fileName: 'README.md',
+  }));
 });
