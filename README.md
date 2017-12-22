@@ -37,6 +37,22 @@ The command is `github-spellcheck`. It takes the following options:
 --exclude <glob> ...                             Do not spellcheck files that match one of these globs.
 ```
 
+## Applying corrections
+
+The tool will search for potential spelling mistakes in the specified GitHub repository, then ask you what you want to do with each mistake. Here are the commands that the tool accepts:
+
+```
+Command   Meaning           Description
+y         yes               Include this correction in the pull request.
+n         no                Do not include this correction in the pull request.
+d         delete repeated   Delete the word to be corrected and the space in front of it. For example, "the the" will become "the".
+i         ignore            Ignore the word to be corrected for the rest of the session.
+w         whitelist         Permanently whitelist the word to be corrected.
+e         edit              Replace the word to be corrected with a specified word.
+s         skip file         Do not include this correction on any other corrections in this file.
+h         help              Print this usage guide.
+```
+
 ## Whitelist
 
 The whitelist is stored at `~/.github-spellcheck/whitelist.txt`.
