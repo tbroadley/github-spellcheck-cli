@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased (4.0)]
+### Added
+- A progress bar for the automated spellchecking step.
+
 ## [Unreleased]
 
 ## [3.0.2] - 2017-12-21
@@ -119,6 +123,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
+[Unreleased (4.0)]: https://github.com/tbroadley/github-spellcheck-cli/compare/HEAD...4.0
 [Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...HEAD
 [3.0.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.0...v3.0.1

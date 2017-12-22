@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const chalk = require('chalk');
+const progress = require('cli-progress');
 const dotenv = require('dotenv');
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
@@ -259,9 +260,15 @@ async function go() {
   treeEntries = _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()));
 
   console.log('Spell-checking the remaining files...');
+  const progressBar = new progress.Bar({
+    format: '[{bar}] {percentage}% | ETA: {eta}s | {value}/{total}',
+    stopOnComplete: true,
+  }, progress.Presets.legacy);
+  progressBar.start(treeEntries.length, 0);
   const misspellingsByFile = await Promise.all(_.map(treeEntries, async (entry) => {
     const blob = await entry.getBlob();
     const misspellings = await getMisspellings(blob.toString().replace(/\r\n/g, '\n'), entry.path());
+    progressBar.increment();
     return _.map(misspellings, misspelling => _.assign({}, misspelling, {
       path: entry.path(),
     }));

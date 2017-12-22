@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "chalk": "^2.3.0",
+    "cli-progress": "^1.6.1",
     "command-line-args": "^4.0.7",
     "command-line-usage": "^4.0.2",
     "diff": "^3.4.0",
