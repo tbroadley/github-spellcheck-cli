@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.3] - 2017-12-22
+### Fixed
+- Create a local branch corresponding to the original repo's base branch if such a branch doesn't already exist. This fixes an issue where, if the specified base branch wasn't the parent repository's default branch, the tool would fail.
+
 ## [3.0.2] - 2017-12-21
 ### Fixed
 - Stop decoding HTML entities because doing so throws off the indices of spelling mistakes.
@@ -125,6 +129,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [Unreleased (4.0)]: https://github.com/tbroadley/github-spellcheck-cli/compare/HEAD...4.0
 [Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...HEAD
+[3.0.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v2.0.1...v3.0.0
