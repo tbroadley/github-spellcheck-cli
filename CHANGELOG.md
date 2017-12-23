@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - A progress bar for the automated spellchecking step.
 - Spellchecking for links to anchors within the document (like [this link](#unreleased)).
 - Ignore words in PascalCase, camelCase, and snake_case.
+- Ignore words that contain a period if the last section of the word when split on periods isn't in the dictionary.
+- Ignore words containing a pound symbol (`#`). This will ignore words like `Component#render`.
 
 ### Changed
 - The text that is displayed when there is no suggestion for a mistake.
