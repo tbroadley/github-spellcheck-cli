@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased (4.0)]
 ### Added
 - A progress bar for the automated spellchecking step.
+- Spellchecking for links to anchors within the document (like [this link](#unreleased)).
+- Ignore words in PascalCase, camelCase, and snake_case.
 
 ### Changed
 - The text that is displayed when there is no suggestion for a mistake.
