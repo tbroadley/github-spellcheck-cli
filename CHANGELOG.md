@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - When a file has no changes, print `No changes` instead of printing the entire file twice.
 
 ### Removed
-- The `i` (ignore) command. You can still temporarily whitelist a word with `w` or ignore it once with `n`.
+- The `i` (ignore) command. You can still permanently whitelist a word with `w` or ignore it once with `n`.
 
 ## [3.0.3] - 2017-12-22
 ### Fixed
