@@ -77,7 +77,7 @@ the lazy dog.
   it('works correctly on identical sentences', () => testGenerateWordDiff({
     before: 'These sentences are identical.',
     after: 'These sentences are identical.',
-    expected: '-These sentences are identical.\n+These sentences are identical.',
+    expected: 'No changes',
   }));
 
   it('works correctly on a sentence with two words combined into one', () => testGenerateWordDiff({

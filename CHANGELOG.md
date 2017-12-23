@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- A progress bar for the automated spellchecking step.
+- Spellchecking for links to anchors within the document (like [this link](#unreleased)).
+- Ignore words in PascalCase, camelCase, and snake_case.
+- Ignore words that contain a period if the last section of the word when split on periods isn't in the dictionary.
+- Ignore words containing a pound symbol (`#`). This will ignore words like `Component#render`.
+
+### Changed
+- The text that is displayed when there is no suggestion for a mistake.
+- When a file has no changes, print `No changes` instead of printing the entire file twice.
+
+### Removed
+- The `i` (ignore) command. You can still permanently whitelist a word with `w` or ignore it once with `n`.
 
 ## [3.0.3] - 2017-12-22
 ### Fixed
@@ -123,7 +136,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.3...HEAD
 [3.0.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.0...v3.0.1
