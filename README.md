@@ -46,7 +46,6 @@ Command   Meaning           Description
 y         yes               Include this correction in the pull request.
 n         no                Do not include this correction in the pull request.
 d         delete repeated   Delete the word to be corrected and the space in front of it. For example, "the the" will become "the".
-i         ignore            Ignore the word to be corrected for the rest of the session.
 w         whitelist         Permanently whitelist the word to be corrected.
 e         edit              Replace the word to be corrected with a specified word.
 s         skip file         Do not include this correction on any other corrections in this file.
