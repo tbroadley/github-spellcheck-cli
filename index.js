@@ -214,6 +214,10 @@ async function go() {
   await repo.fetchAll(githubCredentialsOptions);
 
   console.log(`Merging the latest from the parent repository into '${baseBranchName}'...`);
+  if (!await repo.getBranch(baseBranchName).catch(() => false)) {
+    const branchCommit = await repo.getBranchCommit(`parent/${baseBranchName}`);
+    await repo.createBranch(baseBranchName, branchCommit, false);
+  }
   await repo.mergeBranches(baseBranchName, `parent/${baseBranchName}`);
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
