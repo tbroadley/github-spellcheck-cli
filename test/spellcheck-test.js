@@ -24,19 +24,20 @@ describe('getMisspellings', () => {
     });
   }
 
-  function mockSpellchecker(indices, corrections) {
+  function mockSpellchecker(indices, corrections, dictionary) {
     mockery.deregisterMock('spellchecker');
     mockery.resetCache();
     mockery.registerMock('spellchecker', {
       checkSpellingAsync: _.constant(Promise.resolve(indices)),
       getCorrectionsForMisspelling: misspelling => corrections[misspelling],
+      isMisspelled: word => !_.includes(dictionary, word),
     });
     // eslint-disable-next-line global-require
     return require('../lib/spellcheck');
   }
 
   function testSpellcheck({
-    document, misspellings, corrections, expectedMisspellings, fileName,
+    document, misspellings, corrections, expectedMisspellings, fileName, dictionary = [],
   }) {
     const indices = buildIndicesFromWords(document, misspellings);
     const defaultCorrections = _.merge(
@@ -44,7 +45,7 @@ describe('getMisspellings', () => {
       ..._.map(misspellings, misspelling => ({ [misspelling]: [] })),
       corrections
     );
-    const { getMisspellings } = mockSpellchecker(indices, defaultCorrections);
+    const { getMisspellings } = mockSpellchecker(indices, defaultCorrections, dictionary);
     return getMisspellings(document, fileName)
       .should.eventually.deep.equal(_.map(expectedMisspellings, index => ({
         index: indices[index],
@@ -213,10 +214,10 @@ describe('getMisspellings', () => {
 
 *Static Methods*
 
-<ul class="apiIndex">
+<ul class="apiindex">
   <li>
     <a href="#create">
-      <pre>static create(...): CharacterMetadata</pre>
+      <pre>static create(...): charactermetadata</pre>
     </a>
   </li>
 </ul>
@@ -226,14 +227,14 @@ describe('getMisspellings', () => {
   </li>
 </ol>
     `,
-    misspellings: ['ul', 'apiIndex', 'li', 'href', 'pre', 'CharacterMetadata', 'ol'],
+    misspellings: ['ul', 'apiindex', 'li', 'href', 'pre', 'charactermetadata', 'ol'],
     corrections: {
       ul: ['um'],
-      apiIndex: [],
+      apiindex: [],
       li: ['lie'],
       href: ['here'],
       pre: ['pref'],
-      CharacterMetadata: [],
+      charactermetadata: [],
     },
     expectedMisspellings: [1, 5],
     fileName: 'APIReference-CharacterMetadata.md',
@@ -325,5 +326,69 @@ I'm a reference link, [chekc me please].
     misspellings: ['contributers'],
     expectedMisspellings: [0],
     fileName: 'README.md',
+  }));
+
+  it('excludes a camelCase word', () => testSpellcheck({
+    document: 'camelCase',
+    misspellings: ['camelCase'],
+    expectedMisspellings: [],
+    fileName: 'asdf.txt',
+  }));
+
+  it('excludes a PascalCase word', () => testSpellcheck({
+    document: 'PascalCase',
+    misspellings: ['PascalCase'],
+    expectedMisspellings: [],
+    fileName: 'asdf.txt',
+  }));
+
+  it('excludes a long camelCase word', () => testSpellcheck({
+    document: 'I think that camelCaseIsAGreatWayToWriteThings.',
+    misspellings: ['camelCaseIsAGreatWayToWriteThings'],
+    expectedMisspellings: [],
+    fileName: 'asdf.txt',
+  }));
+
+  it('excludes a long PascalCase word', () => testSpellcheck({
+    document: 'Do you agree that PascalCaseAlsoWorksWellAsAVariableNamingConvention',
+    misspellings: ['PascalCaseAlsoWorksWellAsAVariableNamingConvention'],
+    expectedMisspellings: [],
+    fileName: 'asdf.txt',
+  }));
+
+  it('excludes two camelCase words separated by a period', () => testSpellcheck({
+    document: 'thingThing.stuffStuff',
+    misspellings: ['thingThing.stuffStuff'],
+    expectedMisspellings: [],
+    fileName: 'asdf.txt',
+  }));
+
+  it('excludes a capitalized word separated from a camelCase word with a period', () => testSpellcheck({
+    document: 'React.createElement',
+    misspellings: ['React.createElement'],
+    expectedMisspellings: [],
+    fileName: 'asdf.txt',
+  }));
+
+  it('does not exclude a legitimate missing space', () => testSpellcheck({
+    document: 'This document has sentences.Everyone thinks that is great',
+    misspellings: ['sentences.Everyone'],
+    expectedMisspellings: [0],
+    fileName: 'asdf.txt',
+    dictionary: ['Everyone'],
+  }));
+
+  it('excludes a snake_case word', () => testSpellcheck({
+    document: 'snake_case_word',
+    misspellings: ['snake_case_word'],
+    expectedMisspellings: [],
+    fileName: 'asdf.md',
+  }));
+
+  it('excludes a word containing a pound symbol', () => testSpellcheck({
+    document: 'Component#render',
+    misspellings: ['Component#render'],
+    expectedMisspellings: [],
+    fileName: 'asdf.md',
   }));
 });
