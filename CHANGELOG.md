@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - The text that is displayed when there is no suggestion for a mistake.
+- When a file has no changes, print `No changes` instead of printing the entire file twice.
 
 ### Removed
 - The `i` (ignore) command. You can still temporarily whitelist a word with `w` or ignore it once with `n`.
