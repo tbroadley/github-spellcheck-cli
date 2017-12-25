@@ -19,7 +19,6 @@ const { addByUserSelection } = require('./lib/add-by-user-selection');
 const {
   createPullRequest,
   deleteRepo,
-  findForkOfRepo,
   forkRepo,
   getAllReposForAuthenticatedUser,
 } = require('./lib/github');
@@ -162,20 +161,12 @@ async function go() {
   } else {
     console.log(`You don't have access to ${userAndRepo}.`);
     console.log(`Looking for a fork of ${userAndRepo} that you have access to...`);
-    const fork = await findForkOfRepo(userAndRepo, userRepos);
-    if (fork) {
-      console.log(`You have access to ${fork.full_name}, which is a fork of ${userAndRepo}.`);
-      repoUser = fork.owner.login;
-      repoName = fork.name;
-    } else {
-      console.log(`You don't have access to ${userAndRepo} or any of its forks.`);
-      console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
-      const newFork = await forkRepo(repoUser, repoName);
-      console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`);
-      isNewFork = true;
-      repoUser = newFork.owner.login;
-      repoName = newFork.name;
-    }
+    console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
+    const newFork = await forkRepo(repoUser, repoName);
+    console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`);
+    isNewFork = (new Date() - new Date(newFork.created_at)) / 1000 < 10;
+    repoUser = newFork.owner.login;
+    repoName = newFork.name;
   }
 
   const githubCredentialsOptions = {
