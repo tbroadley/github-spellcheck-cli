@@ -8,6 +8,14 @@ const report = require('vfile-reporter');
 const { Spellchecker } = require('./lib/spellchecker');
 
 (async () => {
+  const supportedLanguages = [
+    'en-AU',
+    'en-CA',
+    'en-GB',
+    'en-US',
+    'en-ZA',
+  ];
+
   const optionList = [
     {
       name: 'files',
@@ -16,6 +24,13 @@ const { Spellchecker } = require('./lib/spellchecker');
       description: 'A list of files or globs to spellcheck.',
       multiple: true,
       defaultOption: true,
+    },
+    {
+      name: 'language',
+      alias: 'l',
+      typeLabel: '<language>',
+      description: `The language of the files. The default language is en-US. The following languages are supported: ${supportedLanguages.join(', ')}.`,
+      defaultValue: 'en-US',
     },
     {
       name: 'dictionary',
@@ -39,6 +54,7 @@ const { Spellchecker } = require('./lib/spellchecker');
 
   const {
     files,
+    language,
     dictionary: personalDictionaryPath,
     quiet,
     help,
@@ -67,8 +83,15 @@ const { Spellchecker } = require('./lib/spellchecker');
     process.exit(1);
   }
 
+  if (!supportedLanguages.includes(language)) {
+    console.error();
+    console.error(chalk.red(`The language ${language} is not supported.`));
+    console.log(usage);
+    process.exit(1);
+  }
+
   const spellchecker = new Spellchecker();
-  await spellchecker.init(personalDictionaryPath);
+  await spellchecker.init({ language, personalDictionaryPath });
 
   const filesFromGlobs = await glob(files, { gitignore: true });
 

@@ -23,10 +23,12 @@ $ npm install --save-dev spellcheck-cli
 ## Options
 
 ```
--f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
--d, --dictionary <file>                  A file to use as a personal dictionary.
--q, --quiet                              Do not output anything for files that contain no spelling mistakes.
--h, --help                               Print this help screen.
+  -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
+  -l, --language <language>                The language of the files. The default language is en-US. The following
+                                           languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
+  -d, --dictionary <file>                  A file to use as a personal dictionary.
+  -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
+  -h, --help                               Print this help screen.
 ```
 
 ### Globs
