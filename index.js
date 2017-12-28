@@ -24,6 +24,12 @@ const { Spellchecker } = require('./lib/spellchecker');
       description: 'A file to use as a personal dictionary.',
     },
     {
+      name: 'quiet',
+      alias: 'q',
+      type: Boolean,
+      description: 'Do not output anything for files that contain no spelling mistakes.',
+    },
+    {
       name: 'help',
       alias: 'h',
       type: Boolean,
@@ -34,6 +40,7 @@ const { Spellchecker } = require('./lib/spellchecker');
   const {
     files,
     dictionary: personalDictionaryPath,
+    quiet,
     help,
   } = commandLineArgs(optionList);
 
@@ -68,7 +75,7 @@ const { Spellchecker } = require('./lib/spellchecker');
   const checkSpelling = filePath => spellchecker.checkSpelling.call(spellchecker, filePath);
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
 
-  console.log(report(vfiles));
+  console.log(report(vfiles, { quiet }));
 
   if (sum(vfiles, file => file.messages.length) > 0) {
     process.exit(1);

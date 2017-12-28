@@ -25,6 +25,7 @@ $ npm install --save-dev spellcheck-cli
 ```
 -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
 -d, --dictionary <file>                  A file to use as a personal dictionary.
+-q, --quiet                              Do not output anything for files that contain no spelling mistakes.
 -h, --help                               Print this help screen.
 ```
 
