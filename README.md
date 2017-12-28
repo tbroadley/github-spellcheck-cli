@@ -27,6 +27,8 @@ $ npm install --save-dev spellcheck-cli
   -l, --language <language>                The language of the files. The default language is en-US. The following
                                            languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
   -d, --dictionary <file>                  A file to use as a personal dictionary.
+  --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
+                                           dictionary.txt.
   -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
   -h, --help                               Print this help screen.
 ```
@@ -44,6 +46,10 @@ See [the `node-glob` documentation](https://github.com/isaacs/node-glob#glob-pri
 ### Personal dictionary
 
 The personal dictionary file should be in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents).
+
+### Generating a personal dictionary
+
+This option is useful for adding Spellcheck CLI to an existing open-source software project with a lot of documentation. Instead of fixing every spelling mistake in one pull request, contributors can gradually remove misspellings from the generated dictionary. It's also helpful to be able to generate a personal dictionary then remove the actual misspellings from the dictionary, leaving behind only project-specific terms.
 
 ## Markdown
 

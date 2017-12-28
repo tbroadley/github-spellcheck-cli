@@ -1,8 +1,11 @@
 const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
+const fs = require('fs-extra');
 const glob = require('globby');
+const flatMap = require('lodash/flatMap');
 const sumBy = require('lodash/sumBy');
+const uniq = require('lodash/uniq');
 const report = require('vfile-reporter');
 
 const { Spellchecker } = require('./lib/spellchecker');
@@ -42,6 +45,11 @@ function printError(message) {
       alias: 'd',
       typeLabel: '<file>',
       description: 'A file to use as a personal dictionary.',
+    },
+    {
+      name: 'generate-dictionary',
+      type: Boolean,
+      description: 'Write a personal dictionary that contains all found misspellings to dictionary.txt.',
     },
     {
       name: 'quiet',
@@ -85,6 +93,7 @@ function printError(message) {
     quiet,
     help,
   } = parsedArgs;
+  const generateDictionary = parsedArgs['generate-dictionary'];
 
   if (help) {
     console.log(usage);
@@ -114,6 +123,12 @@ function printError(message) {
   console.log(report(vfiles, { quiet }));
 
   if (sumBy(vfiles, file => file.messages.length) > 0) {
+    if (generateDictionary) {
+      const generatedDictionary = uniq(flatMap(vfiles, f => f.messages.map(m => m.actual))).sort().join('\n');
+      await fs.writeFile('dictionary.txt', generatedDictionary);
+      console.log('Personal dictionary written to dictionary.txt.');
+    }
+
     process.exit(1);
   }
 })().catch((error) => {

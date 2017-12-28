@@ -1,5 +1,5 @@
 CLI
+Gemoji
 pre-commit
 pre-push
 preprocessing/processing
-Gemoji
