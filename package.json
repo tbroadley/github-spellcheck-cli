@@ -6,6 +6,7 @@
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.3.0",
     "command-line-args": "^4.0.7",
     "command-line-usage": "^4.0.2",
     "dictionary-en-us": "^2.0.0",

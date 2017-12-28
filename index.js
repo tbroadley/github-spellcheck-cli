@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const glob = require('globby');
@@ -52,6 +53,13 @@ const { Spellchecker } = require('./lib/spellchecker');
     return;
   }
 
+  if (!files || files.length === 0) {
+    console.error();
+    console.error(chalk.red('A list of files is required.'));
+    console.log(usage);
+    process.exit(1);
+  }
+
   const spellchecker = new Spellchecker();
   await spellchecker.init(personalDictionaryPath);
 
@@ -66,6 +74,6 @@ const { Spellchecker } = require('./lib/spellchecker');
     process.exit(1);
   }
 })().catch((error) => {
-  console.error(error);
+  console.error(chalk.red(error));
   process.exit(1);
 });
