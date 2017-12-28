@@ -1,5 +1,7 @@
+Changelog
 CLI
 Gemoji
+index.js
 pre-commit
 pre-push
 preprocessing/processing
