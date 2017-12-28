@@ -132,6 +132,6 @@ function printError(message) {
     process.exit(1);
   }
 })().catch((error) => {
-  console.error(chalk.red(error));
+  printError(error);
   process.exit(1);
 });
