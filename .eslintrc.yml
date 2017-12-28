@@ -2,4 +2,5 @@ extends: airbnb-base
 env:
   node: true
 rules:
+  comma-dangle: off
   no-console: off

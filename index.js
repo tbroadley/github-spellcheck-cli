@@ -1,17 +1,9 @@
 const commandLineArgs = require('command-line-args');
-const dictionary = require('dictionary-en-us');
-const promisify = require('es6-promisify');
-const fs = require('fs-extra');
 const glob = require('globby');
 const sum = require('lodash/sum');
-const path = require('path');
-const remark = require('remark');
-const gemoji = require('remark-gemoji-to-emoji');
-const remarkRetext = require('remark-retext');
-const retext = require('retext');
-const spell = require('retext-spell');
-const vfile = require('vfile');
 const report = require('vfile-reporter');
+
+const { Spellchecker } = require('./lib/spellchecker');
 
 (async () => {
   const optionDefinitions = [
@@ -32,33 +24,12 @@ const report = require('vfile-reporter');
     dictionary: personalDictionaryPath,
   } = commandLineArgs(optionDefinitions);
 
-  const personalDictionary = personalDictionaryPath ?
-    await fs.readFile(personalDictionaryPath) :
-    '';
-
-  const markdownParser = remark().use(gemoji);
-  const spellchecker = retext().use(spell, {
-    dictionary,
-    personal: personalDictionary,
-  });
-
-  async function checkSpelling(filePath) {
-    let spellcheckerForFileType;
-    if (['.md', '.markdown'].includes(path.extname(filePath).toLowerCase())) {
-      spellcheckerForFileType = spellchecker;
-    } else {
-      spellcheckerForFileType = markdownParser.use(remarkRetext, spellchecker);
-    }
-
-    const contents = await fs.readFile(filePath);
-    const file = vfile({
-      contents,
-      path: filePath,
-    });
-    return promisify(spellcheckerForFileType.process)(file);
-  }
+  const spellchecker = new Spellchecker();
+  await spellchecker.init(personalDictionaryPath);
 
   const filesFromGlobs = await glob(files, { gitignore: true });
+
+  const checkSpelling = filePath => spellchecker.checkSpelling.call(spellchecker, filePath);
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
 
   console.log(report(vfiles));
