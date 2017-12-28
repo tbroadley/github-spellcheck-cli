@@ -21,14 +21,26 @@ const report = require('vfile-reporter');
       multiple: true,
       defaultOption: true,
     },
+    {
+      name: 'dictionary',
+      alias: 'd',
+    },
   ];
 
   const {
     files,
+    dictionary: personalDictionaryPath,
   } = commandLineArgs(optionDefinitions);
 
+  const personalDictionary = personalDictionaryPath ?
+    await fs.readFile(personalDictionaryPath) :
+    '';
+
   const markdownParser = remark().use(gemoji);
-  const spellchecker = retext().use(spell, dictionary);
+  const spellchecker = retext().use(spell, {
+    dictionary,
+    personal: personalDictionary,
+  });
 
   async function checkSpelling(filePath) {
     let spellcheckerForFileType;
