@@ -117,6 +117,10 @@ function printError(message) {
   const spellchecker = new Spellchecker();
   await spellchecker.init({ language, personalDictionaryPath });
 
+  if (personalDictionaryPath) {
+    files.push(`!${personalDictionaryPath}`);
+  }
+
   const filesFromGlobs = await glob(files, { gitignore: true });
 
   const checkSpelling = filePath => spellchecker.checkSpelling.call(spellchecker, filePath);
