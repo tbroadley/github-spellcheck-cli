@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '7'
-script: npm run lint && npm test
+script: npm run spellcheck && npm run lint && npm test
 cache:
   directories:
   - node_modules
