@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
