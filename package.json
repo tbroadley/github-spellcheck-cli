@@ -4,5 +4,22 @@
   "description": "A command-line tool for spellchecking documentation.",
   "main": "index.js",
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "command-line-args": "^4.0.7",
+    "dictionary-en-us": "^2.0.0",
+    "es6-promisify": "^5.0.0",
+    "fs-extra": "^5.0.0",
+    "globby": "^7.1.1",
+    "remark": "^8.0.0",
+    "remark-gemoji-to-emoji": "^1.1.0",
+    "remark-retext": "^3.1.0",
+    "retext": "^5.0.0",
+    "retext-spell": "^2.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
 }
