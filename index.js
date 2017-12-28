@@ -7,6 +7,11 @@ const report = require('vfile-reporter');
 
 const { Spellchecker } = require('./lib/spellchecker');
 
+function printError(message) {
+  console.error();
+  console.error(chalk.red(message));
+}
+
 (async () => {
   const supportedLanguages = [
     'en-AU',
@@ -52,14 +57,6 @@ const { Spellchecker } = require('./lib/spellchecker');
     },
   ];
 
-  const {
-    files,
-    language,
-    dictionary: personalDictionaryPath,
-    quiet,
-    help,
-  } = commandLineArgs(optionList);
-
   const usage = getUsage([
     {
       header: 'spellcheck',
@@ -71,21 +68,37 @@ const { Spellchecker } = require('./lib/spellchecker');
     },
   ]);
 
+  let parsedArgs;
+
+  try {
+    parsedArgs = commandLineArgs(optionList);
+  } catch (error) {
+    printError(error.toString());
+    console.log(usage);
+    process.exit(1);
+  }
+
+  const {
+    files,
+    language,
+    dictionary: personalDictionaryPath,
+    quiet,
+    help,
+  } = parsedArgs;
+
   if (help) {
     console.log(usage);
     return;
   }
 
   if (!files || files.length === 0) {
-    console.error();
-    console.error(chalk.red('A list of files is required.'));
+    printError('A list of files is required.');
     console.log(usage);
     process.exit(1);
   }
 
   if (!supportedLanguages.includes(language)) {
-    console.error();
-    console.error(chalk.red(`The language ${language} is not supported.`));
+    printError(`The language "${language}" is not supported.`);
     console.log(usage);
     process.exit(1);
   }
