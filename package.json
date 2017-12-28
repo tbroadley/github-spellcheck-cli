@@ -1,0 +1,8 @@
+{
+  "name": "spellcheck-cli",
+  "version": "1.0.0",
+  "description": "A command-line tool for spellchecking documentation.",
+  "main": "index.js",
+  "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
+  "license": "MIT"
+}
