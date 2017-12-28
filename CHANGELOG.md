@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- Documentation spellchecking in CI via [Spellchecker CLI](https://github.com/tbroadley/spellchecker-cli).
+- Documentaton spellchecking in CI via [Spellchecker CLI](https://github.com/tbroadley/spellchecker-cli).
 
 ### Changed
 - Always fork the given repo, since the GitHub API will return the existing fork if one has already been created.
