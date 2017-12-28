@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const glob = require('globby');
-const sum = require('lodash/sum');
+const sumBy = require('lodash/sumBy');
 const report = require('vfile-reporter');
 
 const { Spellchecker } = require('./lib/spellchecker');
@@ -113,7 +113,7 @@ function printError(message) {
 
   console.log(report(vfiles, { quiet }));
 
-  if (sum(vfiles, file => file.messages.length) > 0) {
+  if (sumBy(vfiles, file => file.messages.length) > 0) {
     process.exit(1);
   }
 })().catch((error) => {
