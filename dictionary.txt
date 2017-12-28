@@ -1,0 +1,5 @@
+CLI
+pre-commit
+pre-push
+preprocessing/processing
+Gemoji

@@ -6,6 +6,9 @@
   "bin": {
     "spellcheck": "./index.js"
   },
+  "scripts": {
+    "spellcheck": "node ./index.js --files \"**/*.md\" --dictionary dictionary.txt"
+  },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
   "license": "MIT",
   "dependencies": {

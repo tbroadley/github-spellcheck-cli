@@ -44,6 +44,6 @@ The personal dictionary file should be in [`nspell` personal dictionary format](
 
 ## Markdown
 
-Spellcheck CLI performs some pre-processing on Markdown files (_i.e._ files with the extension `.md` or `.markdown`):
+Spellcheck CLI performs some preprocessing on Markdown files (_i.e._ files with the extension `.md` or `.markdown`):
 
 - Transforms [Gemoji](https://github.com/wooorm/gemoji) into Unicode emoji, so that emoji names like `:octocat:` aren't spellchecked
