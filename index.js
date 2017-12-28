@@ -13,38 +13,38 @@ const spell = require('retext-spell');
 const vfile = require('vfile');
 const report = require('vfile-reporter');
 
-const markdownParser = remark().use(gemoji);
-const spellchecker = retext().use(spell, dictionary);
-
-async function checkSpelling(filePath) {
-  let spellcheckerForFileType;
-  if (['.md', '.markdown'].includes(path.extname(filePath).toLowerCase())) {
-    spellcheckerForFileType = spellchecker;
-  } else {
-    spellcheckerForFileType = markdownParser.use(remarkRetext, spellchecker);
-  }
-
-  const contents = await fs.readFile(filePath);
-  const file = vfile({
-    contents,
-    path: filePath,
-  });
-  return promisify(spellcheckerForFileType.process)(file);
-}
-
-const optionDefinitions = [
-  {
-    name: 'files',
-    alias: 'f',
-    multiple: true,
-    defaultOption: true,
-  },
-];
-
 (async () => {
+  const optionDefinitions = [
+    {
+      name: 'files',
+      alias: 'f',
+      multiple: true,
+      defaultOption: true,
+    },
+  ];
+
   const {
     files,
   } = commandLineArgs(optionDefinitions);
+
+  const markdownParser = remark().use(gemoji);
+  const spellchecker = retext().use(spell, dictionary);
+
+  async function checkSpelling(filePath) {
+    let spellcheckerForFileType;
+    if (['.md', '.markdown'].includes(path.extname(filePath).toLowerCase())) {
+      spellcheckerForFileType = spellchecker;
+    } else {
+      spellcheckerForFileType = markdownParser.use(remarkRetext, spellchecker);
+    }
+
+    const contents = await fs.readFile(filePath);
+    const file = vfile({
+      contents,
+      path: filePath,
+    });
+    return promisify(spellcheckerForFileType.process)(file);
+  }
 
   const filesFromGlobs = await glob(files, { gitignore: true });
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
