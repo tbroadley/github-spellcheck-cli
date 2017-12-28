@@ -6,11 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Skip checking the personal dictionary (if one is provided).
+
 ## [1.0.1] - 2017-12-28
 
 ### Fixed
 
 - Added a shebang to [index.js](index.js).
 
-[1.0.1]:      https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.1...HEAD
 [Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...v1.0.1
+[1.0.1]:      https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.1...HEAD
