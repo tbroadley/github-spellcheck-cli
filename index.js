@@ -3,12 +3,15 @@ const dictionary = require('dictionary-en-us');
 const promisify = require('es6-promisify');
 const fs = require('fs-extra');
 const glob = require('globby');
+const sum = require('lodash/sum');
 const path = require('path');
 const remark = require('remark');
 const gemoji = require('remark-gemoji-to-emoji');
 const remarkRetext = require('remark-retext');
 const retext = require('retext');
 const spell = require('retext-spell');
+const vfile = require('vfile');
+const report = require('vfile-reporter');
 
 const markdownParser = remark().use(gemoji);
 const spellchecker = retext().use(spell, dictionary);
@@ -20,11 +23,13 @@ async function checkSpelling(filePath) {
   } else {
     spellcheckerForFileType = markdownParser.use(remarkRetext, spellchecker);
   }
-  console.log(`Checking ${filePath}...`);
 
-  const fileContents = await fs.readFile(filePath);
-  const vfile = await promisify(spellcheckerForFileType.process)(fileContents);
-  return vfile.messages;
+  const contents = await fs.readFile(filePath);
+  const file = vfile({
+    contents,
+    path: filePath,
+  });
+  return promisify(spellcheckerForFileType.process)(file);
 }
 
 const optionDefinitions = [
@@ -42,7 +47,14 @@ const optionDefinitions = [
   } = commandLineArgs(optionDefinitions);
 
   const filesFromGlobs = await glob(files, { gitignore: true });
-  console.log(filesFromGlobs);
-  const spellingMistakes = await Promise.all(filesFromGlobs.map(checkSpelling));
-  console.log(spellingMistakes);
-})();
+  const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
+
+  console.log(report(vfiles));
+
+  if (sum(vfiles, file => file.messages.length) > 0) {
+    process.exit(1);
+  }
+})().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
