@@ -67,7 +67,7 @@ function printError(message) {
 
   const usage = getUsage([
     {
-      header: 'spellcheck',
+      header: 'spellchecker',
       content: 'A command-line tool for spellchecking files.',
     },
     {

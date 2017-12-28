@@ -1,13 +1,13 @@
 {
-  "name": "spellcheck-cli",
+  "name": "spellchecker-cli",
   "version": "1.0.0",
   "description": "A command-line tool for spellchecking files.",
   "main": "index.js",
   "bin": {
-    "spellcheck": "./index.js"
+    "spellchecker": "./index.js"
   },
   "scripts": {
-    "spellcheck": "node ./index.js --files \"**/*.md\" --dictionary dictionary.txt"
+    "spellchecker": "node ./index.js --files \"**/*.md\" --dictionary dictionary.txt"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
   "license": "MIT",
