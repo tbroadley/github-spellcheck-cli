@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 2017-12-28
+
 ### Changed
 
 - Skip checking the personal dictionary (if one is provided).
@@ -16,5 +18,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v2.0.0...HEAD
+[2.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v1.0.1...v2.0.0
 [1.0.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v1.0.0...v1.0.1
