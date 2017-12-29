@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [2.0.0] - 2017-12-28
-
 ### Added
 
 - Add a large number of unit and end-to-end tests.
@@ -17,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - [`retext-repeated-words`](https://github.com/retextjs/retext-repeated-words)
   - [`retext-syntax-mentions`](https://github.com/retextjs/retext-syntax-mentions)
   - [`retext-syntax-urls`](https://github.com/retextjs/retext-syntax-urls)
+
+## [2.0.0] - 2017-12-28
 
 ### Changed
 
