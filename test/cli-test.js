@@ -34,8 +34,8 @@ const nonSpellRemovePlugins = removePlugins.filter(notSpell);
 const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
 
 parallel('Spellchecker CLI', function testSpellcheckerCLI() {
-  this.timeout(20000);
-  this.slow(20000);
+  this.timeout(60000);
+  this.slow(60000);
 
   it('prints the command-line usage when the argument `-h` is passed', async () => {
     const result = await runWithArguments('-h');
