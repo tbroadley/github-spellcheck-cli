@@ -121,11 +121,23 @@ describe('Spellchecker CLI', () => {
 
   it('runs in quiet mode when the argument `-q` is passed', async () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt -q');
-    stdout.should.equal('\n');
+    stdout.should.equal('\nSpellchecking 1 file...\n\n\n');
   });
 
   it('runs in quiet mode when the argument `--quiet` is passed', async () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt --quiet');
-    stdout.should.equal('\n');
+    stdout.should.equal('\nSpellchecking 1 file...\n\n\n');
+  });
+
+  it('prints the number of files to be spellchecked when passed one file', async () => {
+    const { stdout } = await runWithArguments('--files test/fixtures/correct.txt');
+    stdout.should.include('Spellchecking 1 file...');
+  });
+
+  it('prints the number of files to be spellchecked when passed a glob', async () => {
+    const globExpression = 'test/fixtures/*.md';
+    const { stdout } = await runWithArguments(`--files ${globExpression}`);
+    const fileCount = (await glob(globExpression)).length;
+    stdout.should.include(`Spellchecking ${fileCount} file${fileCount === 1 ? '' : 's'}...`);
   });
 });
