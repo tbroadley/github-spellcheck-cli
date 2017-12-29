@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
-    "spellchecker": "node ./index.js --files \"**/*.md\" \"!test/**/*.md\" --dictionary dictionary.txt --plugins spell indefinite-article repeated-words syntax-mentions syntax-urls",
+    "spellchecker": "node ./index.js --files \"**/*.md\" \"!test/**/*.md\" --dictionary dictionary.txt",
     "test": "mocha"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
