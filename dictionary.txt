@@ -2,6 +2,7 @@ Changelog
 CLI
 Gemoji
 index.js
+npm
 pre-commit
 pre-push
 preprocessing/processing
