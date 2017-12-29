@@ -28,6 +28,12 @@ describe('Spellchecker CLI', () => {
     stderr.should.include('A list of files is required.');
   });
 
+  it('exits with an error when passed an unknown argument', async () => {
+    const { code, stderr } = await runWithArguments('--test');
+    code.should.equal(1);
+    stderr.should.include('UNKNOWN_OPTION: Unknown option: --test');
+  });
+
   it('exits with an error when passed an unknown language', async () => {
     const { code, stderr } = await runWithArguments('--files a b c --language test');
     code.should.equal(1);
