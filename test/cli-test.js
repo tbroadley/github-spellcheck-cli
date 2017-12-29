@@ -2,6 +2,7 @@ const chai = require('chai');
 const { exec } = require('child_process');
 const glob = require('globby');
 const merge = require('lodash/merge');
+const parallel = require('mocha.parallel');
 const path = require('path');
 
 const {
@@ -32,8 +33,9 @@ const nonSpellRemovePlugins = removePlugins.filter(notSpell);
 
 const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
 
-describe('Spellchecker CLI', function testSpellcheckerCLI() {
-  this.timeout(5000);
+parallel('Spellchecker CLI', function testSpellcheckerCLI() {
+  this.timeout(20000);
+  this.slow(20000);
 
   it('prints the command-line usage when the argument `-h` is passed', async () => {
     const result = await runWithArguments('-h');
