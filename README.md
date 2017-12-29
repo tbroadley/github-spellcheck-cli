@@ -33,7 +33,8 @@ $ npm install --save-dev spellchecker-cli
   --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                            dictionary.txt.
   -p, --plugins <name> <name>...           A list of retext plugins to use. The default is "spell". The following
-                                           plugins are supported: spell.
+                                           plugins are supported: spell, indefinite-article, repeated-words, syntax-
+                                           mentions, syntax-urls.
   -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
   -h, --help                               Print this help screen.
 ```
