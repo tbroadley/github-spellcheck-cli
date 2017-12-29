@@ -56,3 +56,7 @@ This option is useful for adding Spellchecker CLI to an existing open-source sof
 Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files with the extension `.md` or `.markdown`):
 
 - Transforms [Gemoji](https://github.com/wooorm/gemoji) into Unicode emoji, so that emoji names like `:octocat:` aren't spellchecked
+
+## Development
+
+Run `npm install` to install dependencies. Then, run `node index.js` to run Spellcheck CLI. You can also run `npm run spellchecker` to run Spellcheck CLI against its own documentation, `npm run lint` to lint the JavaScript source files, and `npm run test` to run the test suite.
