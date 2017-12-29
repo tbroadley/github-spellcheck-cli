@@ -24,7 +24,9 @@ function runWithArguments(args) {
 
 const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
 
-describe('Spellchecker CLI', () => {
+describe('Spellchecker CLI', function testSpellcheckerCLI() {
+  this.timeout(3000);
+
   it('prints the command-line usage when the argument `-h` is passed', async () => {
     const result = await runWithArguments('-h');
     result.should.not.have.property('code');
