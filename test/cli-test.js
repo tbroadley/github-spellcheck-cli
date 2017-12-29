@@ -9,6 +9,7 @@ const {
   addPlugins,
   removePlugins,
   supportedPlugins,
+  defaultPlugins,
 } = require('../lib/command-line');
 
 chai.should();
@@ -30,7 +31,7 @@ const nonSpellPlugins = supportedPlugins.filter(notSpell);
 const nonSpellAddPlugins = addPlugins.filter(notSpell);
 const nonSpellRemovePlugins = removePlugins.filter(notSpell);
 
-const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
+const toSpaceAndHyphenSplitRegex = word => word.replace(/ /g, '\\s+').replace(/-/g, '-\\s*');
 
 describe('Spellchecker CLI', function testSpellcheckerCLI() {
   this.timeout(3000);
@@ -47,15 +48,28 @@ describe('Spellchecker CLI', function testSpellcheckerCLI() {
     result.stdout.should.include('A command-line tool for spellchecking files.');
   });
 
+  it('prints the default language in the command-line usage', async () => {
+    const { stdout } = await runWithArguments('--help');
+    const defaultLanguageRegex = new RegExp(toSpaceAndHyphenSplitRegex('The default language is en-US.'));
+    stdout.should.match(defaultLanguageRegex);
+  });
+
   it('lists all supported languages in the command-line usage', async () => {
     const { stdout } = await runWithArguments('-h');
-    const languageRegex = new RegExp(supportedLanguages.map(toHyphenSplitRegex).join(',\\s*'));
+    const languageRegex = new RegExp(supportedLanguages.map(toSpaceAndHyphenSplitRegex).join(',\\s*'));
     stdout.should.match(languageRegex);
+  });
+
+  it('prints the default plugin list in the command-line usage', async () => {
+    const { stdout } = await runWithArguments('--help');
+    const defaultPluginsRegex = new RegExp(toSpaceAndHyphenSplitRegex(`The default is "${defaultPlugins.join(' ')}".`));
+    console.log(defaultPluginsRegex);
+    stdout.should.match(defaultPluginsRegex);
   });
 
   it('lists all supported plugins in the command-line usage', async () => {
     const { stdout } = await runWithArguments('-h');
-    const pluginRegex = new RegExp(supportedPlugins.map(toHyphenSplitRegex).join(',\\s*'));
+    const pluginRegex = new RegExp(supportedPlugins.map(toSpaceAndHyphenSplitRegex).join(',\\s*'));
     stdout.should.match(pluginRegex);
   });
 
