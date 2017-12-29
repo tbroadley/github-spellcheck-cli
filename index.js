@@ -5,21 +5,15 @@ const commandLineArgs = require('command-line-args');
 const getUsage = require('command-line-usage');
 const fs = require('fs-extra');
 const glob = require('globby');
-const flatMap = require('lodash/flatMap');
 const sumBy = require('lodash/sumBy');
-const uniq = require('lodash/uniq');
 const report = require('vfile-reporter');
 
 const { Spellchecker } = require('./lib/spellchecker');
+const { toDictionary } = require('./lib/to-dictionary');
 
 function printError(message) {
   console.error();
   console.error(chalk.red(message));
-}
-
-function toDictionary(vfiles) {
-  const misspellings = flatMap(vfiles, f => f.messages.map(m => m.actual));
-  return uniq(misspellings).sort().join('\n');
 }
 
 (async () => {
