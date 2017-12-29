@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.0.0] - 2017-12-28
 
+### Added
+
+- Wrote a large number of unit and end-to-end tests.
+
 ### Changed
 
 - Skip checking the personal dictionary (if one is provided).
