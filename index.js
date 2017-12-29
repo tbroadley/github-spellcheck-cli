@@ -17,6 +17,11 @@ function printError(message) {
   console.error(chalk.red(message));
 }
 
+function toDictionary(vfiles) {
+  const misspellings = flatMap(vfiles, f => f.messages.map(m => m.actual));
+  return uniq(misspellings).sort().join('\n');
+}
+
 (async () => {
   const supportedLanguages = [
     'en-AU',
@@ -130,8 +135,7 @@ function printError(message) {
 
   if (sumBy(vfiles, file => file.messages.length) > 0) {
     if (generateDictionary) {
-      const generatedDictionary = uniq(flatMap(vfiles, f => f.messages.map(m => m.actual))).sort().join('\n');
-      await fs.writeFile('dictionary.txt', generatedDictionary);
+      await fs.writeFile('dictionary.txt', toDictionary(vfiles));
       console.log('Personal dictionary written to dictionary.txt.');
     }
 
