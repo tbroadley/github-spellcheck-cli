@@ -221,4 +221,9 @@ describe('Spellchecker CLI', function testSpellcheckerCLI() {
     const result = await runWithArguments('test/fixtures/syntax-urls.md -p syntax-urls');
     result.should.not.have.property('code');
   });
+
+  it('does not generate a personal dictionary if no spelling mistakes are found', async () => {
+    const { stdout } = await runWithArguments('test/fixtures/repeated-words.md --plugins spell repeated-words');
+    stdout.should.not.include('Personal dictionary written to dictionary.txt.');
+  });
 });

@@ -2,15 +2,9 @@ const chai = require('chai');
 
 const { toDictionary } = require('../lib/to-dictionary');
 
+const { fileWithNoMessages, buildVfile } = require('./helpers/vfile');
+
 chai.should();
-
-const fileWithNoMessages = { source: 'retext-spell', messages: [] };
-
-function buildVfile(actuals) {
-  return {
-    messages: actuals.map(actual => ({ source: 'retext-spell', actual })),
-  };
-}
 
 describe('toDictionary', () => {
   it('returns an empty string when passed an empty array', () => {

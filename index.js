@@ -2,10 +2,10 @@
 
 const fs = require('fs-extra');
 const glob = require('globby');
-const sumBy = require('lodash/sumBy');
 const report = require('vfile-reporter');
 
 const { parseArgs } = require('./lib/command-line');
+const { hasMessages } = require('./lib/has-messages');
 const { printError } = require('./lib/print-error');
 const { Spellchecker } = require('./lib/spellchecker');
 const { toDictionary } = require('./lib/to-dictionary');
@@ -36,8 +36,8 @@ const { toDictionary } = require('./lib/to-dictionary');
 
   console.log(report(vfiles, { quiet }));
 
-  if (sumBy(vfiles, file => file.messages.length) > 0) {
-    if (generateDictionary) {
+  if (hasMessages(vfiles)) {
+    if (generateDictionary && hasMessages(vfiles, message => message.source === 'retext-spell')) {
       await fs.writeFile('dictionary.txt', toDictionary(vfiles));
       console.log('Personal dictionary written to dictionary.txt.');
     }
