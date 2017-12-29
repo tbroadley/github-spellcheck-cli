@@ -123,7 +123,7 @@ function printError(message) {
 
   const filesFromGlobs = await glob(files, { gitignore: true });
 
-  const checkSpelling = filePath => spellchecker.checkSpelling.call(spellchecker, filePath);
+  const checkSpelling = filePath => spellchecker.checkSpelling(filePath);
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
 
   console.log(report(vfiles, { quiet }));
