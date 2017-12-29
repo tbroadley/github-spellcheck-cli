@@ -4,6 +4,11 @@ const glob = require('globby');
 const merge = require('lodash/merge');
 const path = require('path');
 
+const {
+  supportedLanguages,
+  supportedPlugins,
+} = require('../lib/command-line');
+
 chai.should();
 
 function runWithArguments(args) {
@@ -17,6 +22,8 @@ function runWithArguments(args) {
   });
 }
 
+const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
+
 describe('Spellchecker CLI', () => {
   it('prints the command-line usage when the argument `-h` is passed', async () => {
     const result = await runWithArguments('-h');
@@ -28,6 +35,18 @@ describe('Spellchecker CLI', () => {
     const result = await runWithArguments('--help');
     result.should.not.have.property('code');
     result.stdout.should.include('A command-line tool for spellchecking files.');
+  });
+
+  it('lists all supported languages in the command-line usage', async () => {
+    const { stdout } = await runWithArguments('-h');
+    const languageRegex = new RegExp(supportedLanguages.map(toHyphenSplitRegex).join(',\\s*'));
+    stdout.should.match(languageRegex);
+  });
+
+  it('lists all supported plugins in the command-line usage', async () => {
+    const { stdout } = await runWithArguments('-h');
+    const pluginRegex = new RegExp(supportedPlugins.map(toHyphenSplitRegex).join(',\\s*'));
+    stdout.should.match(pluginRegex);
   });
 
   it('exits with an error when no arguments are provided', async () => {
