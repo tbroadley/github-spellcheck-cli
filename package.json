@@ -8,7 +8,8 @@
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
-    "spellchecker": "node ./index.js --files \"**/*.md\" --dictionary dictionary.txt"
+    "spellchecker": "node ./index.js --files \"**/*.md\" --dictionary dictionary.txt",
+    "test": "mocha"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
   "license": "MIT",
@@ -34,8 +35,10 @@
     "vfile-reporter": "^4.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "mocha": "^4.0.1"
   }
 }
