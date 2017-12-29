@@ -4,11 +4,11 @@ const { toDictionary } = require('../lib/to-dictionary');
 
 chai.should();
 
-const fileWithNoMessages = { messages: [] };
+const fileWithNoMessages = { source: 'retext-spell', messages: [] };
 
 function buildVfile(actuals) {
   return {
-    messages: actuals.map(actual => ({ actual })),
+    messages: actuals.map(actual => ({ source: 'retext-spell', actual })),
   };
 }
 
@@ -39,5 +39,18 @@ describe('toDictionary', () => {
       buildVfile(['b', 'c']),
       buildVfile(['c', 'a']),
     ]).should.equal(['a', 'b', 'c'].join('\n'));
+  });
+
+  it('only includes messages from retext-spell', () => {
+    toDictionary([
+      buildVfile(['a', 'b']),
+      {
+        messages: [
+          { source: 'asdf', actual: 'c' },
+          { source: 'asdf', actual: 'd' },
+          { source: 'retext-spell', actual: 'e' },
+        ],
+      },
+    ]).should.equal(['a', 'b', 'e'].join('\n'));
   });
 });
