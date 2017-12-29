@@ -31,7 +31,7 @@ const nonSpellPlugins = supportedPlugins.filter(notSpell);
 const nonSpellAddPlugins = addPlugins.filter(notSpell);
 const nonSpellRemovePlugins = removePlugins.filter(notSpell);
 
-const toSpaceAndHyphenSplitRegex = word => word.replace(/ /g, '\\s+').replace(/-/g, '-\\s*');
+const toSpaceAndHyphenSplitRegex = word => word.replace(/ /g, '\\s*').replace(/-/g, '-\\s*');
 
 describe('Spellchecker CLI', function testSpellcheckerCLI() {
   this.timeout(3000);
