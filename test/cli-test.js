@@ -6,6 +6,8 @@ const path = require('path');
 
 const {
   supportedLanguages,
+  addPlugins,
+  removePlugins,
   supportedPlugins,
 } = require('../lib/command-line');
 
@@ -21,6 +23,12 @@ function runWithArguments(args) {
     });
   });
 }
+
+const notSpell = plugin => plugin !== 'spell';
+
+const nonSpellPlugins = supportedPlugins.filter(notSpell);
+const nonSpellAddPlugins = addPlugins.filter(notSpell);
+const nonSpellRemovePlugins = removePlugins.filter(notSpell);
 
 const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
 
@@ -164,5 +172,53 @@ describe('Spellchecker CLI', function testSpellcheckerCLI() {
   it('does nothing when passed an empty list of plugins', async () => {
     const { stdout } = await runWithArguments('--files a b c --plugins');
     stdout.should.equal('\n');
+  });
+
+  it('applies only retext-spell by default', async () => {
+    const { code, stdout } = await runWithArguments(`--files test/fixtures/{${nonSpellPlugins.join(',')}}.md`);
+    code.should.equal(1);
+    nonSpellAddPlugins.forEach((plugin) => {
+      stdout.should.not.include(`retext-${plugin}`);
+    });
+    nonSpellRemovePlugins.forEach((plugin) => {
+      stdout.should.not.include(`test/fixtures/${plugin}.md: no issues found`);
+    });
+  });
+
+  it('applies all the specified plugins', async () => {
+    const { code, stdout } = await runWithArguments(`--files test/fixtures/{${nonSpellPlugins.join(',')}}.md --plugins ${nonSpellPlugins.join(' ')}`);
+    code.should.equal(1);
+    nonSpellAddPlugins.forEach((plugin) => {
+      stdout.should.include(`retext-${plugin}`);
+    });
+    nonSpellRemovePlugins.forEach((plugin) => {
+      stdout.should.include(`test/fixtures/${plugin}.md: no issues found`);
+    });
+  });
+
+  it('applies retext-indefinite-article when it is specified', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/indefinite-article.md -p indefinite-article');
+    code.should.equal(1);
+    stdout.should.include('Use `an` before `8-year`, not `a`');
+    stdout.should.include('Use `an` before `hour`, not `a`');
+    stdout.should.include('Use `a` before `European`, not `an`');
+  });
+
+  it('applies retext-repeated-words when it is specified', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/repeated-words.md -p repeated-words');
+    code.should.equal(1);
+    stdout.should.include('Expected `it` once, not twice');
+    stdout.should.include('Expected `to` once, not twice');
+    stdout.should.include('Expected `the` once, not twice');
+  });
+
+  it('applies retext-syntax-mentions when it is specified', async () => {
+    const result = await runWithArguments('test/fixtures/syntax-mentions.md -p syntax-mentions');
+    result.should.not.have.property('code');
+  });
+
+  it('applies retext-syntax-urls when it is specified', async () => {
+    const result = await runWithArguments('test/fixtures/syntax-urls.md -p syntax-urls');
+    result.should.not.have.property('code');
   });
 });
