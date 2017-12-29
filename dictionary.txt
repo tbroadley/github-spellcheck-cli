@@ -1,8 +1,8 @@
-Changelog
 CLI
+Changelog
 Gemoji
-index.js
 npm
 pre-commit
 pre-push
 preprocessing/processing
+retext
