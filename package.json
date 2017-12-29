@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint \"**/*.js\"",
-    "spellchecker": "node ./index.js --files \"**/*.md\" \"!test/**/*.md\" --dictionary dictionary.txt",
+    "spellchecker": "node ./index.js --files \"**/*.md\" \"!test/**/*.md\" --dictionary dictionary.txt --plugins spell indefinite-article repeated-words syntax-mentions syntax-urls",
     "test": "mocha"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
@@ -22,7 +22,6 @@
     "dictionary-en-gb": "^2.0.0",
     "dictionary-en-us": "^2.0.0",
     "dictionary-en-za": "^2.0.0",
-    "es6-promisify": "^5.0.0",
     "fs-extra": "^5.0.0",
     "globby": "^7.1.1",
     "lodash": "^4.17.4",
@@ -30,7 +29,11 @@
     "remark-gemoji-to-emoji": "^1.1.0",
     "remark-retext": "^3.1.0",
     "retext": "^5.0.0",
+    "retext-indefinite-article": "^1.1.2",
+    "retext-repeated-words": "^1.2.1",
     "retext-spell": "^2.3.1",
+    "retext-syntax-mentions": "^1.1.4",
+    "retext-syntax-urls": "^1.0.0",
     "vfile": "^2.3.0",
     "vfile-reporter": "^4.0.0"
   },
