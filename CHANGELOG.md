@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0] - 2017-12-29
+
 ### Added
 
 - Log a count of the files to be spellchecked.
@@ -31,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v3.0.0...HEAD
+[3.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v2.0.0...v3.0.0
 [2.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v1.0.1...v2.0.0
 [1.0.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v1.0.0...v1.0.1
