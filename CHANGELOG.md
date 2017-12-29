@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - [`retext-repeated-words`](https://github.com/retextjs/retext-repeated-words)
   - [`retext-syntax-mentions`](https://github.com/retextjs/retext-syntax-mentions)
   - [`retext-syntax-urls`](https://github.com/retextjs/retext-syntax-urls)
+- Apply all of the above plugins, as well as [`retext-spell`](https://github.com/retextjs/retext-spell), by default.
 
 ### Changed
 

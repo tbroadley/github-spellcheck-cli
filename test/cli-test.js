@@ -186,14 +186,20 @@ describe('Spellchecker CLI', function testSpellcheckerCLI() {
     stdout.should.equal('\nSpellchecking 0 files...\n\n\n');
   });
 
-  it('applies only retext-spell by default', async () => {
-    const { code, stdout } = await runWithArguments(`--files test/fixtures/{${nonSpellPlugins.join(',')}}.md`);
+  it('applies all default plugins by default', async () => {
+    const { code, stdout } = await runWithArguments(`--files test/fixtures/{{${nonSpellPlugins.join(',')}}.md,incorrect.txt}`);
+
     code.should.equal(1);
+
+    stdout.should.include('retext-spell');
+    stdout.should.not.include('test/fixtures/incorrect.txt: no issues found');
+
     nonSpellAddPlugins.forEach((plugin) => {
-      stdout.should.not.include(`retext-${plugin}`);
+      stdout.should.include(`retext-${plugin}`);
     });
+
     nonSpellRemovePlugins.forEach((plugin) => {
-      stdout.should.not.include(`test/fixtures/${plugin}.md: no issues found`);
+      stdout.should.include(`test/fixtures/${plugin}.md: no issues found`);
     });
   });
 
