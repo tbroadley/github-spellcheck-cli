@@ -16,6 +16,18 @@ function runWithArguments(args) {
 }
 
 describe('Spellchecker CLI', () => {
+  it('prints the command-line usage when the argument `-h` is passed', async () => {
+    const result = await runWithArguments('-h');
+    result.should.not.have.property('code');
+    result.stdout.should.include('A command-line tool for spellchecking files.');
+  });
+
+  it('prints the command-line usage when the argument `--help` is passed', async () => {
+    const result = await runWithArguments('--help');
+    result.should.not.have.property('code');
+    result.stdout.should.include('A command-line tool for spellchecking files.');
+  });
+
   it('exits with an error when no arguments are provided', async () => {
     const { code, stderr } = await runWithArguments('');
     code.should.equal(1);
