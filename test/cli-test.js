@@ -1,6 +1,8 @@
 const chai = require('chai');
 const { exec } = require('child_process');
+const glob = require('globby');
 const merge = require('lodash/merge');
+const path = require('path');
 
 chai.should();
 
@@ -53,8 +55,9 @@ describe('Spellchecker CLI', () => {
   });
 
   it('exits with an error when run on a file with a spelling mistake', async () => {
-    const { code } = await runWithArguments('test/fixtures/incorrect.txt');
+    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt');
     code.should.equal(1);
+    stdout.should.include('`Thisisnotaword` is misspelt');
   });
 
   it('exits with no error when run on a file with no spelling mistakes', async () => {
@@ -63,12 +66,66 @@ describe('Spellchecker CLI', () => {
   });
 
   it('exits with an error when run with a dictionary that does not contain the words in the given file', async () => {
-    const { code } = await runWithArguments('test/fixtures/en-CA.txt');
+    const { code, stdout } = await runWithArguments('test/fixtures/en-CA.txt');
     code.should.equal(1);
+    ['Colour', 'honour', 'behaviour'].forEach((word) => {
+      stdout.should.include(`\`${word}\` is misspelt`);
+    });
   });
 
   it('exits with no error when run with a dictionary that contains the words in the given file', async () => {
     const result = await runWithArguments('-f test/fixtures/en-CA.txt -l en-CA');
     result.should.not.have.property('code');
+  });
+
+  it('handles Markdown syntax', async () => {
+    const { code, stdout } = await runWithArguments('--files test/fixtures/markdown.md');
+    code.should.equal(1);
+    ['Spellig', 'paragrap', 'containin', 'mistaks', 'Bullts', 'Moar'].forEach((word) => {
+      stdout.should.include(`\`${word}\` is misspelt`);
+    });
+  });
+
+  it('ignores spelling mistakes in code blocks', async () => {
+    const result = await runWithArguments('-f test/fixtures/code-blocks.md');
+    result.should.not.have.property('code');
+  });
+
+  it('ignores Gemoji', async () => {
+    const result = await runWithArguments('-f test/fixtures/gemoji.md');
+    result.should.not.have.property('code');
+  });
+
+  it('ignores HTML tables', async () => {
+    const result = await runWithArguments('--files test/fixtures/table.md');
+    result.should.not.have.property('code');
+  });
+
+  it('ignores words in the provided dictionary file', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionary test/fixtures/dictionary.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('does not spellcheck the provided dictionary file', async () => {
+    const { stdout } = await runWithArguments('-f test/fixtures/*.txt -d test/fixtures/dictionary.txt');
+    stdout.should.not.contain('test/fixtures/dictionary.txt: no issues found');
+  });
+
+  it('spellchecks all files in a glob', async () => {
+    const { stdout } = await runWithArguments('test/fixtures/*');
+    const fileNames = await glob('*', { cwd: path.join(__dirname, 'test/fixtures') });
+    fileNames.forEach((fileName) => {
+      stdout.should.contain(`test/fixtures/${fileName}`);
+    });
+  });
+
+  it('runs in quiet mode when the argument `-q` is passed', async () => {
+    const { stdout } = await runWithArguments('--files test/fixtures/correct.txt -q');
+    stdout.should.equal('\n');
+  });
+
+  it('runs in quiet mode when the argument `--quiet` is passed', async () => {
+    const { stdout } = await runWithArguments('--files test/fixtures/correct.txt --quiet');
+    stdout.should.equal('\n');
   });
 });
