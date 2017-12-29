@@ -16,13 +16,14 @@ const { toDictionary } = require('./lib/to-dictionary');
     language,
     personalDictionaryPath,
     generateDictionary,
+    plugins,
     quiet,
   } = parseArgs();
 
   const personalDictionary = personalDictionaryPath ?
     await fs.readFile(personalDictionaryPath) :
     '';
-  const spellchecker = new Spellchecker({ language, personalDictionary });
+  const spellchecker = new Spellchecker({ language, personalDictionary, plugins });
 
   if (personalDictionaryPath) {
     files.push(`!${personalDictionaryPath}`);

@@ -128,4 +128,20 @@ describe('Spellchecker CLI', () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt --quiet');
     stdout.should.equal('\n');
   });
+
+  it('exits with no error when passed an empty list of plugins', async () => {
+    const result = await runWithArguments('--files a b c --plugins');
+    result.should.not.have.property('code');
+  });
+
+  it('exits with an error when passed unknown plugins', async () => {
+    const { code, stderr } = await runWithArguments('--files a b c --plugins d e f');
+    code.should.equal(1);
+    stderr.should.include('The following retext plugins are not supported: d, e, f.');
+  });
+
+  it('does nothing when passed an empty list of plugins', async () => {
+    const { stdout } = await runWithArguments('--files a b c --plugins');
+    stdout.should.equal('\n');
+  });
 });
