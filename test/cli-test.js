@@ -63,7 +63,6 @@ describe('Spellchecker CLI', function testSpellcheckerCLI() {
   it('prints the default plugin list in the command-line usage', async () => {
     const { stdout } = await runWithArguments('--help');
     const defaultPluginsRegex = new RegExp(toSpaceAndHyphenSplitRegex(`The default is "${defaultPlugins.join(' ')}".`));
-    console.log(defaultPluginsRegex);
     stdout.should.match(defaultPluginsRegex);
   });
 
