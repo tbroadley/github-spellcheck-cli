@@ -32,6 +32,9 @@ $ npm install --save-dev spellchecker-cli
   -d, --dictionary <file>                  A file to use as a personal dictionary.
   --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                            dictionary.txt.
+  -p, --plugins <name> <name>...           A list of retext plugins to use. The default is "spell". The following
+                                           plugins are supported: spell, indefinite-article, repeated-words, syntax-
+                                           mentions, syntax-urls.
   -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
   -h, --help                               Print this help screen.
 ```
@@ -45,6 +48,14 @@ $ spellchecker --files **/*.md !test/**/*.md test/README.md
 ```
 
 See [the `node-glob` documentation](https://github.com/isaacs/node-glob#glob-primer) for a full description of glob syntax.
+
+### Plugins
+
+Make sure to remove `retext-` from the beginning of the plugin name. For example, to use only `retext-spell`, run:
+
+```
+$ spellchecker --files <glob> --plugins spell
+```
 
 ### Personal dictionary
 

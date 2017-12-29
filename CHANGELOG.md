@@ -14,7 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Wrote a large number of unit and end-to-end tests.
+- Add a large number of unit and end-to-end tests.
+- Add development instructions to [README.md](./README.md).
+- Add support for the following [retext](https://github.com/retextjs/retext) plugins:
+  - [`retext-indefinite-article`](https://github.com/retextjs/retext-indefinite-article)
+  - [`retext-repeated-words`](https://github.com/retextjs/retext-repeated-words)
+  - [`retext-syntax-mentions`](https://github.com/retextjs/retext-syntax-mentions)
+  - [`retext-syntax-urls`](https://github.com/retextjs/retext-syntax-urls)
 
 ### Changed
 
@@ -24,7 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Added a shebang to [index.js](index.js).
+- Added a shebang to [index.js](./index.js).
 
 [Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v2.0.0...HEAD
 [2.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v1.0.1...v2.0.0
