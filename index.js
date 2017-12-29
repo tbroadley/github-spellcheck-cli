@@ -113,7 +113,9 @@ function printError(message) {
     process.exit(1);
   }
 
-  const personalDictionary = await fs.readFile(personalDictionaryPath);
+  const personalDictionary = personalDictionaryPath ?
+    await fs.readFile(personalDictionaryPath) :
+    '';
   const spellchecker = new Spellchecker({ language, personalDictionary });
 
   if (personalDictionaryPath) {
