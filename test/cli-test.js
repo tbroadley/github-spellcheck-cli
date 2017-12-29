@@ -183,7 +183,7 @@ describe('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('does nothing when passed an empty list of plugins', async () => {
     const { stdout } = await runWithArguments('--files a b c --plugins');
-    stdout.should.equal('\n');
+    stdout.should.equal('\nSpellchecking 0 files...\n\n\n');
   });
 
   it('applies only retext-spell by default', async () => {
