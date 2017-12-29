@@ -33,4 +33,24 @@ describe('Spellchecker CLI', () => {
     code.should.equal(1);
     stderr.should.include('The language "test" is not supported.');
   });
+
+  it('exits with an error when run on a file with a spelling mistake', async () => {
+    const { code } = await runWithArguments('test/fixtures/incorrect.txt');
+    code.should.equal(1);
+  });
+
+  it('exits with no error when run on a file with no spelling mistakes', async () => {
+    const result = await runWithArguments('--files test/fixtures/correct.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('exits with an error when run with a dictionary that does not contain the words in the given file', async () => {
+    const { code } = await runWithArguments('test/fixtures/en-CA.txt');
+    code.should.equal(1);
+  });
+
+  it('exits with no error when run with a dictionary that contains the words in the given file', async () => {
+    const result = await runWithArguments('-f test/fixtures/en-CA.txt -l en-CA');
+    result.should.not.have.property('code');
+  });
 });
