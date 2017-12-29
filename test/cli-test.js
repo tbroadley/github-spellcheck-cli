@@ -10,6 +10,7 @@ const {
   addPlugins,
   removePlugins,
   supportedPlugins,
+  defaultPlugins,
 } = require('../lib/command-line');
 
 chai.should();
@@ -31,7 +32,7 @@ const nonSpellPlugins = supportedPlugins.filter(notSpell);
 const nonSpellAddPlugins = addPlugins.filter(notSpell);
 const nonSpellRemovePlugins = removePlugins.filter(notSpell);
 
-const toHyphenSplitRegex = word => word.split('-').join('-\\s*');
+const toSpaceAndHyphenSplitRegex = word => word.replace(/ /g, '\\s*').replace(/-/g, '-\\s*');
 
 parallel('Spellchecker CLI', function testSpellcheckerCLI() {
   this.timeout(60000);
@@ -49,15 +50,27 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.stdout.should.include('A command-line tool for spellchecking files.');
   });
 
+  it('prints the default language in the command-line usage', async () => {
+    const { stdout } = await runWithArguments('--help');
+    const defaultLanguageRegex = new RegExp(toSpaceAndHyphenSplitRegex('The default language is en-US.'));
+    stdout.should.match(defaultLanguageRegex);
+  });
+
   it('lists all supported languages in the command-line usage', async () => {
     const { stdout } = await runWithArguments('-h');
-    const languageRegex = new RegExp(supportedLanguages.map(toHyphenSplitRegex).join(',\\s*'));
+    const languageRegex = new RegExp(supportedLanguages.map(toSpaceAndHyphenSplitRegex).join(',\\s*'));
     stdout.should.match(languageRegex);
+  });
+
+  it('prints the default plugin list in the command-line usage', async () => {
+    const { stdout } = await runWithArguments('--help');
+    const defaultPluginsRegex = new RegExp(toSpaceAndHyphenSplitRegex(`The default is "${defaultPlugins.join(' ')}".`));
+    stdout.should.match(defaultPluginsRegex);
   });
 
   it('lists all supported plugins in the command-line usage', async () => {
     const { stdout } = await runWithArguments('-h');
-    const pluginRegex = new RegExp(supportedPlugins.map(toHyphenSplitRegex).join(',\\s*'));
+    const pluginRegex = new RegExp(supportedPlugins.map(toSpaceAndHyphenSplitRegex).join(',\\s*'));
     stdout.should.match(pluginRegex);
   });
 
@@ -152,12 +165,24 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('runs in quiet mode when the argument `-q` is passed', async () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt -q');
-    stdout.should.equal('\n');
+    stdout.should.equal('\nSpellchecking 1 file...\n\n\n');
   });
 
   it('runs in quiet mode when the argument `--quiet` is passed', async () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt --quiet');
-    stdout.should.equal('\n');
+    stdout.should.equal('\nSpellchecking 1 file...\n\n\n');
+  });
+
+  it('prints the number of files to be spellchecked when passed one file', async () => {
+    const { stdout } = await runWithArguments('--files test/fixtures/correct.txt');
+    stdout.should.include('Spellchecking 1 file...');
+  });
+
+  it('prints the number of files to be spellchecked when passed a glob', async () => {
+    const globExpression = 'test/fixtures/*.md';
+    const { stdout } = await runWithArguments(`--files ${globExpression}`);
+    const fileCount = (await glob(globExpression)).length;
+    stdout.should.include(`Spellchecking ${fileCount} file${fileCount === 1 ? '' : 's'}...`);
   });
 
   it('exits with no error when passed an empty list of plugins', async () => {
@@ -173,17 +198,23 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('does nothing when passed an empty list of plugins', async () => {
     const { stdout } = await runWithArguments('--files a b c --plugins');
-    stdout.should.equal('\n');
+    stdout.should.equal('\nSpellchecking 0 files...\n\n\n');
   });
 
-  it('applies only retext-spell by default', async () => {
-    const { code, stdout } = await runWithArguments(`--files test/fixtures/{${nonSpellPlugins.join(',')}}.md`);
+  it('applies all default plugins by default', async () => {
+    const { code, stdout } = await runWithArguments(`--files test/fixtures/{{${nonSpellPlugins.join(',')}}.md,incorrect.txt}`);
+
     code.should.equal(1);
+
+    stdout.should.include('retext-spell');
+    stdout.should.not.include('test/fixtures/incorrect.txt: no issues found');
+
     nonSpellAddPlugins.forEach((plugin) => {
-      stdout.should.not.include(`retext-${plugin}`);
+      stdout.should.include(`retext-${plugin}`);
     });
+
     nonSpellRemovePlugins.forEach((plugin) => {
-      stdout.should.not.include(`test/fixtures/${plugin}.md: no issues found`);
+      stdout.should.include(`test/fixtures/${plugin}.md: no issues found`);
     });
   });
 

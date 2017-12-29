@@ -31,9 +31,12 @@ const { toDictionary } = require('./lib/to-dictionary');
 
   const filesFromGlobs = await glob(files, { gitignore: true });
 
+  console.log();
+  console.log(`Spellchecking ${filesFromGlobs.length} file${filesFromGlobs.length === 1 ? '' : 's'}...`);
   const checkSpelling = filePath => spellchecker.checkSpelling(filePath);
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
 
+  console.log();
   console.log(report(vfiles, { quiet }));
 
   if (hasMessages(vfiles)) {
