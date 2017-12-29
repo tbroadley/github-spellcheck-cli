@@ -2,6 +2,9 @@
 
 A command-line tool for spellchecking files.
 
+[![Build Status](https://travis-ci.org/tbroadley/spellchecker-cli.svg?branch=master)](https://travis-ci.org/tbroadley/spellchecker-cli)
+[![npm](https://img.shields.io/npm/v/spellchecker-cli.svg)](https://www.npmjs.com/package/spellchecker-cli)
+
 ## Use Case
 
 You can help contributors to your open-source software project catch spelling mistakes in documentation by running Spellchecker CLI as a pre-commit or pre-push Git hook or as part of your continuous integration process.
