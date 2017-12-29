@@ -6,6 +6,8 @@ const { fileWithNoMessages, buildVfile } = require('./helpers/vfile');
 
 chai.should();
 
+const addNewlines = strings => strings.map(s => `${s}\n`).join('');
+
 describe('toDictionary', () => {
   it('returns an empty string when passed an empty array', () => {
     toDictionary([]).should.equal('');
@@ -24,7 +26,7 @@ describe('toDictionary', () => {
       buildVfile(['c', 'e']),
       buildVfile(['b']),
       buildVfile(['a', 'd']),
-    ]).should.equal(['a', 'b', 'c', 'd', 'e'].join('\n'));
+    ]).should.equal(addNewlines(['a', 'b', 'c', 'd', 'e']));
   });
 
   it('returns a deduplicated list of messages', () => {
@@ -32,7 +34,7 @@ describe('toDictionary', () => {
       buildVfile(['a', 'b']),
       buildVfile(['b', 'c']),
       buildVfile(['c', 'a']),
-    ]).should.equal(['a', 'b', 'c'].join('\n'));
+    ]).should.equal(addNewlines(['a', 'b', 'c']));
   });
 
   it('only includes messages from retext-spell', () => {
@@ -45,6 +47,6 @@ describe('toDictionary', () => {
           { source: 'retext-spell', actual: 'e' },
         ],
       },
-    ]).should.equal(['a', 'b', 'e'].join('\n'));
+    ]).should.equal(addNewlines(['a', 'b', 'e']));
   });
 });

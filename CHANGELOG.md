@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - [`retext-syntax-mentions`](https://github.com/retextjs/retext-syntax-mentions)
   - [`retext-syntax-urls`](https://github.com/retextjs/retext-syntax-urls)
 - Apply all of the above plugins, as well as [`retext-spell`](https://github.com/retextjs/retext-spell), by default.
+- Add a newline to the end of the generated dictionary.
 
 ## [2.0.0] - 2017-12-28
 
