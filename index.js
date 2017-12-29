@@ -114,8 +114,8 @@ function printError(message) {
     process.exit(1);
   }
 
-  const spellchecker = new Spellchecker();
-  await spellchecker.init({ language, personalDictionaryPath });
+  const personalDictionary = await fs.readFile(personalDictionaryPath);
+  const spellchecker = new Spellchecker({ language, personalDictionary });
 
   if (personalDictionaryPath) {
     files.push(`!${personalDictionaryPath}`);
