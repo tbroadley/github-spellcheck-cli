@@ -23,7 +23,9 @@ If you want to run Spellchecker CLI in a Git hook or in a CI environment, it's b
 $ npm install --save-dev spellchecker-cli
 ```
 
-## Options
+## Usage
+
+Run Spellchecker CLI using the command `spellchecker`. This command takes the following options:
 
 ```
   -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
