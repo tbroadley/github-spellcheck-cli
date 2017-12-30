@@ -49,4 +49,15 @@ describe('toDictionary', () => {
       },
     ]).should.equal(addNewlines(['a', 'b', 'e']));
   });
+
+  it('ignores overflow messages from retext-spell', () => {
+    toDictionary([
+      {
+        messages: [
+          { source: 'retext-spell', ruleId: 'retext-spell', actual: 'a' },
+          { source: 'retext-spell', ruleId: 'overflow', actual: 'b' },
+        ],
+      },
+    ]).should.equal('a\n');
+  });
 });
