@@ -56,10 +56,18 @@ See [the `node-glob` documentation](https://github.com/isaacs/node-glob#glob-pri
 
 ### Plugins
 
-Make sure to remove `retext-` from the beginning of the plugin name. For example, to use only `retext-spell`, run:
+The following `retext` plugins are supported:
+
+- [`retext-spell`](https://github.com/retextjs/retext-spell): check spelling
+- [`retext-indefinite-article`](https://github.com/retextjs/retext-indefinite-article): check that "a" and "an" are used correctly
+- [`retext-repeated-words`](https://github.com/retextjs/retext-repeated-words): check `for for` repeated words
+- [`retext-syntax-mentions`](https://github.com/retextjs/retext-syntax-mentions): ignore GitHub mentions (_e.g._ @tbroadley) when spellchecking
+- [`retext-syntax-urls`](https://github.com/retextjs/retext-syntax-urls): ignore URL-like values (_e.g._ `README.md`, `https://example.com`) when spellchecking
+
+When using the `--plugins` command-line option, make sure to remove `retext-` from the beginning of the plugin name. For example, to use only `retext-spell` and `retext-indefinite-article`, run:
 
 ```
-$ spellchecker --files <glob> --plugins spell
+$ spellchecker --files <glob> --plugins spell indefinite-article
 ```
 
 ### Personal dictionary
