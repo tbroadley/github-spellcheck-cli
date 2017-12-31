@@ -9,6 +9,14 @@ A command-line tool for spellchecking files, built on top of [`retext`](https://
 
 You can help contributors to your open-source software project catch spelling mistakes in documentation by running Spellchecker CLI as a pre-commit or pre-push Git hook or as part of your continuous integration process.
 
+## Features
+
+- Run on any plain text file, with special handling for Markdown syntax
+- Check for spelling mistakes, repeated words, and/or correct usage of "a" and "and"
+- Check spelling using an American, British, Canadian, Australian, or South African English dictionary
+- Specify a custom dictionary of project-specific terms to be combined with the dictionary for the specified language
+- Generate the custom dictionary automatically based on misspellings found in the checked files
+
 ## Installation
 
 If you want to use Spellchecker CLI as a command-line tool on your own computer, you can install it globally:
