@@ -90,6 +90,7 @@ This option is useful for adding Spellchecker CLI to an existing open-source sof
 
 Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files with the extension `.md` or `.markdown`, ignoring capitalization):
 
+- Ignores `inline code` and tables
 - Transforms [Gemoji](https://github.com/wooorm/gemoji) into Unicode emoji, so that emoji names like `:octocat:` aren't spellchecked
 
 ## Development
