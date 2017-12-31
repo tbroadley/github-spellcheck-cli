@@ -36,18 +36,18 @@ $ npm install --save-dev spellchecker-cli
 Run Spellchecker CLI using the command `spellchecker`. This command takes the following options:
 
 ```
-  -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
-  -l, --language <language>                The language of the files. The default language is en-US. The following
-                                           languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
-  -d, --dictionary <file>                  A file to use as a personal dictionary.
-  --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
-                                           dictionary.txt.
-  -p, --plugins <name> <name>...           A list of retext plugins to use. The default is "spell indefinite-article
-                                           repeated-words syntax-mentions syntax-urls". The following plugins are
-                                           supported: spell, indefinite-article, repeated-words, syntax-mentions,
-                                           syntax-urls.
-  -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
-  -h, --help                               Print this help screen.
+-f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
+-l, --language <language>                The language of the files. The default language is en-US. The following
+                                         languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
+-d, --dictionary <file>                  A file to use as a personal dictionary.
+--generate-dictionary                    Write a personal dictionary that contains all found misspellings to
+                                         dictionary.txt.
+-p, --plugins <name> <name>...           A list of retext plugins to use. The default is "spell indefinite-article
+                                         repeated-words syntax-mentions syntax-urls". The following plugins are
+                                         supported: spell, indefinite-article, repeated-words, syntax-mentions,
+                                         syntax-urls.
+-q, --quiet                              Do not output anything for files that contain no spelling mistakes.
+-h, --help                               Print this help screen.
 ```
 
 If you've installed Spellchecker CLI globally, you can simply run `spellchecker` to invoke the tool. If you used the `--save-dev` flag, run `./node_modules/.bin/spellchecker` from the root directory of your project (or just `spellchecker` inside an NPM script).
