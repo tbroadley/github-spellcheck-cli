@@ -7,6 +7,7 @@
     "spellchecker": "./index.js"
   },
   "scripts": {
+    "ci": "npm run spellchecker && npm run lint && npm run test",
     "lint": "eslint \"**/*.js\"",
     "spellchecker": "node ./index.js --files \"**/*.md\" \"!test/**/*.md\" --dictionary dictionary.txt",
     "test": "mocha"
