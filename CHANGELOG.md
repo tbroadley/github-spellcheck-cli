@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added a `--ignore` option. This option takes a list of regexes. Spelling mistakes that match any of the regexes, after wrapping each regex in `^` and `$`, will be ignored.
+
 ## [3.0.1] - 2017-12-30
 
 ### Fixed

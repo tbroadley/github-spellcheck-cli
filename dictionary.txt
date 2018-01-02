@@ -1,8 +1,10 @@
 CLI
 Changelog
 Gemoji
+SHAs
 npm
 pre-commit
 pre-push
 preprocessing/processing
+regexes
 retext
