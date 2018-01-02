@@ -261,12 +261,12 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
   });
 
   it('ignores spelling mistakes that match the given regexes', async () => {
-    const result = await runWithArguments('test/fixtures/incorrect.txt --ignore Thisisnot.* (pre)?processed');
+    const result = await runWithArguments('test/fixtures/incorrect.txt --ignore "Thisisnot.*" "(pre)?processed"');
     result.should.not.have.property('code');
   });
 
   it('does not ignore spelling mistakes that do not match any of the given regexes', async () => {
-    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt --ignore Thisisnot processed');
+    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt --ignore "Thisisnot" "processed"');
     code.should.equal(1);
     stdout.should.include('`Thisisnotaword` is misspelt');
     stdout.should.include('`preprocessed` is misspelt');
