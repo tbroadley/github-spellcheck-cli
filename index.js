@@ -16,6 +16,7 @@ const { toDictionary } = require('./lib/to-dictionary');
     language,
     personalDictionaryPath,
     generateDictionary,
+    ignoreRegexes,
     plugins,
     quiet,
   } = parseArgs();
@@ -23,7 +24,12 @@ const { toDictionary } = require('./lib/to-dictionary');
   const personalDictionary = personalDictionaryPath ?
     await fs.readFile(personalDictionaryPath) :
     '';
-  const spellchecker = new Spellchecker({ language, personalDictionary, plugins });
+  const spellchecker = new Spellchecker({
+    language,
+    personalDictionary,
+    ignoreRegexes,
+    plugins,
+  });
 
   if (personalDictionaryPath) {
     files.push(`!${personalDictionaryPath}`);
