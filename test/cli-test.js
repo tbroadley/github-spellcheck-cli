@@ -152,7 +152,7 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('does not spellcheck the provided dictionary file', async () => {
     const { stdout } = await runWithArguments('-f test/fixtures/*.txt -d test/fixtures/dictionaries/one.txt');
-    stdout.should.not.contain('test/fixtures/dictionaries/one.txt: no issues found');
+    stdout.should.not.contain('test/fixtures/dictionaries/one.txt');
   });
 
   it('spellchecks all files in a glob', async () => {
