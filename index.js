@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const glob = require('globby');
 const report = require('vfile-reporter');
 
+const { buildPersonalDictionary } = require('./lib/build-personal-dictionary');
 const { parseArgs } = require('./lib/command-line');
 const { hasMessages } = require('./lib/has-messages');
 const { printError } = require('./lib/print-error');
@@ -22,10 +23,7 @@ const { toDictionary } = require('./lib/to-dictionary');
     quiet,
   } = parseArgs();
 
-  const personalDictionary = personalDictionaryPaths.length > 0 ?
-    await Promise.all(personalDictionaryPaths.map(filePath => fs.readFile(filePath)))
-      .then(dicts => dicts.join('')) :
-    '';
+  const personalDictionary = await buildPersonalDictionary(personalDictionaryPaths);
   const spellchecker = new Spellchecker({
     language,
     personalDictionary,

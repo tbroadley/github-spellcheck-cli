@@ -83,7 +83,12 @@ $ spellchecker --files <glob> --plugins spell indefinite-article
 
 ### Personal dictionaries
 
-Personal dictionary files should be in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents).
+Personal dictionary files should be either text files in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents) or JavaScript files with the extension `.js` that export an array of strings, each in `nspell` personal dictionary format. For example, the following is a valid dictionary file:
+
+```js
+// dictionary.js
+module.exports = ['foo', 'bar/baz', '*qux'];
+```
 
 ### Generating a personal dictionary
 

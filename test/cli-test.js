@@ -15,15 +15,19 @@ const {
 
 chai.should();
 
-function runWithArguments(args) {
+function runCommand(command) {
   return new Promise((resolve) => {
-    exec(`node index.js ${args}`, (error, stdout, stderr) => {
+    exec(command, (error, stdout, stderr) => {
       if (error) {
         resolve(merge({}, error, { stdout, stderr }));
       }
       resolve({ stdout, stderr });
     });
   });
+}
+
+function runWithArguments(args) {
+  return runCommand(`node index.js ${args}`);
 }
 
 const notSpell = plugin => plugin !== 'spell';
@@ -262,6 +266,21 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('supports multiple dictionaries', async () => {
     const result = await runWithArguments('test/fixtures/incorrect-2.txt --dictionaries test/fixtures/dictionaries/one.txt test/fixtures/dictionaries/two.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('supports programmatic dictionaries', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/programmatic.js');
+    result.should.not.have.property('code');
+  });
+
+  it('loads programmatic dictionaries relative to the current working directory', async () => {
+    const result = await runCommand('cd test && node ../index.js fixtures/incorrect.txt --dictionaries fixtures/dictionaries/programmatic.js');
+    result.should.not.have.property('code');
+  });
+
+  it('supports specifying both non-programmatic and programmatic dictionaries', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect-2.txt --dictionaries test/fixtures/dictionaries/programmatic.js test/fixtures/dictionaries/two.txt');
     result.should.not.have.property('code');
   });
 
