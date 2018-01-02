@@ -14,7 +14,7 @@ const { toDictionary } = require('./lib/to-dictionary');
   const {
     files,
     language,
-    personalDictionaryPath,
+    personalDictionaryPaths,
     generateDictionary,
     ignoreRegexes,
     suggestions,
@@ -22,8 +22,9 @@ const { toDictionary } = require('./lib/to-dictionary');
     quiet,
   } = parseArgs();
 
-  const personalDictionary = personalDictionaryPath ?
-    await fs.readFile(personalDictionaryPath) :
+  const personalDictionary = personalDictionaryPaths.length > 0 ?
+    await Promise.all(personalDictionaryPaths.map(filePath => fs.readFile(filePath)))
+      .then(dicts => dicts.join('')) :
     '';
   const spellchecker = new Spellchecker({
     language,
@@ -33,8 +34,8 @@ const { toDictionary } = require('./lib/to-dictionary');
     plugins,
   });
 
-  if (personalDictionaryPath) {
-    files.push(`!${personalDictionaryPath}`);
+  if (personalDictionaryPaths.length > 0) {
+    files.push(...personalDictionaryPaths.map(filePath => `!${filePath}`));
   }
 
   const filesFromGlobs = await glob(files, { gitignore: true });

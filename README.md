@@ -39,7 +39,7 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
 -l, --language <language>                The language of the files. The default language is en-US. The following
                                          languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
--d, --dictionary <file>                  A file to use as a personal dictionary.
+-d, --dictionaries <file> <file>...      Files to combine into a personal dictionary.
 --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                          dictionary.txt.
 -i, --ignore <regex> <regex>...          Spelling mistakes that match any of these regexes will be ignored.
@@ -81,9 +81,9 @@ When using the `--plugins` command-line option, make sure to remove `retext-` fr
 $ spellchecker --files <glob> --plugins spell indefinite-article
 ```
 
-### Personal dictionary
+### Personal dictionaries
 
-The personal dictionary file should be in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents).
+Personal dictionary files should be in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents).
 
 ### Generating a personal dictionary
 
