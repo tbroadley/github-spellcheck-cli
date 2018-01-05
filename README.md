@@ -60,6 +60,14 @@ The whitelist is stored at `~/.github-spellcheck/whitelist.txt`.
 
 Instructions for generating a personal access token are [here](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/). The token should have the `repo` and `delete_repo` scopes.
 
+After generating a personal access token, invoke the tool as follows:
+
+```
+$ github-spellcheck --token <token> --repository ...
+```
+
+It's only necessary to pass `--token <token>` to the tool once, or if you want to update the token. GitHub Spellcheck will store the token in a file and subsequent invocations will read the token from there.
+
 ## Development
 
 Fork this repository, clone your fork, then run `npm install`.
