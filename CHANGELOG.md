@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a `--ignore` option. This option takes a list of regexes. Spelling mistakes that match any of the regexes, after wrapping each regex in `^` and `$`, will be ignored.
 
+## [3.0.2] - 2017-04-14
+
+### Fixed
+
+- Updated [`retext-indefinite-article`](https://github.com/retextjs/retext-indefinite-article) to 1.1.3 in order to properly expect "a" in front of words like "1-to-1" and "1:00".
+
 ## [3.0.1] - 2017-12-30
 
 ### Fixed

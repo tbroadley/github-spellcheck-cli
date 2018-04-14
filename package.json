@@ -30,7 +30,7 @@
     "remark-gemoji-to-emoji": "^1.1.0",
     "remark-retext": "^3.1.0",
     "retext": "^5.0.0",
-    "retext-indefinite-article": "^1.1.2",
+    "retext-indefinite-article": "^1.1.3",
     "retext-repeated-words": "^1.2.1",
     "retext-spell": "^2.3.1",
     "retext-syntax-mentions": "^1.1.4",
