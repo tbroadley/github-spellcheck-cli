@@ -271,4 +271,18 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     stdout.should.include('`Thisisnotaword` is misspelt');
     stdout.should.include('`preprocessed` is misspelt');
   });
+
+  it('does not limit number of reported misspelling errors', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/gibberish-50-lines.txt');
+    code.should.equal(1);
+    stdout.should.include('50 warnings');
+    stdout.should.not.include('Too many misspellings');
+  });
+
+  it('does not show overflow error for ignored patterns', async () => {
+    const result = await runWithArguments('test/fixtures/gibberish-50-lines.txt --ignore "nm[0-9]+a"');
+    result.should.not.have.property('code');
+    result.stdout.should.not.include('Too many misspellings');
+    result.stdout.should.include('no issues found');
+  });
 });
