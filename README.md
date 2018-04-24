@@ -83,11 +83,15 @@ $ spellchecker --files <glob> --plugins spell indefinite-article
 
 ### Personal dictionaries
 
-Personal dictionary files should be either text files in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents) or JavaScript files with the extension `.js` that export an array of strings, each in `nspell` personal dictionary format. For example, the following is a valid dictionary file:
+Each line in a personal dictionary is treated as a regular expression. You could use this feature to ignore spelling mistakes with a common form but too many possible instances to be included in a personal dictionary. For instance, you could use the regular expression `[0-9a-f]{7}` to match Git short SHAs.
+
+Each regex will be wrapped with `^` and `$` before mistakes are tested against it. For example, if "ize" is included in the dictionary, "optimize" and other words that contain "ize" will not be ignored. To match "optimize", you could use the regular expression `[A-Za-z]+ize`.
+
+A personal dictionary should either be a plaintext file or a JavaScript file with the extension `.js` that exports an array of strings or regular expressions. For example, the following is a valid dictionary file:
 
 ```js
 // dictionary.js
-module.exports = ['foo', 'bar/baz', '*qux'];
+module.exports = ['foo', /^bazz?/];
 ```
 
 ### Generating a personal dictionary

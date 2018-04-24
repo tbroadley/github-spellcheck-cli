@@ -284,6 +284,23 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.should.not.have.property('code');
   });
 
+  it('treats dictionary entries as regexes', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/regex.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('treats dictionary entries as if they were wrapped in ^ and $', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/regex-no-match.txt');
+    code.should.equal(1);
+    stdout.should.include('`Thisisnotaword` is misspelt');
+    stdout.should.include('`preprocessed` is misspelt');
+  });
+
+  it('supports programmatic dictionaries that pass mixed regexes and strings', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/regex.js');
+    result.should.not.have.property('code');
+  });
+
   it('ignores spelling mistakes that match the given regexes', async () => {
     const result = await runWithArguments('test/fixtures/incorrect.txt --ignore "Thisisnot.*" "(pre)?processed"');
     result.should.not.have.property('code');
