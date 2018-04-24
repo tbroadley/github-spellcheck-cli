@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed a bug where the spell checking was skipped after 30 found misspell errors, even if they are matched by one of `--ignore` patterns.
+
 ## [3.0.2] - 2017-04-14
 
 ### Fixed
