@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Allow specification of more than one file to combine into a personal dictionary.
+- Treat plaintext dictionaries as lists of regexes.
 
 ## [3.1.0] - 2018-06-12
 
