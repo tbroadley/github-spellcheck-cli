@@ -1,9 +1,9 @@
 CLI
 Changelog
 Gemoji
+NPM
 SHAs
 npm
-NPM
 plaintext
 pre-commit
 pre-push
