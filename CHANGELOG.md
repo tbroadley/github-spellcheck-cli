@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added a `--no-suggestions` option, which allows users to disable the generation of spelling suggestions when errors are detected.
+
 ## [3.0.3] - 2017-04-24
 
 ### Fixed
