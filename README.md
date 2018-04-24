@@ -58,7 +58,7 @@ If you've installed Spellchecker CLI globally, you can simply run `spellchecker`
 Spellchecker CLI uses [`globby`](https://github.com/sindresorhus/globby), which is based on [`glob`](https://github.com/isaacs/node-glob), to parse globs. The tool passes the provided list of globs directly to `globby`. This means that you can, for instance, use `!` to negate a glob:
 
 ```
-$ spellchecker --files **/*.md !test/**/*.md test/README.md
+$ spellchecker --files '**/*.md' '!test/**/*.md' 'test/README.md'
 ```
 
 See [the `node-glob` documentation](https://github.com/isaacs/node-glob#glob-primer) for a full description of glob syntax.
