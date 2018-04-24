@@ -285,4 +285,17 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.stdout.should.not.include('Too many misspellings');
     result.stdout.should.include('no issues found');
   });
+
+  it('enables suggestions by default', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt');
+    code.should.equal(1);
+    stdout.should.include('`preprocessed` is misspelt; did you mean `reprocessed`?');
+  });
+
+  it('allows suggestions to be disabled', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt --no-suggestions');
+    code.should.equal(1);
+    stdout.should.include('`preprocessed` is misspelt');
+    stdout.should.not.include('`preprocessed` is misspelt; did you mean `reprocessed`?');
+  });
 });

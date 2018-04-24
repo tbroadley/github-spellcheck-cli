@@ -17,6 +17,7 @@ const { toDictionary } = require('./lib/to-dictionary');
     personalDictionaryPath,
     generateDictionary,
     ignoreRegexes,
+    suggestions,
     plugins,
     quiet,
   } = parseArgs();
@@ -28,6 +29,7 @@ const { toDictionary } = require('./lib/to-dictionary');
     language,
     personalDictionary,
     ignoreRegexes,
+    suggestions,
     plugins,
   });
 

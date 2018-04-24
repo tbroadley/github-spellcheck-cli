@@ -47,6 +47,8 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
                                          repeated-words syntax-mentions syntax-urls". The following plugins are
                                          supported: spell, indefinite-article, repeated-words, syntax-mentions,
                                          syntax-urls.
+--no-suggestions                         Do not print suggested replacements for misspelled words. This option will
+                                         improve Spellchecker's runtime when many errors are detected.
 -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
 -h, --help                               Print this help screen.
 ```
