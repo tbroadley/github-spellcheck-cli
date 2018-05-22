@@ -7,15 +7,13 @@ const getUsage = require('command-line-usage');
 const fs = require('fs-extra');
 const glob = require('globby');
 const _ = require('lodash');
-const {
-  Cred, Index, Remote, Repository, Reset,
-} = require('nodegit');
 const opn = require('opn');
 const path = require('path');
 const prompt = require('prompt-promise');
 const userHome = require('user-home');
 
 const { addByUserSelection } = require('./lib/add-by-user-selection');
+const { git } = require('./lib/git');
 const {
   createPullRequest,
   deleteRepo,
@@ -53,6 +51,10 @@ async function findGithubFile(name) {
     `{${name}*,{.github,docs}/${name}*}`,
     { cwd: clonePath, gitignore: true, nocase: true }
   ));
+}
+
+function lines(str) {
+  return str.trim().replace(/\r/g, '').split('\n');
 }
 
 const optionDefinitions = [
@@ -169,12 +171,6 @@ async function go() {
     repoName = newFork.name;
   }
 
-  const githubCredentialsOptions = {
-    callbacks: {
-      credentials: () => Cred.userpassPlaintextNew(process.env.GITHUB_TOKEN, 'x-oauth-basic'),
-    },
-  };
-
   clonePath = path.join(userHome, `/.github-spellcheck/${repoUser}/${repoName}`);
 
   let exists;
@@ -187,56 +183,61 @@ async function go() {
     exists = (await fs.pathExists(clonePath)) && (await fs.pathExists(path.join(clonePath, '/.git')));
   }
 
-  let repo;
-  if (exists) {
-    repo = await Repository.open(clonePath);
-  } else {
+  const repoFullUrl = `https://${process.env.GITHUB_TOKEN}@github.com/${repoUser}/${repoName}.git`;
+
+  if (!exists) {
     console.log('Creating a temporary directory...');
     await fs.ensureDir(clonePath);
 
-    const url = `https://github.com/${repoUser}/${repoName}.git`;
-    console.log(`Cloning ${url} into the temporary directory...`);
-    repo = await cloneWithRetry(url, clonePath, githubCredentialsOptions);
+    console.log(`Cloning ${repoUser}/${repoName} into the temporary directory...`);
+    await cloneWithRetry(repoFullUrl, clonePath);
+  }
+
+  async function repoHasRemote(remoteName) {
+    const [stdout] = await git(clonePath, 'remote');
+    return _.includes(lines(stdout), remoteName);
   }
 
   console.log(`Fetching the latest on the branch '${baseBranchName}' from the parent repository...`);
-  if (!await Remote.lookup(repo, 'parent').catch(() => false)) {
-    await Remote.create(repo, 'parent', `https://github.com/${userAndRepo}`);
+  if (!await repoHasRemote('parent')) {
+    await git(clonePath, `remote add parent https://github.com/${userAndRepo}`);
   }
-  await repo.fetchAll(githubCredentialsOptions);
+  await git(clonePath, 'fetch parent');
+
+  async function repoHasBranch(name) {
+    const [stdout] = await git(clonePath, 'branch');
+    const branches = lines(stdout);
+    return _.includes(branches, `  ${name}`) || _.includes(branches, `* ${name}`);
+  }
+
+  function getBranchCommit(name) {
+    return git(clonePath, `rev-parse parent/${name}`)
+      .then(([stdout]) => stdout.trim());
+  }
 
   console.log(`Merging the latest from the parent repository into '${baseBranchName}'...`);
-  if (!await repo.getBranch(baseBranchName).catch(() => false)) {
-    const branchCommit = await repo.getBranchCommit(`parent/${baseBranchName}`);
-    await repo.createBranch(baseBranchName, branchCommit, false);
+  if (!await repoHasBranch(baseBranchName)) {
+    const branchCommit = await getBranchCommit(baseBranchName);
+    await git(clonePath, `branch ${baseBranchName} ${branchCommit}`);
   }
-  await repo.mergeBranches(baseBranchName, `parent/${baseBranchName}`);
+  await git(clonePath, `checkout ${baseBranchName}`);
+  await git(clonePath, `merge parent/${baseBranchName}`);
 
   console.log(`Getting the last commit from the branch '${baseBranchName}'...`);
-  const commit = await repo.getBranchCommit(baseBranchName);
+  const commit = await getBranchCommit(baseBranchName);
 
   console.log('Resetting local repository...');
-  await Reset.reset(repo, commit, Reset.TYPE.HARD);
-
-  console.log('Getting the state of the working tree...');
-  const tree = await commit.getTree();
+  await git(clonePath, `reset --hard ${commit}`);
 
   console.log('Getting a list of files in the working tree...');
-  let treeEntries = await new Promise((resolve, reject) => {
-    const walker = tree.walk(true);
-    walker.on('end', resolve);
-    walker.on('error', reject);
-    walker.start();
-  });
-
-  treeEntries = _.sortBy(treeEntries, treeEntry => treeEntry.path());
+  let treeEntries = await git(clonePath, 'ls-files').then(([stdout]) => lines(stdout));
 
   function getPathsToIncludeOrExclude(includeOrExclude) {
     return glob(includeOrExclude, { cwd: clonePath, gitignore: true });
   }
 
   function includesPath(pathsToTestAgainst) {
-    return treeEntry => _.includes(pathsToTestAgainst, treeEntry.path().replace(/\\/g, '/'));
+    return treeEntry => _.includes(pathsToTestAgainst, treeEntry.replace(/\\/g, '/'));
   }
 
   if (!_.isEmpty(include)) {
@@ -252,7 +253,7 @@ async function go() {
   }
 
   console.log(`Filtering the list to only include files with extensions '${extensions.join(', ')}'...`);
-  treeEntries = _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry.path()));
+  treeEntries = _.filter(treeEntries, treeEntry => extensionRegex.test(treeEntry));
 
   console.log('Spell-checking the remaining files...');
   const progressBar = new progress.Bar({
@@ -261,15 +262,18 @@ async function go() {
   }, progress.Presets.legacy);
   progressBar.start(treeEntries.length, 0);
   const misspellingsByFile = await Promise.all(_.map(treeEntries, async (entry) => {
-    const blob = await entry.getBlob();
-    const misspellings = await getMisspellings(blob.toString().replace(/\r\n/g, '\n'), entry.path());
+    const buf = await fs.readFile(path.join(clonePath, entry));
+    const misspellings = await getMisspellings(buf.toString().replace(/\r\n/g, '\n'), entry);
     progressBar.increment();
     return _.map(misspellings, misspelling => _.assign({}, misspelling, {
-      path: entry.path(),
+      path: entry,
     }));
   }));
 
-  const { changeCount, finalDiff } = await addByUserSelection(_.flatten(misspellingsByFile), repo);
+  const { changeCount, finalDiff } = await addByUserSelection(
+    _.flatten(misspellingsByFile),
+    clonePath
+  );
 
   console.log();
 
@@ -298,33 +302,22 @@ async function go() {
           description: 'Create a pull request with the specified changes.',
           responseFunction: async () => {
             console.log(`Creating a new branch "${branchName}"...`);
-            const newBranchRef = await repo.createBranch('fix-typos', commit, false);
+            await git(clonePath, `branch ${branchName} ${commit}`);
 
             console.log(`Checking out "${branchName}"...`);
-            await repo.checkoutBranch(newBranchRef);
-
-            const index = await repo.refreshIndex();
+            await git(clonePath, `checkout ${branchName}`);
 
             console.log('Adding all changes to the index...');
-            await index.addAll(['*'], Index.ADD_OPTION.ADD_DEFAULT);
-            await index.write();
-            const indexOid = await index.writeTree();
+            await git(clonePath, 'add -A');
 
-            const signature = repo.defaultSignature();
             console.log('Committing all changes...');
-            const newCommit = await repo.createCommit(
-              'HEAD',
-              signature,
-              signature,
-              `docs: fix typo${changeCount === 1 ? '' : 's'}`,
-              indexOid,
-              [commit]
-            );
+            await git(clonePath, `commit -m "docs: fix typo${changeCount === 1 ? '' : 's'}"`);
 
+            const newCommit = await git(clonePath, 'rev-parse HEAD')
+              .then(([stdout]) => stdout.trim());
             console.log(`Commit ${newCommit} created.`);
             console.log('Pushing to remote "origin"...');
-            const remote = await Remote.lookup(repo, 'origin');
-            await remote.push([`refs/heads/${branchName}`], githubCredentialsOptions);
+            await git(clonePath, `push ${repoFullUrl} refs/heads/${branchName}`);
 
             if (await findGithubFile('PULL_REQUEST_TEMPLATE') && !quiet) {
               console.log('Opening the pull request creation page...');
