@@ -28,7 +28,7 @@ describe('getMisspellings', () => {
     mockery.deregisterMock('spellchecker');
     mockery.resetCache();
     mockery.registerMock('spellchecker', {
-      checkSpellingAsync: _.constant(Promise.resolve(indices)),
+      checkSpelling: _.constant(indices),
       getCorrectionsForMisspelling: misspelling => corrections[misspelling],
       isMisspelled: word => !_.includes(dictionary, word),
     });
