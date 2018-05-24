@@ -15,7 +15,7 @@ When I'm looking through the documentation of an open-source software project, I
 
 ## Setup
 
-You need to have Node.js and NPM installed.
+You need to have Git, Node.js, and NPM installed.
 
 ```
 $ npm install --global github-spellcheck-cli

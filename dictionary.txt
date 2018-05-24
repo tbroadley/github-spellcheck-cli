@@ -4,6 +4,7 @@ ESLint
 Github
 Hurray
 NPM
+Nodegit
 Node.js
 PRs
 PascalCase
