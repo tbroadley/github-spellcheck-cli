@@ -102,6 +102,16 @@ function printUsage() {
   console.log(getUsage(usageSections));
 }
 
+async function deleteNewForkAndExit(exitCode) {
+  if (isNewFork && repoUser && repoName) {
+    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
+    await deleteRepo(repoUser, repoName);
+  }
+
+  console.log(chalk.red('Exiting...'));
+  process.exit(exitCode);
+}
+
 async function go() {
   let commandLineArguments;
 
@@ -355,26 +365,20 @@ async function go() {
         },
       ]
     );
-  } else if (isNewFork) {
-    console.log(chalk.red('No corrections added.'));
-    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
-    await deleteRepo(repoUser, repoName);
-    console.log(chalk.red('Exiting...'));
   } else {
-    console.log(chalk.red('No corrections added. Exiting...'));
+    console.log(chalk.red('No corrections added.'));
+    await deleteNewForkAndExit(0);
   }
 
   prompt.finish();
 }
 
+process.on('SIGINT', () => {
+  console.log();
+  deleteNewForkAndExit(130);
+});
+
 go().catch(async (error) => {
   console.error(chalk.red(`Error: ${error}`));
-
-  if (isNewFork && repoUser && repoName) {
-    console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
-    await deleteRepo(repoUser, repoName);
-  }
-
-  console.log(chalk.red('Exiting...'));
-  process.exit(1);
+  await deleteNewForkAndExit(1);
 });
