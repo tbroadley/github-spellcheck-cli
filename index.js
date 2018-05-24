@@ -71,7 +71,7 @@ const optionDefinitions = [
     name: 'branch', defaultValue: 'fix-typos', typeLabel: '<branch name>', description: 'The name of the branch to commit corrections to.',
   },
   {
-    name: 'base', defaultValue: 'master', typeLabel: '<branch name>', description: 'The name of the branch to create the pull request against.',
+    name: 'base', typeLabel: '<branch name>', description: 'The name of the branch to create the pull request against.',
   },
   {
     name: 'extensions', alias: 'e', multiple: true, defaultValue: ['md', 'txt'], typeLabel: '<extension> [<extension>] ...', description: 'Only spellcheck files with these extensions for spelling mistakes.',
@@ -123,12 +123,13 @@ async function go() {
     token,
     repository,
     branch: branchName,
-    base: baseBranchName,
     extensions,
     include,
     exclude,
     quiet,
   } = commandLineArguments;
+
+  let baseBranchName = commandLineArguments.base;
 
   if (help) {
     printUsage();
@@ -157,18 +158,21 @@ async function go() {
   console.log('Getting a list of all GitHub repos that you have access to...');
   const userRepos = await getAllReposForAuthenticatedUser();
 
-  const repoWithSameFullName = _.find(userRepos, { full_name: userAndRepo });
-  if (repoWithSameFullName) {
+  let githubRepo = _.find(userRepos, { full_name: userAndRepo });
+  if (githubRepo) {
     console.log(`You already have access to ${userAndRepo}.`);
   } else {
     console.log(`You don't have access to ${userAndRepo}.`);
-    console.log(`Looking for a fork of ${userAndRepo} that you have access to...`);
-    console.log(`Forking ${userAndRepo} using your GitHub credentials...`);
-    const newFork = await forkRepo(repoUser, repoName);
-    console.log(`Forked ${userAndRepo} to ${newFork.full_name}.`);
-    isNewFork = (new Date() - new Date(newFork.created_at)) / 1000 < 10;
-    repoUser = newFork.owner.login;
-    repoName = newFork.name;
+    console.log(`Forking ${userAndRepo} or retrieving your existing fork...`);
+    githubRepo = await forkRepo(repoUser, repoName);
+    console.log(`Fork of ${userAndRepo} now exists at ${githubRepo.full_name}.`);
+    isNewFork = (new Date() - new Date(githubRepo.created_at)) / 1000 < 10;
+    repoUser = githubRepo.owner.login;
+    repoName = githubRepo.name;
+  }
+
+  if (!baseBranchName) {
+    baseBranchName = githubRepo.default_branch;
   }
 
   clonePath = path.join(userHome, `/.github-spellcheck/${repoUser}/${repoName}`);
