@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [5.0.0] 2018-05-23
 ### Changed
 - Remove Nodegit dependency.
 - Default to the given repo's default branch as the branch to base changes off of, instead of always using `master`.
@@ -153,7 +154,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.3...v4.0.0
 [3.0.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...v3.0.3
