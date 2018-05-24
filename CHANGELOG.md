@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [4.1.0] - 2018-05-23
 ### Added
 - Documentation spellchecking in CI via [Spellchecker CLI](https://github.com/tbroadley/spellchecker-cli).
 
@@ -147,7 +149,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.3...v4.0.0
 [3.0.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.1...v3.0.2
