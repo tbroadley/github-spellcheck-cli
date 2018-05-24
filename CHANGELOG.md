@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Always fork the given repo, since the GitHub API will return the existing fork if one has already been created.
 - Use Git commands instead of Nodegit.
 
+### Fixed
+- Use a synchronous spellchecking method instead of an asynchronous one, to avoid spurious spelling mistakes returned by the asynchronous one.
+
 ## [4.0.0] - 2017-12-23
 ### Added
 - A progress bar for the automated spellchecking step.
