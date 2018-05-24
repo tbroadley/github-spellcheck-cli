@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Remove Nodegit dependency.
+- Default to the given repo's default branch as the branch to base changes off of, instead of always using `master`.
 
 ## [4.1.0] - 2018-05-23
 ### Added
