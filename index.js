@@ -153,7 +153,7 @@ async function go() {
   }
 
   if (token) {
-    await fs.writeFile('.env', `GITHUB_TOKEN=${token}`);
+    await fs.writeFile('.env', `GITHUB_TOKEN=${token}\n`);
 
     if (!repository) {
       console.log('Saved your GitHub token.');
