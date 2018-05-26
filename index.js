@@ -16,9 +16,9 @@ const { addByUserSelection } = require('./lib/add-by-user-selection');
 const { git } = require('./lib/git');
 const {
   createPullRequest,
+  getRepo,
   deleteRepo,
   forkRepo,
-  getAllReposForAuthenticatedUser,
 } = require('./lib/github');
 const { cloneWithRetry } = require('./lib/retry');
 const { getMisspellings } = require('./lib/spellcheck');
@@ -171,14 +171,12 @@ async function go() {
   const userAndRepo = `${repoUser}/${repoName}`;
   const extensionRegex = new RegExp(`\\.(${extensions.join('|')})$`);
 
-  console.log('Getting a list of all GitHub repos that you have access to...');
-  const userRepos = await getAllReposForAuthenticatedUser();
+  let githubRepo = await getRepo(repoUser, repoName);
 
-  let githubRepo = _.find(userRepos, { full_name: userAndRepo });
-  if (githubRepo) {
-    console.log(`You already have access to ${userAndRepo}.`);
+  if (githubRepo.permissions.push) {
+    console.log(`You already have push access to ${userAndRepo}.`);
   } else {
-    console.log(`You don't have access to ${userAndRepo}.`);
+    console.log(`You don't have push access to ${userAndRepo}.`);
     console.log(`Forking ${userAndRepo} or retrieving your existing fork...`);
     githubRepo = await forkRepo(repoUser, repoName);
     console.log(`Fork of ${userAndRepo} now exists at ${githubRepo.full_name}.`);

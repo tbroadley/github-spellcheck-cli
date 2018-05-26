@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Shallow clone repositories to spellcheck.
 - Print a newline at the end of the `.env` file.
+- Determine whether the user has access to the given repo much more efficiently.
 
 ## [5.0.0] 2018-05-23
 ### Changed
