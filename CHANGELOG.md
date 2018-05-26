@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Delete a newly-created fork on Ctrl-C interrupt.
 - Allow specifying just the token on the command line. If you run `github-spellcheck -t TOKEN`, the token will be saved and the program will exit.
-- Print a newline at the end of the `.env` file.
 - When accepting or rejecting corrections, display the number of remaining instances of the current misspelling.
+
+### Changed
+- Shallow clone repositories to spellcheck.
+- Print a newline at the end of the `.env` file.
 
 ## [5.0.0] 2018-05-23
 ### Changed
