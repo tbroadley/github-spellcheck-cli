@@ -152,8 +152,10 @@ async function go() {
     process.exit(1);
   }
 
+  const envPath = path.join(userHome, '.github-spellcheck', '.env');
+
   if (token) {
-    await fs.writeFile('.env', `GITHUB_TOKEN=${token}\n`);
+    await fs.writeFile(envPath, `GITHUB_TOKEN=${token}\n`);
 
     if (!repository) {
       console.log('Saved your GitHub token.');
@@ -161,7 +163,7 @@ async function go() {
     }
   }
 
-  dotenv.config();
+  dotenv.config({ path: envPath });
 
   [repoUser, repoName] = await parseRepo(repository).catch((error) => {
     console.error(chalk.red(error));

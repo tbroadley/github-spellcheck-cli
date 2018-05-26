@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Print a newline at the end of the `.env` file.
 - Determine whether the user has access to the given repo much more efficiently.
 
+### Fixed
+- Store GitHub API credentials in `~/.github-spellcheck`, instead of in whatever directory the tool is run in.
+
 ## [5.0.0] 2018-05-23
 ### Changed
 - Remove Nodegit dependency.
