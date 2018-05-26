@@ -12,7 +12,8 @@
     "spellcheck": "spellchecker \"**/*.{md,txt}\" \"!dictionary.txt\" --dictionary dictionary.txt --language en-CA",
     "test": "mocha -C"
   },
-  "author": "",
+  "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
+  "repository": "https://github.com/tbroadley/github-spellcheck-cli",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -28,7 +29,7 @@
     "es6-promisify": "^5.0.0",
     "fs-extra": "^4.0.3",
     "globby": "^7.1.1",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "opn": "^5.1.0",
     "promise-retry": "^1.1.1",
     "prompt-promise": "^1.0.3",
@@ -41,7 +42,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^4.13.1",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
