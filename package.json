@@ -12,7 +12,8 @@
     "spellcheck": "spellchecker \"**/*.{md,txt}\" \"!dictionary.txt\" --dictionary dictionary.txt --language en-CA",
     "test": "mocha -C"
   },
-  "author": "",
+  "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
+  "repository": "https://github.com/tbroadley/github-spellcheck-cli",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
