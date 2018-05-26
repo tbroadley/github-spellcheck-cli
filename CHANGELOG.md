@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Shallow clone repositories to spellcheck.
 - Print a newline at the end of the `.env` file.
 - Determine whether the user has access to the given repo much more efficiently.
+- Remove language mentioning temporary directories.
 
 ### Fixed
 - Store GitHub API credentials in `~/.github-spellcheck`, instead of in whatever directory the tool is run in.
