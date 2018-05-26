@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [6.0.0] - 2018-05-26
 ### Added
 - Delete a newly-created fork on Ctrl-C interrupt.
 - Allow specifying just the token on the command line. If you run `github-spellcheck -t TOKEN`, the token will be saved and the program will exit.
@@ -19,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Store GitHub API credentials in `~/.github-spellcheck`, instead of in whatever directory the tool is run in.
 
-## [5.0.0] 2018-05-23
+## [5.0.0] - 2018-05-23
 ### Changed
 - Remove Nodegit dependency.
 - Default to the given repo's default branch as the branch to base changes off of, instead of always using `master`.
@@ -167,7 +169,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...HEAD
+[5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.3...v4.0.0
