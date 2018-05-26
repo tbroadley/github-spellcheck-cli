@@ -195,7 +195,7 @@ async function go() {
 
   let exists;
   if (isNewFork) {
-    console.log(`Making sure the temporary directory for ${repoUser}/${repoName} doesn't already exist...`);
+    console.log(`Making sure the directory for ${repoUser}/${repoName} doesn't already exist...`);
     await fs.remove(clonePath);
     exists = false;
   } else {
@@ -206,10 +206,10 @@ async function go() {
   const repoFullUrl = `https://${process.env.GITHUB_TOKEN}@github.com/${repoUser}/${repoName}.git`;
 
   if (!exists) {
-    console.log('Creating a temporary directory...');
+    console.log('Creating a directory...');
     await fs.ensureDir(clonePath);
 
-    console.log(`Cloning ${repoUser}/${repoName} into the temporary directory...`);
+    console.log(`Cloning ${repoUser}/${repoName} into the directory...`);
     await cloneWithRetry(repoFullUrl, clonePath);
   }
 
