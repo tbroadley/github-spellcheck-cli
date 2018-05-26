@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Delete a newly-created fork on Ctrl-C interrupt.
+- When accepting or rejecting corrections, display the number of remaining instances of the current misspelling.
 
 ## [5.0.0] 2018-05-23
 ### Changed
