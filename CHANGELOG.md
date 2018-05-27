@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Print the number of spelling mistakes left in the current file and the number of remaining files.
 
 ## [6.0.0] - 2018-05-26
 ### Added
