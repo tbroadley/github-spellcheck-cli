@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Print the number of spelling mistakes left in the current file and the number of remaining files.
 
+### Changed
+- Fetch only the base branch for the PR instead of all branches in the repo.
+
+### Fixed
+- Increase the `stdout` buffer size when running Git commands to make sure that `git ls-files` doesn't overflow it when run on large repositories.
+
 ## [6.0.0] - 2018-05-26
 ### Added
 - Delete a newly-created fork on Ctrl-C interrupt.
@@ -172,7 +178,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The core Github Spellcheck functionality. Hurray!
 
 [Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...HEAD
-[5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
+[6.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v3.0.3...v4.0.0
