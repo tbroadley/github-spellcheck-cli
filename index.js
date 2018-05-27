@@ -222,7 +222,7 @@ async function go() {
   if (!await repoHasRemote('parent')) {
     await git(clonePath, `remote add parent https://github.com/${userAndRepo}`);
   }
-  await git(clonePath, 'fetch parent');
+  await git(clonePath, `fetch parent ${baseBranchName}`);
 
   async function repoHasBranch(name) {
     const [stdout] = await git(clonePath, 'branch');
