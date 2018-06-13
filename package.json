@@ -14,6 +14,10 @@
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tbroadley/spellchecker-cli.git"
+  },
   "dependencies": {
     "chalk": "^2.3.0",
     "command-line-args": "^4.0.7",
