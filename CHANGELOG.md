@@ -6,17 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.1.0] - 2018-06-12
+
 ### Added
 
 - Added a `--no-suggestions` option, which allows users to disable the generation of spelling suggestions when errors are detected.
 
-## [3.0.3] - 2017-04-24
+## [3.0.3] - 2018-04-24
 
 ### Fixed
 
 - Fixed a bug where the spell checking was skipped after 30 found misspell errors, even if they are matched by one of `--ignore` patterns.
 
-## [3.0.2] - 2017-04-14
+## [3.0.2] - 2018-04-14
 
 ### Fixed
 
@@ -56,7 +58,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v3.0.3...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v3.0.4...HEAD
+[3.0.4]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.3...v3.0.4
 [3.0.3]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.2...v3.0.3
 [3.0.2]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.1...v3.0.2
 [3.0.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.0...v3.0.1
