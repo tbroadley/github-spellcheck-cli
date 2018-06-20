@@ -152,7 +152,16 @@ async function go() {
     process.exit(1);
   }
 
-  const envPath = path.join(userHome, '.github-spellcheck', '.env');
+  const dotFolderPath = path.join(userHome, '.github-spellcheck');
+  try {
+    await fs.mkdir(dotFolderPath);
+  } catch (e) {
+    if (e.code !== 'EEXIST') {
+      throw e;
+    }
+  }
+
+  const envPath = path.join(dotFolderPath, '.env');
 
   if (token) {
     await fs.writeFile(envPath, `GITHUB_TOKEN=${token}\n`);
@@ -191,7 +200,7 @@ async function go() {
     baseBranchName = githubRepo.default_branch;
   }
 
-  clonePath = path.join(userHome, `/.github-spellcheck/${repoUser}/${repoName}`);
+  clonePath = path.join(dotFolderPath, repoUser, repoName);
 
   let exists;
   if (isNewFork) {
