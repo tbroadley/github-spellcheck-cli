@@ -191,7 +191,7 @@ async function go() {
     baseBranchName = githubRepo.default_branch;
   }
 
-  clonePath = path.join(userHome, `/.github-spellcheck/${repoUser}/${repoName}`);
+  clonePath = path.join(userHome, '.github-spellcheck', repoUser, repoName);
 
   let exists;
   if (isNewFork) {
