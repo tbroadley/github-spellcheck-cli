@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [7.0.0] - 2018-06-20
 ### Added
 - Print the number of spelling mistakes left in the current file and the number of remaining files.
 
@@ -180,7 +182,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...HEAD
+[7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...v7.0.0
 [6.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.0.0...v4.1.0
