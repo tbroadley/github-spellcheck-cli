@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Increase the `stdout` buffer size when running Git commands to make sure that `git ls-files` doesn't overflow it when run on large repositories.
 - Fix a bug where `github-spellcheck` crashes if the directory `~/.github-spellcheck` doesn't exist.
+- Fix a bug where interrupting the program using Ctrl-C after the creation of a PR would still delete newly-created repos.
 
 ## [6.0.0] - 2018-05-26
 ### Added
