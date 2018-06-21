@@ -27,6 +27,7 @@ const { respondToUserInput } = require('./lib/user-input');
 let isNewFork = false;
 let repoUser;
 let repoName;
+let prCreated = false;
 let clonePath;
 
 function parseRepo(repo) {
@@ -103,7 +104,7 @@ function printUsage() {
 }
 
 async function deleteNewForkAndExit(exitCode) {
-  if (isNewFork && repoUser && repoName) {
+  if (isNewFork && repoUser && repoName && !prCreated) {
     console.log(chalk.red(`Deleting ${repoUser}/${repoName}...`));
     await deleteRepo(repoUser, repoName);
   }
@@ -362,6 +363,7 @@ async function go() {
                 `Fix typo${changeCount === 1 ? '' : 's'}`,
                 'PR created using https://github.com/tbroadley/github-spellcheck-cli.'
               );
+              prCreated = true;
 
               if (quiet) {
                 console.log(`Pull request #${pullRequest.number} created.`);
