@@ -369,7 +369,7 @@ async function go() {
                 console.log(`Pull request #${pullRequest.number} created.`);
               } else {
                 console.log(`Pull request #${pullRequest.number} created. Opening in your browser...`);
-                await opn(pullRequest.html_url);
+                await opn(pullRequest.html_url, { wait: false });
               }
             }
           },
