@@ -5,14 +5,14 @@ ESLint
 Github
 Hurray
 NPM
-Nodegit
+Node it
 Node.js
 PRs
 PascalCase
 README
 README.md
 Whitelist
-backoff
+back off
 bugfixes
 npm
 repo

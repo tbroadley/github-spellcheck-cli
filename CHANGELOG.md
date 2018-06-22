@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [5.0.0] - 2018-05-23
 ### Changed
-- Remove Nodegit dependency.
+- Remove Node it dependency.
 - Default to the given repo's default branch as the branch to base changes off of, instead of always using `master`.
 
 ## [4.1.0] - 2018-05-23
@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Always fork the given repo, since the GitHub API will return the existing fork if one has already been created.
-- Use Git commands instead of Nodegit.
+- Use Git commands instead of Node it.
 
 ### Fixed
 - Use a synchronous spellchecking method instead of an asynchronous one, to avoid spurious spelling mistakes returned by the asynchronous one.
@@ -107,9 +107,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Generated commits now have messages that are pluralized according to the number of changes made and that comply with [Conventional Commits 1.0.0-beta.1](https://conventionalcommits.org/spec/v1.0.0-beta.1.html).
 - The spelling mistake editing prompt now only accepts the exact single-letter command (e.g. `y` but not `yes`).
 - The names of the columns in the spelling mistake editing prompt's help message.
-- Colours for highlighting and deleting changed words.
-- Diffs with spacing changes are highlighted correctly. For example, if "worldrecord" is replaced with "world record", the space inside "world record" will be highlighted as added, instead of the space after it.
-- Create a pull request against the parent repository instead of the source. This only changes the tool's behaviour when the target repo is itself a fork. The PR will now be made against the target repo, rather than against the target repo's parent/grandparent/...
+- Colors for highlighting and deleting changed words.
+- Diffs with spacing changes are highlighted correctly. For example, if "world record" is replaced with "world record", the space inside "world record" will be highlighted as added, instead of the space after it.
+- Create a pull request against the parent repository instead of the source. This only changes the tool's behavior when the target repo is itself a fork. The PR will now be made against the target repo, rather than against the target repo's parent/grandparent/…
 
 ### Removed
 - Local clone deletion when a new fork is deleted.
@@ -130,7 +130,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.1.2] - 2017-12-16
 ### Added
 - A test for `getMisspellings`.
-- Exponential backoff while trying to clone the repository.
+- Exponential back off while trying to clone the repository.
 
 ### Removed
 - One-second gap between forking and cloning the fork.
