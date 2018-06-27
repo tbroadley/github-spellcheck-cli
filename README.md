@@ -26,15 +26,17 @@ $ npm install --global github-spellcheck-cli
 The command is `github-spellcheck`. It takes the following options:
 
 ```
--h, --help                                       Print this usage guide.
--t, --token <token>                              GitHub personal access token. You only need to provide the token when you
-                                                 start using github-spellcheck, and again if you have a new token.
--r, --repository <username/repository or URL>    The repository to spellcheck.
---branch <branch name>                           The name of the branch to commit corrections to.
---base <branch name>                             The name of the branch to create the pull request against.
--e, --extensions <extension> [<extension>] ...   Only spellcheck files with these extensions for spelling mistakes.
---include <glob> ...                             Only spellcheck files that match at least one of these globs.
---exclude <glob> ...                             Do not spellcheck files that match one of these globs.
+  -h, --help                                       Print this usage guide.
+  -t, --token <token>                              GitHub personal access token. You only need to provide the token when you
+                                                   start using github-spellcheck, and again if you have a new token.
+  -r, --repository <username/repository or URL>    The repository to spellcheck.
+  --no-pr                                          Do not automatically create a pull request on the target repository.
+  --branch <branch name>                           The name of the branch to commit corrections to.
+  --base <branch name>                             The name of the branch to create the pull request against.
+  -e, --extensions <extension> [<extension>] ...   Only spellcheck files with these extensions for spelling mistakes.
+  --include <glob> ...                             Only spellcheck files that match at least one of these globs.
+  --exclude <glob> ...                             Do not spellcheck files that match one of these globs.
+  -q, --quiet                                      Do not open CONTRIBUTING.md or the new pull request in a browser.
 ```
 
 ## Applying corrections
