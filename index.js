@@ -332,7 +332,7 @@ async function go() {
     await respondToUserInput(
       createPR
         ? 'Are you sure you want to create a pull request with these corrections?'
-        : `Are you sure you want to push these changes to ${userAndRepo}?`,
+        : `Are you sure you want to push these changes to ${repoUser}/${repoName}?`,
       [
         {
           command: 'y',
