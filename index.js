@@ -378,7 +378,7 @@ async function go() {
           command: 'n',
           meaning: 'no',
           description: 'Exit the program.',
-          responseFunction: _.noop,
+          responseFunction: () => deleteNewForkAndExit(0),
         },
       ]
     );
