@@ -67,7 +67,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v3.0.1...4.0
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v3.0.4...HEAD
+[3.0.4]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.3...v3.0.4
+[3.0.3]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.2...v3.0.3
+[3.0.2]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.1...v3.0.2
 [3.0.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.0...v3.0.1
 [3.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v2.0.0...v3.0.0
 [2.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v1.0.1...v2.0.0
