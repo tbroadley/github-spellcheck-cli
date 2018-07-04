@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [7.1.0] - 2018-07-04
 ### Added
 - [Delete a newly-created fork](https://github.com/tbroadley/github-spellcheck-cli/pull/84) if a PR is not created or the changes are not pushed to the target repository, by [@madhavarshney](https://github.com/madhavarshney).
 - Option to [disable automatic PR creation](https://github.com/tbroadley/github-spellcheck-cli/pull/83) by [@madhavarshney](https://github.com/madhavarshney).
@@ -185,7 +187,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.0...HEAD
+[7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...v7.1.0
 [7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...v7.0.0
 [6.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...v5.0.0
