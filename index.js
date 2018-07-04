@@ -22,9 +22,9 @@ const { toDictionary } = require('./lib/to-dictionary');
     quiet,
   } = parseArgs();
 
-  const personalDictionary = personalDictionaryPath ?
-    await fs.readFile(personalDictionaryPath) :
-    '';
+  const personalDictionary = personalDictionaryPath
+    ? await fs.readFile(personalDictionaryPath)
+    : '';
   const spellchecker = new Spellchecker({
     language,
     personalDictionary,
