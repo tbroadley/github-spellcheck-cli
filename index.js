@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const glob = require('globby');
 const report = require('vfile-reporter');
 
+const { buildPersonalDictionary } = require('./lib/build-personal-dictionary');
 const { parseArgs } = require('./lib/command-line');
 const { hasMessages } = require('./lib/has-messages');
 const { printError } = require('./lib/print-error');
@@ -14,7 +15,7 @@ const { toDictionary } = require('./lib/to-dictionary');
   const {
     files,
     language,
-    personalDictionaryPath,
+    personalDictionaryPaths,
     generateDictionary,
     ignoreRegexes,
     suggestions,
@@ -22,9 +23,7 @@ const { toDictionary } = require('./lib/to-dictionary');
     quiet,
   } = parseArgs();
 
-  const personalDictionary = personalDictionaryPath
-    ? await fs.readFile(personalDictionaryPath)
-    : '';
+  const personalDictionary = await buildPersonalDictionary(personalDictionaryPaths);
   const spellchecker = new Spellchecker({
     language,
     personalDictionary,
@@ -33,8 +32,8 @@ const { toDictionary } = require('./lib/to-dictionary');
     plugins,
   });
 
-  if (personalDictionaryPath) {
-    files.push(`!${personalDictionaryPath}`);
+  if (personalDictionaryPaths.length > 0) {
+    files.push(...personalDictionaryPaths.map(filePath => `!${filePath}`));
   }
 
   const filesFromGlobs = await glob(files, { gitignore: true });

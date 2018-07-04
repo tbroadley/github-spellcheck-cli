@@ -15,15 +15,19 @@ const {
 
 chai.should();
 
-function runWithArguments(args) {
+function runCommand(command) {
   return new Promise((resolve) => {
-    exec(`node index.js ${args}`, (error, stdout, stderr) => {
+    exec(command, (error, stdout, stderr) => {
       if (error) {
         resolve(merge({}, error, { stdout, stderr }));
       }
       resolve({ stdout, stderr });
     });
   });
+}
+
+function runWithArguments(args) {
+  return runCommand(`node index.js ${args}`);
 }
 
 const notSpell = plugin => plugin !== 'spell';
@@ -146,13 +150,13 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
   });
 
   it('ignores words in the provided dictionary file', async () => {
-    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionary test/fixtures/dictionary.txt');
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/one.txt');
     result.should.not.have.property('code');
   });
 
   it('does not spellcheck the provided dictionary file', async () => {
-    const { stdout } = await runWithArguments('-f test/fixtures/*.txt -d test/fixtures/dictionary.txt');
-    stdout.should.not.contain('test/fixtures/dictionary.txt: no issues found');
+    const { stdout } = await runWithArguments('-f test/fixtures/*.txt -d test/fixtures/dictionaries/one.txt');
+    stdout.should.not.contain('test/fixtures/dictionaries/one.txt');
   });
 
   it('spellchecks all files in a glob', async () => {
@@ -258,6 +262,43 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
   it('does not generate a personal dictionary if no spelling mistakes are found', async () => {
     const { stdout } = await runWithArguments('test/fixtures/repeated-words.md --plugins spell repeated-words');
     stdout.should.not.include('Personal dictionary written to dictionary.txt.');
+  });
+
+  it('supports multiple dictionaries', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect-2.txt --dictionaries test/fixtures/dictionaries/one.txt test/fixtures/dictionaries/two.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('supports programmatic dictionaries', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/programmatic.js');
+    result.should.not.have.property('code');
+  });
+
+  it('loads programmatic dictionaries relative to the current working directory', async () => {
+    const result = await runCommand('cd test && node ../index.js fixtures/incorrect.txt --dictionaries fixtures/dictionaries/programmatic.js');
+    result.should.not.have.property('code');
+  });
+
+  it('supports specifying both non-programmatic and programmatic dictionaries', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect-2.txt --dictionaries test/fixtures/dictionaries/programmatic.js test/fixtures/dictionaries/two.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('treats dictionary entries as regexes', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/regex.txt');
+    result.should.not.have.property('code');
+  });
+
+  it('treats dictionary entries as if they were wrapped in ^ and $', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/regex-no-match.txt');
+    code.should.equal(1);
+    stdout.should.include('`Thisisnotaword` is misspelt');
+    stdout.should.include('`preprocessed` is misspelt');
+  });
+
+  it('supports programmatic dictionaries that pass mixed regexes and strings', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect.txt --dictionaries test/fixtures/dictionaries/regex.js');
+    result.should.not.have.property('code');
   });
 
   it('ignores spelling mistakes that match the given regexes', async () => {

@@ -39,7 +39,7 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
 -l, --language <language>                The language of the files. The default language is en-US. The following
                                          languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
--d, --dictionary <file>                  A file to use as a personal dictionary.
+-d, --dictionaries <file> <file>...      Files to combine into a personal dictionary.
 --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                          dictionary.txt.
 -i, --ignore <regex> <regex>...          Spelling mistakes that match any of these regexes will be ignored.
@@ -81,9 +81,18 @@ When using the `--plugins` command-line option, make sure to remove `retext-` fr
 $ spellchecker --files <glob> --plugins spell indefinite-article
 ```
 
-### Personal dictionary
+### Personal dictionaries
 
-The personal dictionary file should be in [`nspell` personal dictionary format](https://github.com/wooorm/nspell#personal-dictionary-documents).
+Each line in a personal dictionary is treated as a regular expression. You could use this feature to ignore spelling mistakes with a common form but too many possible instances to be included in a personal dictionary. For instance, you could use the regular expression `[0-9a-f]{7}` to match Git short SHAs.
+
+Each regex will be wrapped with `^` and `$` before mistakes are tested against it. For example, if "ize" is included in the dictionary, "optimize" and other words that contain "ize" will not be ignored. To match "optimize", you could use the regular expression `[A-Za-z]+ize`.
+
+A personal dictionary should either be a plaintext file or a JavaScript file with the extension `.js` that exports an array of strings or regular expressions. For example, the following is a valid dictionary file:
+
+```js
+// dictionary.js
+module.exports = ['foo', /^bazz?/];
+```
 
 ### Generating a personal dictionary
 
