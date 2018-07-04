@@ -69,6 +69,9 @@ const optionDefinitions = [
     name: 'repository', alias: 'r', typeLabel: '<username/repository or URL>', description: 'The repository to spellcheck.',
   },
   {
+    name: 'no-pr', type: Boolean, description: 'Do not automatically create a pull request on the target repository.',
+  },
+  {
     name: 'branch', defaultValue: 'fix-typos', typeLabel: '<branch name>', description: 'The name of the branch to commit corrections to.',
   },
   {
@@ -133,6 +136,7 @@ async function go() {
     help,
     token,
     repository,
+    'no-pr': noPR,
     branch: branchName,
     extensions,
     include,
@@ -323,13 +327,19 @@ async function go() {
     console.log(finalDiff);
     console.log();
 
+    const createPR = !(noPR || await findGithubFile('PULL_REQUEST_TEMPLATE'));
+
     await respondToUserInput(
-      'Are you sure you want to create a pull request with these corrections?',
+      createPR
+        ? 'Are you sure you want to create a pull request with these corrections?'
+        : `Are you sure you want to push these changes to ${repoUser}/${repoName}?`,
       [
         {
           command: 'y',
           meaning: 'yes',
-          description: 'Create a pull request with the specified changes.',
+          description: createPR
+            ? 'Create a pull request with the specified changes.'
+            : `Push the changes${!quiet ? ' and open the pull request creation page' : ''}.`,
           responseFunction: async () => {
             console.log(`Creating a new branch "${branchName}"...`);
             await git(clonePath, `branch ${branchName} ${commit}`);
@@ -349,7 +359,8 @@ async function go() {
             console.log('Pushing to remote "origin"...');
             await git(clonePath, `push ${repoFullUrl} refs/heads/${branchName}`);
 
-            if (await findGithubFile('PULL_REQUEST_TEMPLATE') && !quiet) {
+            if (!createPR) {
+              if (quiet) return;
               console.log('Opening the pull request creation page...');
               await opn(`https://github.com/${userAndRepo}/compare/${baseBranchName}...${repoUser}:${branchName}`);
             } else {

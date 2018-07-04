@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - [Delete a newly-created fork](https://github.com/tbroadley/github-spellcheck-cli/pull/84) if a PR is not created or the changes are not pushed to the target repository, by [@madhavarshney](https://github.com/madhavarshney).
+- Option to [disable automatic PR creation](https://github.com/tbroadley/github-spellcheck-cli/pull/83) by [@madhavarshney](https://github.com/madhavarshney).
 
 ## [7.0.0] - 2018-06-20
 ### Added
