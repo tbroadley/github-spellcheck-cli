@@ -31,6 +31,7 @@
     "globby": "^8.0.1",
     "lodash": "^4.17.10",
     "remark": "^9.0.0",
+    "remark-frontmatter": "^1.2.0",
     "remark-gemoji-to-emoji": "^1.1.0",
     "remark-retext": "^3.1.0",
     "retext": "^5.0.0",
