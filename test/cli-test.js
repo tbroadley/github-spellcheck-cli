@@ -259,6 +259,17 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.should.not.have.property('code');
   });
 
+  it('applies retext-frontmatter when it is specified', async () => {
+    const result = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p frontmatter');
+    result.should.not.have.property('code');
+  });
+
+  it('checks only the given keys in the frontmatter', async () => {
+    const { code, stdout, stderr } = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p spell frontmatter --frontmatter-keys contributors');
+    code.should.equal(1);
+    stdout.should.include('`tbroadley` is misspelt');
+  });
+
   it('does not generate a personal dictionary if no spelling mistakes are found', async () => {
     const { stdout } = await runWithArguments('test/fixtures/repeated-words.md --plugins spell repeated-words');
     stdout.should.not.include('Personal dictionary written to dictionary.txt.');
