@@ -265,7 +265,7 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
   });
 
   it('checks only the given keys in the frontmatter', async () => {
-    const { code, stdout, stderr } = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p spell frontmatter --frontmatter-keys contributors');
+    const { code, stdout } = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p spell frontmatter --frontmatter-keys contributors');
     code.should.equal(1);
     stdout.should.include('`tbroadley` is misspelt');
   });
