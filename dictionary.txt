@@ -1,8 +1,10 @@
 CLI
 Changelog
+Frontmatter
 Gemoji
 NPM
 SHAs
+frontmatter
 npm
 plaintext
 pre-commit
