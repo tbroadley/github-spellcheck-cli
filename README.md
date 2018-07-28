@@ -42,14 +42,17 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 -d, --dictionaries <file> <file>...      Files to combine into a personal dictionary.
 --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                          dictionary.txt.
--i, --ignore <regex> <regex>...          Spelling mistakes that match any of these regexes will be ignored.
+-i, --ignore <regex> <regex>...          Spelling mistakes that match any of these regexes (after being wrapped with ^
+                                         and $) will be ignored.
 -p, --plugins <name> <name>...           A list of retext plugins to use. The default is "spell indefinite-article
                                          repeated-words syntax-mentions syntax-urls". The following plugins are
                                          supported: spell, indefinite-article, repeated-words, syntax-mentions,
-                                         syntax-urls.
+                                         syntax-urls, frontmatter.
 --no-suggestions                         Do not print suggested replacements for misspelled words. This option will
                                          improve Spellchecker's runtime when many errors are detected.
 -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
+--frontmatter-keys <key> <key>...        A list of frontmatter keys whose values should be spellchecked. By default,
+                                         no values are spellchecked. Only valid when the `frontmatter` plugin is used.
 -h, --help                               Print this help screen.
 ```
 
@@ -75,7 +78,11 @@ The following `retext` plugins are supported:
 - [`retext-syntax-mentions`](https://github.com/retextjs/retext-syntax-mentions): ignore GitHub mentions (_e.g._ @tbroadley) when spellchecking
 - [`retext-syntax-urls`](https://github.com/retextjs/retext-syntax-urls): ignore URL-like values (_e.g._ `README.md`, `https://example.com`) when spellchecking
 
-When using the `--plugins` command-line option, make sure to remove `retext-` from the beginning of the plugin name. For example, to use only `retext-spell` and `retext-indefinite-article`, run:
+The following `remark` plugins are supported:
+
+- [`remark-frontmatter`](https://github.com/remarkjs/remark-frontmatter): parse frontmatter for spellchecking (see [Frontmatter](#frontmatter))
+
+When using the `--plugins` command-line option, make sure to remove `retext-` or `remark-` from the beginning of the plugin name. For example, to use only `retext-spell` and `retext-indefinite-article`, run:
 
 ```
 $ spellchecker --files <glob> --plugins spell indefinite-article
@@ -116,6 +123,10 @@ Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files wit
 
 - Ignores `inline code` and tables
 - Transforms [Gemoji](https://github.com/wooorm/gemoji) into Unicode emoji, so that emoji names like `:octocat:` aren't spellchecked
+
+### Frontmatter
+
+Spellchecker CLI can parse Markdown frontmatter when the `frontmatter` plugin is used. The `--frontmatter-keys` option can be used to specify a list of top-level keys to extract from the frontmatter. Other top-level keys will be ignored. This is useful for spellchecking only certain parts of the frontmatter.
 
 ## Development
 

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Add support for programmatic dictionaries.
+- Add support for parsing and spellchecking frontmatter with the `frontmatter` plugin and `--frontmatter-keys` command-line option.
 
 ### Changed
 
