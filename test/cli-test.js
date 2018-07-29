@@ -259,11 +259,6 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.should.not.have.property('code');
   });
 
-  it('applies retext-frontmatter when it is specified', async () => {
-    const result = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p frontmatter');
-    result.should.not.have.property('code');
-  });
-
   it('ignores the frontmatter if no keys are given', async () => {
     const result = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p spell frontmatter');
     result.should.not.have.property('code');
