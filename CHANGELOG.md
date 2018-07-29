@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.0.0] - 2018-07-29
+
 ### Added
 
 - Add support for programmatic dictionaries.
@@ -68,7 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.0.0...HEAD
+[4.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.1.0...v4.0.0
 [3.1.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.3...v3.1.0
 [3.0.3]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.2...v3.0.3
 [3.0.2]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.1...v3.0.2
