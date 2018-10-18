@@ -188,7 +188,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The core Github Spellcheck functionality. Hurray!
 
 [Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.0...HEAD
-[7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...v7.1.0
+[7.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...v7.1.0
 [7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...v7.0.0
 [6.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v4.1.0...v5.0.0
