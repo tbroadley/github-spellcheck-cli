@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [7.1.1] - 2018-10-19
 ### Fixed
 - Attempt to connect to repository count is now accurate to the last retry [@adelsmee](https://github.com/adelsmee).
 
@@ -189,7 +191,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.0...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.1...HEAD
+[7.1.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.0...v7.1.1
 [7.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...v7.1.0
 [7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...v7.0.0
 [6.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v5.0.0...v6.0.0
