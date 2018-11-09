@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix spelling errors appearing on Unicode emoji variation selectors by removing these characters before spellchecking.
+
 ## [4.0.0] - 2018-07-29
 
 ### Added

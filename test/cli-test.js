@@ -365,4 +365,9 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     stdout.should.include('`preprocessed` is misspelt');
     stdout.should.not.include('`preprocessed` is misspelt; did you mean `reprocessed`?');
   });
+
+  it('does not flag Unicode emoji variation selectors as spelling errors', async () => {
+    const result = await runWithArguments('test/fixtures/emoji.txt');
+    result.should.not.have.property('code');
+  });
 });
