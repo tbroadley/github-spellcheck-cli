@@ -21,5 +21,4 @@ repo's
 whitelist
 madhavarshney
 adelsmee
-️smittey
-octokit
+️
