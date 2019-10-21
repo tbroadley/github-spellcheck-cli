@@ -1,6 +1,6 @@
 {
   "name": "github-spellcheck-cli",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -19,7 +19,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@octokit/rest": "^15.7.0",
+    "@octokit/rest": "^16.33.1",
     "chalk": "^2.3.0",
     "cli-progress": "^1.6.1",
     "command-line-args": "^4.0.7",
