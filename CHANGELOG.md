@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [7.1.2] - 2019-10-21
 ### Changed
-- Upgraded to latest version of @octokit/rest due to deprication warnings for the 'fork' functionality. [@smitty](https://github.com/smittey)
+- Upgraded to latest version of `@octokit/rest` due to deprecation warnings for the fork functionality [@smittey](https://github.com/smittey).
 
 ## [7.1.1] - 2018-10-19
 ### Fixed

@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint \"index.js\" \"{lib,test}/*.js\"",
     "lint-fix": "eslint \"index.js\" \"{lib,test}/*.js\" --fix",
-    "spellcheck": "spellchecker \"**/*.{md,txt}\" \"!dictionary.txt\" --dictionary dictionary.txt --language en-CA",
+    "spellcheck": "spellchecker \"**/*.{md,txt}\" \"!dictionary.txt\" --dictionaries dictionary.txt --language en-CA",
     "test": "mocha -C"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
@@ -47,6 +47,6 @@
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
     "mockery": "^2.1.0",
-    "spellchecker-cli": "^1.0.1"
+    "spellchecker-cli": "^4.0.1"
   }
 }
