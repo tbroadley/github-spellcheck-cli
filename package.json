@@ -1,6 +1,6 @@
 {
   "name": "github-spellcheck-cli",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint \"index.js\" \"{lib,test}/*.js\"",
     "lint-fix": "eslint \"index.js\" \"{lib,test}/*.js\" --fix",
-    "spellcheck": "spellchecker \"**/*.{md,txt}\" \"!dictionary.txt\" --dictionary dictionary.txt --language en-CA",
+    "spellcheck": "spellchecker \"**/*.{md,txt}\" \"!dictionary.txt\" --dictionaries dictionary.txt --language en-CA",
     "test": "mocha -C"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
@@ -19,7 +19,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@octokit/rest": "^15.7.0",
+    "@octokit/rest": "^16.33.1",
     "chalk": "^2.3.0",
     "cli-progress": "^1.6.1",
     "command-line-args": "^4.0.7",
@@ -47,6 +47,6 @@
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^4.0.1",
     "mockery": "^2.1.0",
-    "spellchecker-cli": "^1.0.1"
+    "spellchecker-cli": "^4.0.1"
   }
 }
