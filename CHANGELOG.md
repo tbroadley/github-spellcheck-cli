@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.0.2] - 2020-01-15
+
+### Fixed
+
+- Upgraded several packages that contained security vulnerabilities
+
 ## [4.0.1] - 2018-11-09
 
 ### Fixed
@@ -76,7 +82,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.0.1...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.0.2...HEAD
+[4.0.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.0.1...v4.0.2
 [4.0.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.0.0...v4.0.1
 [4.0.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.1.0...v4.0.0
 [3.1.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v3.0.3...v3.1.0
