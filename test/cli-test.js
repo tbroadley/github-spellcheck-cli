@@ -327,6 +327,11 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.should.not.have.property('code');
   });
 
+  it('supports programmatic dictionaries that contain case-insensitive regexes', async () => {
+    const result = await runWithArguments('test/fixtures/incorrect-case-insensitive.txt --dictionaries test/fixtures/dictionaries/regex.js');
+    result.should.not.have.property('code');
+  });
+
   it('ignores spelling mistakes that match the given regexes', async () => {
     const result = await runWithArguments('test/fixtures/incorrect.txt --ignore "Thisisnot.*" "(pre)?processed"');
     result.should.not.have.property('code');
