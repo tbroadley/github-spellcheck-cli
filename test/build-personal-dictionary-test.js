@@ -27,6 +27,7 @@ describe('buildPersonalDictionary', () => {
     (await buildPersonalDictionary(['test/fixtures/dictionaries/regex.js'])).should.deep.equal([
       /^Thisisnotaword$/,
       /^(pre)?processed$/,
+      /^canadaa$/i,
     ]);
   });
 
@@ -39,6 +40,7 @@ describe('buildPersonalDictionary', () => {
       /^preprocessed$/,
       /^Thisisnotaword$/,
       /^(pre)?processed$/,
+      /^canadaa$/i
     ]);
   });
 });
