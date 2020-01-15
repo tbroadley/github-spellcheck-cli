@@ -28,7 +28,7 @@
     "dictionary-en-us": "^2.0.0",
     "dictionary-en-za": "^2.0.0",
     "fs-extra": "^6.0.1",
-    "globby": "^8.0.1",
+    "globby": "^8.0.2",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
     "remark": "^9.0.0",
