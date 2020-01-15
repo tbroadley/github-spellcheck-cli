@@ -40,7 +40,7 @@ describe('buildPersonalDictionary', () => {
       /^preprocessed$/,
       /^Thisisnotaword$/,
       /^(pre)?processed$/,
-      /^canadaa$/i
+      /^canadaa$/i,
     ]);
   });
 });
