@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [7.1.2] - 2019-10-21
+### Changed
+- Upgraded to latest version of `@octokit/rest` due to deprecation warnings for the fork functionality [@smittey](https://github.com/smittey).
+
 ## [7.1.1] - 2018-10-19
 ### Fixed
 - Attempt to connect to repository count is now accurate to the last retry [@adelsmee](https://github.com/adelsmee).
