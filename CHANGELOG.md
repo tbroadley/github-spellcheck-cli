@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added functionality to output JSON and JUnit reports, for better integration with automation and CI/CD tools.
+
 ## [4.0.2] - 2020-01-15
 
 ### Fixed
