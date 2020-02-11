@@ -10,6 +10,7 @@ const { hasMessages } = require('./lib/has-messages');
 const { printError } = require('./lib/print-error');
 const { Spellchecker } = require('./lib/spellchecker');
 const { toDictionary } = require('./lib/to-dictionary');
+const { generateReports } = require('./lib/report-generator');
 
 (async () => {
   const {
@@ -20,6 +21,7 @@ const { toDictionary } = require('./lib/to-dictionary');
     ignoreRegexes,
     suggestions,
     plugins,
+    reports,
     quiet,
   } = parseArgs();
 
@@ -45,6 +47,10 @@ const { toDictionary } = require('./lib/to-dictionary');
 
   console.log();
   console.log(report(vfiles, { quiet }));
+
+  if (reports.length > 0) {
+    generateReports(reports, vfiles);
+  }
 
   if (hasMessages(vfiles)) {
     if (generateDictionary && hasMessages(vfiles, message => message.source === 'retext-spell')) {

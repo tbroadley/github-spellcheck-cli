@@ -53,6 +53,8 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 -q, --quiet                              Do not output anything for files that contain no spelling mistakes.
 --frontmatter-keys <key> <key>...        A list of frontmatter keys whose values should be spellchecked. By default,
                                          no values are spellchecked. Only valid when the `frontmatter` plugin is used.
+--reports <file> <file>...               A list of report files to generate. The type of report is based on the
+                                         extension of the file. (Supported: .junit.xml and .json)
 -h, --help                               Print this help screen.
 ```
 
@@ -127,6 +129,19 @@ Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files wit
 ### Frontmatter
 
 Spellchecker CLI can parse Markdown frontmatter when the `frontmatter` plugin is used. The `--frontmatter-keys` option can be used to specify a list of top-level keys to extract from the frontmatter. Other top-level keys will be ignored. This is useful for spellchecking only certain parts of the frontmatter.
+
+### Reports
+
+Reports can be generated showing all the issues found in a way that can be read by automation tools or CI/CD systems.
+
+For example, Jenkins and Gitlab CI/CD use JUnit reports, and this allows the creation of those reports, so that the output may be read in the User Interface of those tools. This allows for proper CI/CD integration before deploying static site documentation.
+
+The report type is determined by how the file ends. If the extension ends with `.json` for example, then it will generate a JSON report.
+
+List of Report types:
+
+- JSON: ending in `.json`
+- JUnit: ending in `junit.xml` (Note, the whole file name may be `junit.xml` as well)
 
 ## Development
 
