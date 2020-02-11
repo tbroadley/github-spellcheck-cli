@@ -12,3 +12,6 @@ pre-push
 preprocessing
 regexes
 retext
+Gitlab
+JSON
+JUnit
