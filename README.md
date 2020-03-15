@@ -130,7 +130,7 @@ Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files wit
 
 Spellchecker CLI can parse Markdown frontmatter when the `frontmatter` plugin is used. The `--frontmatter-keys` option can be used to specify a list of top-level keys to extract from the frontmatter. Other top-level keys will be ignored. This is useful for spellchecking only certain parts of the frontmatter.
 
-### Reports
+### Reports
 
 Reports can be generated showing all the issues found in a way that can be read by automation tools or CI/CD systems.
 
