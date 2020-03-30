@@ -122,7 +122,7 @@ In this case, only the literal word "ize" will be ignored, not words that contai
 
 ### Gitignore integration
 
-By default `spellchecker-cli` does not spell-check files that are ignored by `.gitignore` files. This decreases the amount of files that need to be processed overall, but occasionally this is desired behavior. To disable this behavior, include the `--no-ignore` flag.
+By default `spellchecker-cli` does not spell-check files that are ignored by `.gitignore` files. This decreases the amount of files that need to be processed overall, but occasionally this is undesired. To disable this behavior, include the `--no-ignore` flag.
 
 ## Markdown
 
