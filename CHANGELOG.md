@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [4.1.1] - 2020-03-15
 
+### Added
+
+- Added flag to allow spellchecking of files that are ignored by git.
+
 ### Fixed
 
 - Upgraded packages that contained security vulnerabilities.
