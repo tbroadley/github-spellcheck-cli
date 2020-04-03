@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.2.0] - 2020-04-02
+
 ### Added
 
 - Added flag to allow spellchecking of files that are ignored by git.
@@ -98,7 +100,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.1.1...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.2.0...HEAD
+[4.2.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.1.1...v4.2.0
 [4.1.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.1.0...v4.1.1
 [4.1.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.0.2...v4.1.0
 [4.0.2]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.0.1...v4.0.2
