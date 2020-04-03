@@ -42,6 +42,7 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 -d, --dictionaries <file> <file>...      Files to combine into a personal dictionary.
 --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                          dictionary.txt.
+--no-gitignore                           Don't respect ignore files (.gitignore, .ignore, etc.).
 -i, --ignore <regex> <regex>...          Spelling mistakes that match any of these regexes (after being wrapped with ^
                                          and $) will be ignored.
 -p, --plugins <name> <name>...           A list of retext plugins to use. The default is "spell indefinite-article
@@ -118,6 +119,10 @@ spellchecker --files README.md --ignore "ize"
 ```
 
 In this case, only the literal word "ize" will be ignored, not words that contain it, like "optimize". To match optimize, you could use the regular expression `[A-Za-z]+ize`.
+
+### Gitignore integration
+
+By default `spellchecker-cli` does not spell-check files that are ignored by `.gitignore` files. This decreases the amount of files that need to be processed overall, but occasionally this is undesired. To disable this behavior, include the `--no-ignore` flag.
 
 ## Markdown
 

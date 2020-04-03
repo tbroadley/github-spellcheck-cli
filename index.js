@@ -18,6 +18,7 @@ const { generateReports } = require('./lib/report-generator');
     language,
     personalDictionaryPaths,
     generateDictionary,
+    noGitignore,
     ignoreRegexes,
     suggestions,
     plugins,
@@ -38,7 +39,7 @@ const { generateReports } = require('./lib/report-generator');
     files.push(...personalDictionaryPaths.map(filePath => `!${filePath}`));
   }
 
-  const filesFromGlobs = await glob(files, { gitignore: true });
+  const filesFromGlobs = await glob(files, { gitignore: !noGitignore });
 
   console.log();
   console.log(`Spellchecking ${filesFromGlobs.length} file${filesFromGlobs.length === 1 ? '' : 's'}...`);

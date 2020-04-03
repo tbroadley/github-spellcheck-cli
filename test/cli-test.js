@@ -375,4 +375,21 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     const result = await runWithArguments('test/fixtures/emoji.txt');
     result.should.not.have.property('code');
   });
+
+  it('exits with an error when run on a file that is included in the .gitignore and the --no-gitignore flag is passed', async () => {
+    const createFileResult = await runCommand('echo "This file contians a misspelled word." > test/fixtures/gitignored-file.txt');
+    createFileResult.should.not.have.property('code');
+
+    const { code, stdout } = await runWithArguments('--no-gitignore --files test/fixtures/gitignored-file.txt');
+    code.should.equal(1);
+    stdout.should.include('`contians` is misspelt');
+  });
+
+  it('exits with no error when run on a file that is included in the .gitignore', async () => {
+    const createFileResult = await runCommand('echo "This file contians a misspelled word." > test/fixtures/gitignored-file.txt');
+    createFileResult.should.not.have.property('code');
+
+    const result = await runWithArguments('--files test/fixtures/gitignored-file.txt');
+    result.should.not.have.property('code');
+  });
 });
