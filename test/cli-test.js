@@ -264,6 +264,11 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     result.should.not.have.property('code');
   });
 
+  it('ignores the frontmatter if no keys are given (toml)', async () => {
+    const result = await runWithArguments('test/fixtures/frontmatter-incorrect-toml.md -p spell frontmatter');
+    result.should.not.have.property('code');
+  });
+
   it('checks only the given keys in the frontmatter (1)', async () => {
     const { code, stdout } = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p spell frontmatter --frontmatter-keys contributors');
     code.should.equal(1);
@@ -280,6 +285,27 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('checks only the given keys in the frontmatter (3)', async () => {
     const { code, stdout } = await runWithArguments('test/fixtures/frontmatter-incorrect.md -p spell frontmatter --frontmatter-keys title contributors');
+    code.should.equal(1);
+    stdout.should.include('`documnet` is misspelt');
+    stdout.should.include('`tbroadley` is misspelt');
+  });
+
+  it('checks only the given keys in the frontmatter (toml) (1)', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/frontmatter-incorrect-toml.md -p spell frontmatter --frontmatter-keys contributors');
+    code.should.equal(1);
+    stdout.should.include('`tbroadley` is misspelt');
+    stdout.should.not.include('`documnet` is misspelt');
+  });
+
+  it('checks only the given keys in the frontmatter (toml) (2)', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/frontmatter-incorrect-toml.md -p spell frontmatter --frontmatter-keys title');
+    code.should.equal(1);
+    stdout.should.include('`documnet` is misspelt');
+    stdout.should.not.include('`tbroadley` is misspelt');
+  });
+
+  it('checks only the given keys in the frontmatter (toml) (3)', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/frontmatter-incorrect-toml.md -p spell frontmatter --frontmatter-keys title contributors');
     code.should.equal(1);
     stdout.should.include('`documnet` is misspelt');
     stdout.should.include('`tbroadley` is misspelt');
