@@ -133,7 +133,7 @@ Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files wit
 
 ### Frontmatter
 
-Spellchecker CLI can parse Markdown frontmatter when the `frontmatter` plugin is used. The `--frontmatter-keys` option can be used to specify a list of top-level keys to extract from the frontmatter. Other top-level keys will be ignored. This is useful for spellchecking only certain parts of the frontmatter.
+Spellchecker CLI can parse Markdown frontmatter when the `frontmatter` plugin is used. The `--frontmatter-keys` option can be used to specify a list of top-level keys to extract from the frontmatter. Other top-level keys will be ignored. This is useful for spellchecking only certain parts of the frontmatter. Both YAML and TOML formats are supported using the `frontmatter` plugin, so the Markdown files you are checking may have a mix of files that use either.
 
 ### Reports
 

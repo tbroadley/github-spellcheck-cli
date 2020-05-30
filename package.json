@@ -42,6 +42,7 @@
     "retext-spell": "^2.4.1",
     "retext-syntax-mentions": "^1.1.6",
     "retext-syntax-urls": "^1.0.2",
+    "toml": "^3.0.0",
     "unist-util-visit": "^1.4.1",
     "vfile": "^3.0.1",
     "vfile-reporter": "^5.1.2"

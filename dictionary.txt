@@ -16,3 +16,5 @@ Gitlab
 JSON
 JUnit
 Gitignore
+TOML
+YAML
