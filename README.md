@@ -124,6 +124,10 @@ In this case, only the literal word "ize" will be ignored, not words that contai
 
 By default `spellchecker-cli` does not spell-check files that are ignored by `.gitignore` files. This decreases the amount of files that need to be processed overall, but occasionally this is undesired. To disable this behavior, include the `--no-ignore` flag.
 
+### Exclude blocks
+
+If you want to exclude whole blocks in a file from spellchecking, this could be achieved by using the HTML inline comments `<!-- spellchecker-disable -->` and `<!-- spellchecker-enable -->`. Everything between these comments will be removed before proceeding with the spellcheck.
+
 ## Markdown
 
 Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files with the extension `.md` or `.markdown`, ignoring capitalization):

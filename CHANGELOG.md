@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added support for inline HTML comments `spellchecker-enable/spellchecker-disable` to exclude blocks from spellchecking (@xoxys).
+
 ## [4.3.0] - 2020-05-30
 
 ### Added
