@@ -418,4 +418,25 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     const result = await runWithArguments('--files test/fixtures/gitignored-file.txt');
     result.should.not.have.property('code');
   });
+
+  it('ignores spelling mistakes inside exclude comment blocks', async () => {
+    const code = await runWithArguments('test/fixtures/exclude-blocks.md');
+    code.should.not.have.property('code');
+  });
+
+  it('catch spelling mistakes inside incomplete exclude comment blocks', async () => {
+    const { code, stdout } = await runWithArguments('test/fixtures/exclude-blocks-incorrect.md');
+    code.should.equal(1);
+    stdout.should.include('`iinside` is misspelt');
+  });
+
+  it('ignores spelling mistakes inside single-line exclude comments', async () => {
+    const code = await runWithArguments('test/fixtures/exclude-blocks-singleline.md');
+    code.should.not.have.property('code');
+  });
+
+  it('ignores spelling mistakes inside exclude comment blocks with special formatting', async () => {
+    const code = await runWithArguments('test/fixtures/exclude-blocks-formatting.md');
+    code.should.not.have.property('code');
+  });
 });
