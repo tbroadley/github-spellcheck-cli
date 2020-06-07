@@ -124,20 +124,20 @@ In this case, only the literal word "ize" will be ignored, not words that contai
 
 By default `spellchecker-cli` does not spell-check files that are ignored by `.gitignore` files. This decreases the amount of files that need to be processed overall, but occasionally this is undesired. To disable this behavior, include the `--no-ignore` flag.
 
-### Exclude blocks
-
-If you want to exclude whole blocks in a file from spellchecking, this could be achieved by using the HTML inline comments `<!-- spellchecker-disable -->` and `<!-- spellchecker-enable -->`. Everything between these comments will be removed before proceeding with the spellcheck.
-
-## Markdown
+### Markdown
 
 Spellchecker CLI performs some preprocessing on Markdown files (_i.e._ files with the extension `.md` or `.markdown`, ignoring capitalization):
 
 - Ignores `inline code` and tables
 - Transforms [Gemoji](https://github.com/wooorm/gemoji) into Unicode emoji, so that emoji names like `:octocat:` aren't spellchecked
 
-### Frontmatter
+#### Frontmatter
 
 Spellchecker CLI can parse Markdown frontmatter when the `frontmatter` plugin is used. The `--frontmatter-keys` option can be used to specify a list of top-level keys to extract from the frontmatter. Other top-level keys will be ignored. This is useful for spellchecking only certain parts of the frontmatter. Both YAML and TOML formats are supported using the `frontmatter` plugin, so the Markdown files you are checking may have a mix of files that use either.
+
+#### Exclude blocks
+
+If you want to exclude whole blocks in a Markdown file from spellchecking, this could be achieved by using the HTML inline comments `<!-- spellchecker-disable -->` and `<!-- spellchecker-enable -->`. Everything between these comments will be removed before proceeding with the spellcheck.
 
 ### Reports
 
