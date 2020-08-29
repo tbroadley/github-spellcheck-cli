@@ -95,6 +95,8 @@ $ spellchecker --files <glob> --plugins spell indefinite-article
 
 Each line in a personal dictionary is treated as a regular expression. You could use this feature to ignore spelling mistakes with a common form but too many possible instances to be included in a personal dictionary. For instance, you could use the regular expression `[0-9a-f]{7}` to match Git short SHAs.
 
+These regular expressions are case-sensitive. If you want to ignore both the capitalized and uncapitalized version of a word, you should include both versions in the dictionary.
+
 Each regex will be wrapped with `^` and `$` before mistakes are tested against it. For example, if "ize" is included in the dictionary, "optimize" and other words that contain "ize" will not be ignored. To match "optimize", you could use the regular expression `[A-Za-z]+ize`.
 
 A personal dictionary should either be a plaintext file or a JavaScript file with the extension `.js` that exports an array of strings or regular expressions. For example, the following is a valid dictionary file:

@@ -19,3 +19,4 @@ Gitignore
 TOML
 YAML
 2FA
+uncapitalized
