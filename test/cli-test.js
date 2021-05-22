@@ -169,12 +169,18 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('runs in quiet mode when the argument `-q` is passed', async () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt -q');
-    stdout.should.equal('\nSpellchecking 1 file...\n\n\n');
+    stdout.should.equal('');
   });
 
   it('runs in quiet mode when the argument `--quiet` is passed', async () => {
     const { stdout } = await runWithArguments('--files test/fixtures/correct.txt --quiet');
-    stdout.should.equal('\nSpellchecking 1 file...\n\n\n');
+    stdout.should.equal('');
+  });
+
+  it('prints errors in quiet mode', async () => {
+    const { code, stdout } = await runWithArguments('--files test/fixtures/incorrect.txt --quiet');
+    code.should.equal(1);
+    stdout.should.include('`Thisisnotaword` is misspelt');
   });
 
   it('prints the number of files to be spellchecked when passed one file', async () => {
@@ -202,7 +208,7 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('does nothing when passed an empty list of plugins', async () => {
     const { stdout } = await runWithArguments('--files a b c --plugins');
-    stdout.should.equal('\nSpellchecking 0 files...\n\n\n');
+    stdout.should.equal('Spellchecking 0 files...\n');
   });
 
   it('applies all default plugins by default', async () => {

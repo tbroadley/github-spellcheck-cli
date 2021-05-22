@@ -41,13 +41,20 @@ const { generateReports } = require('./lib/report-generator');
 
   const filesFromGlobs = await glob(files, { gitignore: !noGitignore });
 
-  console.log();
-  console.log(`Spellchecking ${filesFromGlobs.length} file${filesFromGlobs.length === 1 ? '' : 's'}...`);
+  if (!quiet) {
+    console.log(`Spellchecking ${filesFromGlobs.length} file${filesFromGlobs.length === 1 ? '' : 's'}...`);
+  }
+
   const checkSpelling = filePath => spellchecker.checkSpelling(filePath);
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
 
-  console.log();
-  console.log(report(vfiles, { quiet }));
+  const results = report(vfiles, { quiet });
+  if (results.length > 0) {
+    if (!quiet) {
+      console.log();
+    }
+    console.log(results);
+  }
 
   if (reports.length > 0) {
     generateReports(reports, vfiles);
