@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Fixed a bug where the tool would print output in quiet mode, even if it found no errors.
+
 ## [4.4.0] - 2020-06-06
 
 ### Added
