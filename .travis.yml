@@ -5,10 +5,3 @@ script: npm run ci
 cache:
   directories:
   - node_modules
-deploy:
-  provider: npm
-  email: buriedunderbooks@hotmail.com
-  on:
-    tags: true
-  api_key:
-    secure: nPXxP8Sd9dlAKg0RBJ8D23ucicZa6RW/V65WrED/k4KKbRnJWLlJFePBTvkd7l0lxL/ITLHw4KnZ1jNbm8XlOQsdxYmP39vhLa0u9bQcJTxtTv51Z+kQuc5rRWuNImFDhNNp64zGz9gKpncmG/jSk2n3wGeqmYm8VXeyMYM160Ki48OHY7l4OrTaAhfIkEXzEi42Lzyfkxx5qYtOFozyRDspz1iAFQhPmptl5vG49wOS616ooouAPi1Qdus65Fsquw2nO59QyyUGnjTe0X9Gwu8AxUb/8yJ3s/o70J2fmUhRSuHqwFzMyuX/+0C68P31JVj3sgKXMygtf3ZWwSyGlvmUAQQ0pGtPrHO3xQHEwZroyF7pmrLG7/L/JmDEOlXKGD9FIPvxsMY4iHblYPL+3r40KxrWQQnH/f5vx1vzWgnMaWmmSniYsWoc/WQuJCiRb0tn5nOONicbsE3IcM8bsFsFnrteKEsndfU6VDNchh2zKC8r7Pkb36V62t9USk1tpa3f7HbrBAuJ/Tkkvw5NDCYSUQ98XQddWIURXRSk0e6q+8eDyuqz/ehJJNiQBL5UvnNzgYnw+vl9mBWuSSQmZ3E0mRRxo7fAbTRBYDyM1oDEY8Rp+JS/VVilBnf2F+Ps1AqYAejdfMikH7Qb31HSc6oTmzTKS6znY0Qt/72hLJU=
