@@ -2,7 +2,7 @@
 
 A command-line tool for spellchecking files, built on top of [`retext`](https://github.com/retextjs/retext) and [`remark`](https://github.com/remarkjs/remark).
 
-[![Build Status](https://travis-ci.org/tbroadley/spellchecker-cli.svg?branch=master)](https://travis-ci.org/tbroadley/spellchecker-cli)
+[![Build Status](https://travis-ci.com/tbroadley/spellchecker-cli.svg?branch=master)](https://travis-ci.com/tbroadley/spellchecker-cli)
 [![npm](https://img.shields.io/npm/v/spellchecker-cli.svg)](https://www.npmjs.com/package/spellchecker-cli)
 
 ## Use Case
