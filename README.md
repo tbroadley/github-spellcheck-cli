@@ -38,7 +38,7 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 ```
 -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
 -l, --language <language>                The language of the files. The default language is en-US. The following
-                                         languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
+                                         languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA, vi.
 -d, --dictionaries <file> <file>...      Files to combine into a personal dictionary.
 --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                          dictionary.txt.
