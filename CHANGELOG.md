@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.5.0] - 2021-06-04
+
 - Add Vietnamese support
+- Use Yarn for package management
 
 ## [4.4.1] - 2021-05-22
 
@@ -121,7 +124,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.4.1...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.5.0...HEAD
+[4.5.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.4.1...v4.5.0
 [4.4.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.4.0...v4.4.1
 [4.4.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.3.0...v4.4.0
 [4.3.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.2.0...v4.3.0
