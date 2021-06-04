@@ -2,6 +2,8 @@ CLI
 Changelog
 Frontmatter
 Gemoji
+yarn
+Yarn
 NPM
 SHAs
 frontmatter
