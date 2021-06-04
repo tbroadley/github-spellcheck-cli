@@ -6,13 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Add Vietnamese support
+
 ## [4.4.1] - 2021-05-22
 
 ### Fixed
 
 - Fixed a bug where the tool would print output in quiet mode, even if it found no errors.
 - Upgraded dependencies.
-- Add Vietnamese support
 
 ## [4.4.0] - 2020-06-06
 
