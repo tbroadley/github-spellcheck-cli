@@ -38,7 +38,7 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
 ```
 -f, --files <file|glob> <file|glob>...   A list of files or globs to spellcheck.
 -l, --language <language>                The language of the files. The default language is en-US. The following
-                                         languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA.
+                                         languages are supported: en-AU, en-CA, en-GB, en-US, en-ZA, vi.
 -d, --dictionaries <file> <file>...      Files to combine into a personal dictionary.
 --generate-dictionary                    Write a personal dictionary that contains all found misspellings to
                                          dictionary.txt.
@@ -156,4 +156,4 @@ List of Report types:
 
 ## Development
 
-Run `npm install` to install dependencies. Then, run `node index.js` to run Spellcheck CLI. You can also run `npm run spellchecker` to run Spellcheck CLI against its own documentation, `npm run lint` to lint the JavaScript source files, and `npm run test` to run the test suite.
+Run `yarn install` to install dependencies. Then, run `node index.js` to run Spellcheck CLI. You can also run `yarn spellchecker` to run Spellcheck CLI against its own documentation, `yarn lint` to lint the JavaScript source files, and `yarn test` to run the test suite.
