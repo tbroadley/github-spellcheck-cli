@@ -457,8 +457,16 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
     code.should.not.have.property('code');
   });
 
-  it('can read options from a config file', async () => {
+  it('can read options from a YAML config file', async () => {
     const result = await runWithArguments('--config test/fixtures/config/basic.yml');
     result.should.not.have.property('code');
   });
+  it('can read options from a JSON config file', async () => {
+    const result = await runWithArguments('--config test/fixtures/config/basic.json');
+    result.should.not.have.property('code');
+  });
+  it('can read options from a JSONC config file', async() => {
+    const result = await runWithArguments('--config test/fixtures/config/basic.jsonc');
+    result.should.not.have.property('code');
+  })
 });

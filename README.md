@@ -56,7 +56,7 @@ Run Spellchecker CLI using the command `spellchecker`. This command takes the fo
                                          no values are spellchecked. Only valid when the `frontmatter` plugin is used.
 --reports <file> <file>...               A list of report files to generate. The type of report is based on the
                                          extension of the file. (Supported: .junit.xml and .json)
---config <path>                          A path to a YAML config file.
+--config <path>                          A path to a config file.
 -h, --help                               Print this help screen.
 ```
 
@@ -64,7 +64,7 @@ If you've installed Spellchecker CLI globally, you can simply run `spellchecker`
 
 ### Configuration files
 
-Spellchecker CLI can also read configuration from a YAML file. By default, it will try to read `.spellcheckerrc.yaml` or `.spellcheckerrc.yml` in the root directory of your project. You can also specify a different path using the `--config` command line argument.
+Spellchecker CLI can also read configuration from a JSON or YAML file. By default, it will try to read `.spellcheckerrc.yaml`, `.spellcheckerrc.yml`, `.spellcheckerrc.json`, or `.spellcheckerrc.jsonc` in the root directory of your project. You can also specify a different path using the `--config` command line argument.
 
 You can specify any command line option in a config file. Just make sure to use camelcase option names in the config file, _e.g._ `frontmatterKeys` instead of `frontmatter-keys`.
 
