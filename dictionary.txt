@@ -22,3 +22,5 @@ TOML
 YAML
 2FA
 uncapitalized
+config
+camelcase
