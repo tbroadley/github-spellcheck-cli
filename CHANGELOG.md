@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Added support for reading configuration from a YAML file.
+
 ## [4.5.0] - 2021-06-04
 
 - Add Vietnamese support

@@ -17,12 +17,17 @@ chai.should();
 
 function runCommand(command) {
   return new Promise((resolve) => {
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        resolve(merge({}, error, { stdout, stderr }));
+    exec(
+      command,
+      // Prevent Spellchecker from picking up .spellcheckerrc.yml in these tests.
+      { env: Object.assign({}, process.env, { APP_ROOT_PATH: __dirname }) },
+      (error, stdout, stderr) => {
+        if (error) {
+          resolve(merge({}, error, { stdout, stderr }));
+        }
+        resolve({ stdout, stderr });
       }
-      resolve({ stdout, stderr });
-    });
+    );
   });
 }
 
@@ -80,6 +85,12 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
 
   it('exits with an error when no arguments are provided', async () => {
     const { code, stderr } = await runWithArguments('');
+    code.should.equal(1);
+    stderr.should.include('A list of files is required.');
+  });
+
+  it('exits with an error when an empty config file is specified', async () => {
+    const { code, stderr } = await runWithArguments('--config test/fixtures/config/empty.yml');
     code.should.equal(1);
     stderr.should.include('A list of files is required.');
   });
@@ -444,5 +455,10 @@ parallel('Spellchecker CLI', function testSpellcheckerCLI() {
   it('ignores spelling mistakes inside exclude comment blocks with special formatting', async () => {
     const code = await runWithArguments('test/fixtures/exclude-blocks-formatting.md');
     code.should.not.have.property('code');
+  });
+
+  it('can read options from a config file', async () => {
+    const result = await runWithArguments('--config test/fixtures/config/basic.yml');
+    result.should.not.have.property('code');
   });
 });

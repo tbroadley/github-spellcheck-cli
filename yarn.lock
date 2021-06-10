@@ -233,6 +233,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"app-root-path@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "app-root-path@npm:3.0.0"
+  checksum: c4799a164ff9d3887654bcdaf32d1c84fddb326ba42ada30fbd26d8339a83f36dd490760a09c22fee86528a754f9f4997628cc962b8b33b4e2e7329c6333c74f
+  languageName: node
+  linkType: hard
+
 "aproba@npm:^1.0.3":
   version: 1.2.0
   resolution: "aproba@npm:1.2.0"
@@ -4036,6 +4043,7 @@ fsevents@~2.3.1:
   version: 0.0.0-use.local
   resolution: "spellchecker-cli@workspace:."
   dependencies:
+    app-root-path: ^3.0.0
     chai: ^4.3.4
     chalk: ^2.4.2
     command-line-args: ^5.1.1

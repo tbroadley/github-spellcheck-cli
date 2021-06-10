@@ -5,7 +5,7 @@ const glob = require('globby');
 const report = require('vfile-reporter');
 
 const { buildPersonalDictionary } = require('./lib/build-personal-dictionary');
-const { parseArgs } = require('./lib/command-line');
+const { parseConfig } = require('./lib/config');
 const { hasMessages } = require('./lib/has-messages');
 const { printError } = require('./lib/print-error');
 const { Spellchecker } = require('./lib/spellchecker');
@@ -24,7 +24,7 @@ const { generateReports } = require('./lib/report-generator');
     plugins,
     reports,
     quiet,
-  } = parseArgs();
+  } = parseConfig();
 
   const personalDictionary = await buildPersonalDictionary(personalDictionaryPaths);
   const spellchecker = new Spellchecker({
