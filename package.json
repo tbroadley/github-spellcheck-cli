@@ -1,6 +1,6 @@
 {
   "name": "spellchecker-cli",
-  "version": "4.8.0-alpha.0",
+  "version": "4.8.0-alpha.1",
   "description": "A command-line tool for spellchecking files.",
   "main": "build/index.js",
   "files": [
