@@ -7,6 +7,8 @@ plugins:
   - "@typescript-eslint"
 env:
   node: true
+ignorePatterns:
+  - build/**/*
 rules:
   comma-dangle:
     - error
