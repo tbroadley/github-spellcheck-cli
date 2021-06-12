@@ -13,7 +13,7 @@
     "ci": "yarn spellchecker && yarn lint && yarn test",
     "lint": "eslint \"**/*.js\"",
     "spellchecker": "ts-node ./index.ts",
-    "test": "mocha",
+    "test": "tsc && mocha",
     "prepack": "tsc"
   },
   "author": "Thomas Broadley <buriedunderbooks@hotmail.com>",
