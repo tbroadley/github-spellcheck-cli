@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Compile project using the TypeScript compiler.
+
 ## [4.7.0] - 2021-06-12
 
 - Add support for JSON and JSONC configuration files ([@gadhagod](https://github.com/gadhagod)).

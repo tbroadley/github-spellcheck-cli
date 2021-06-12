@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const fs = require('fs-extra');
-const glob = require('globby');
-const report = require('vfile-reporter');
+import * as fs from 'fs-extra';
+import glob from 'globby';
+import reporter from 'vfile-reporter';
 
 const { buildPersonalDictionary } = require('./lib/build-personal-dictionary');
 const { parseConfig } = require('./lib/config');
@@ -36,7 +36,7 @@ const { generateReports } = require('./lib/report-generator');
   });
 
   if (personalDictionaryPaths.length > 0) {
-    files.push(...personalDictionaryPaths.map(filePath => `!${filePath}`));
+    files.push(...personalDictionaryPaths.map((filePath: string) => `!${filePath}`));
   }
 
   const filesFromGlobs = await glob(files, { gitignore: !noGitignore });
@@ -45,10 +45,10 @@ const { generateReports } = require('./lib/report-generator');
     console.log(`Spellchecking ${filesFromGlobs.length} file${filesFromGlobs.length === 1 ? '' : 's'}...`);
   }
 
-  const checkSpelling = filePath => spellchecker.checkSpelling(filePath);
+  const checkSpelling = (filePath: string) => spellchecker.checkSpelling(filePath);
   const vfiles = await Promise.all(filesFromGlobs.map(checkSpelling));
 
-  const results = report(vfiles, { quiet });
+  const results = reporter(vfiles, { quiet });
   if (results.length > 0) {
     if (!quiet) {
       console.log();
@@ -61,7 +61,7 @@ const { generateReports } = require('./lib/report-generator');
   }
 
   if (hasMessages(vfiles)) {
-    if (generateDictionary && hasMessages(vfiles, message => message.source === 'retext-spell')) {
+    if (generateDictionary && hasMessages(vfiles, (message: any) => message.source === 'retext-spell')) {
       await fs.writeFile('dictionary.txt', toDictionary(vfiles));
       console.log('Personal dictionary written to dictionary.txt.');
     }

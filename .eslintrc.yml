@@ -1,6 +1,14 @@
-extends: airbnb-base
+extends:
+  - airbnb-base
+  - "plugin:@typescript-eslint/recommended"
+root: true
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
 env:
   node: true
+ignorePatterns:
+  - build/**/*
 rules:
   comma-dangle:
     - error
@@ -9,4 +17,7 @@ rules:
       imports: always-multiline
       exports: always-multiline
       functions: never
-  no-console: off
+  no-console:
+    - off
+  "@typescript-eslint/no-var-requires":
+    - off
