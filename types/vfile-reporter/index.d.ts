@@ -1,15 +1,4 @@
 declare module 'vfile-reporter' {
-  /**
-   * Report a file’s messages.
-   *
-   * @param {Error|VFile|Array.<VFile>} [files]
-   * @param {Options} [options]
-   * @returns {string}
-   */
-  export default function reporter(
-    files?: Error | VFile | Array<VFile>,
-    options?: Options
-  ): string
   export type VFile = import('vfile').VFile
   export type VFileMessage = import('vfile-message').VFileMessage
   export type Statistics = import('vfile-statistics').Statistics
@@ -40,4 +29,16 @@ declare module 'vfile-reporter' {
     stats: Statistics
     sizes: _Sizes
   }
+
+  /**
+   * Report a file’s messages.
+   *
+   * @param {Error|VFile|Array.<VFile>} [files]
+   * @param {Options} [options]
+   * @returns {string}
+   */
+  export default function reporter(
+    files?: Error | VFile | Array<VFile>,
+    options?: Options
+  ): string;
 }
