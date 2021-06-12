@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.7.0] - 2021-06-12
+
 - Add support for JSON and JSONC configuration files ([@gadhagod](https://github.com/gadhagod)).
 
 ## [4.6.0] - 2021-06-10
@@ -130,7 +132,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added a shebang to [index.js](./index.js).
 
-[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.6.0...HEAD
+[Unreleased]: https://github.com/tbroadley/spellchecker-cli/compare/v4.7.0...HEAD
+[4.7.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.6.0...v4.7.0
 [4.6.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.5.0...v4.6.0
 [4.5.0]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.4.1...v4.5.0
 [4.4.1]:      https://github.com/tbroadley/spellchecker-cli/compare/v4.4.0...v4.4.1
