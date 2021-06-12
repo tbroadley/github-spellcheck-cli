@@ -1,0 +1,9 @@
+/*
+ Configuration
+*/
+{
+    "files": [ // files to be checked
+        "test/fixtures/en-CA.txt"
+    ],
+    "language": "en-CA" // language
+}
