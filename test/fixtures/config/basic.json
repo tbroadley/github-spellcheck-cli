@@ -2,5 +2,5 @@
     "files": [
         "test/fixtures/en-CA.txt"
     ],
-    "lanuage": "en-CA"
+    "language": "en-CA"
 }

@@ -5,5 +5,5 @@
     "files": [ // files to be checked
         "test/fixtures/en-CA.txt"
     ],
-    "lanuage": "en-CA" // language
+    "language": "en-CA" // language
 }
