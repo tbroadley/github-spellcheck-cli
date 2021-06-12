@@ -165,4 +165,4 @@ List of Report types:
 
 ## Development
 
-Run `yarn install` to install dependencies. Then, run `node index.js` to run Spellcheck CLI. You can also run `yarn spellchecker` to run Spellcheck CLI against its own documentation, `yarn lint` to lint the JavaScript source files, and `yarn test` to run the test suite.
+Run `yarn install` to install dependencies. Then, run `npx ts-node index.js` to run Spellchecker CLI. You can also run `yarn spellchecker` to run Spellcheck CLI against its own documentation, `yarn lint` to lint the JavaScript source files, and `yarn test` to run the test suite.
