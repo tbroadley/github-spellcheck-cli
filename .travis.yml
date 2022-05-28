@@ -1,6 +1,9 @@
 language: node_js
 node_js:
 - '17'
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python3 # for node-gyp
 script: yarn spellcheck && yarn lint && yarn test
 cache:
   directories:
