@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-- '12'
-script: npm run spellcheck && npm run lint && npm test
+- '17'
+script: yarn spellcheck && yarn lint && yarn test
 cache:
   directories:
   - node_modules
