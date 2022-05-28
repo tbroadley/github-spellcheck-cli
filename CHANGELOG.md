@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [7.1.3] - 2022-05-28
+### Changed
+- Upgraded packages due to security vulnerabilities.
+
 ## [7.1.2] - 2019-10-21
 ### Changed
 - Upgraded to latest version of `@octokit/rest` due to deprecation warnings for the fork functionality [@smittey](https://github.com/smittey).
@@ -195,7 +199,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.1...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.3...HEAD
+[7.1.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.2...v7.1.3
+[7.1.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.1...v7.1.2
 [7.1.1]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.0...v7.1.1
 [7.1.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.0.0...v7.1.0
 [7.0.0]: https://github.com/tbroadley/github-spellcheck-cli/compare/v6.0.0...v7.0.0
