@@ -15,13 +15,13 @@ When I'm looking through the documentation of an open-source software project, I
 
 ## Setup
 
-You need to have Git, [Node.js](https://nodejs.org/en/download/), and [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
+You need to have Git, Node.js, and NPM installed.
 
 ```
 $ npm install --location=global github-spellcheck-cli
 ```
 
-Due to issues with the SpellChecker Node Module Github Spellcheck does not currently support Ubuntu. 
+Due to issues with the SpellChecker Node Module Github Spellcheck does not currently support Ubuntu. More information can be found at issue [#90](https://github.com/tbroadley/github-spellcheck-cli/issues/90).
 
 ## Usage
 
