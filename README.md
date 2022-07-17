@@ -2,6 +2,8 @@
 
 A tool for checking GitHub repositories for spelling errors and submitting PRs to fix them.
 
+Currently, *GitHub Spellcheck doesn't work on Linux* because of https://github.com/atom/node-spellchecker/issues/54. More information: https://github.com/tbroadley/github-spellcheck-cli/issues/90.
+
 [![npm](https://img.shields.io/npm/v/github-spellcheck-cli.svg)](https://www.npmjs.com/package/github-spellcheck-cli)
 [![Build Status](https://travis-ci.org/tbroadley/github-spellcheck-cli.svg?branch=master)](https://travis-ci.org/tbroadley/github-spellcheck-cli)
 
@@ -18,10 +20,14 @@ When I'm looking through the documentation of an open-source software project, I
 You need to have Git, Node.js, and NPM installed.
 
 ```
-$ npm install --location=global github-spellcheck-cli
+$ npm install --global github-spellcheck-cli
 ```
 
-Due to issues with the SpellChecker Node Module Github Spellcheck does not currently support Ubuntu. More information can be found at issue [#90](https://github.com/tbroadley/github-spellcheck-cli/issues/90).
+Or:
+
+```
+$ npm install --location=global github-spellcheck-cli
+```
 
 ## Usage
 
