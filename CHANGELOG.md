@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Updated README.md to clarify that the package doesn't currently work on Linux, and to suggest `npm install --location=global` as well as `--global` ([@Syed-Naufal-Mahmood](https://github.com/Syed-Naufal-Mahmood)).
 
 ## [7.1.4] - 2022-05-28
 ### Fixed
