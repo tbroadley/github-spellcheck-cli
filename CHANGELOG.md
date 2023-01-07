@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [7.1.5] - 2023-01-08
 ### Changed
 - Updated README.md to clarify that the package doesn't currently work on Linux, and to suggest `npm install --location=global` as well as `--global` ([@Syed-Naufal-Mahmood](https://github.com/Syed-Naufal-Mahmood)).
+
+### Fixed
+- Upgraded json5 to fix a security issue.
 
 ## [7.1.4] - 2022-05-28
 ### Fixed
@@ -205,7 +210,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - The core Github Spellcheck functionality. Hurray!
 
-[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.4...HEAD
+[Unreleased]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.5...HEAD
+[7.1.5]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.4...v7.1.5
 [7.1.4]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.3...v7.1.4
 [7.1.3]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.2...v7.1.3
 [7.1.2]: https://github.com/tbroadley/github-spellcheck-cli/compare/v7.1.1...v7.1.2
