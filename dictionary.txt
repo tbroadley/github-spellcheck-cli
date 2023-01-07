@@ -22,4 +22,4 @@ whitelist
 Octokit
 madhavarshney
 adelsmee
-️
+json5
