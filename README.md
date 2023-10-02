@@ -62,7 +62,7 @@ s         skip file         Do not include this correction on any other correcti
 h         help              Print this usage guide.
 ```
 
-**WARNING**: After you use this tool once for a repository, if you try and use it again for the same repoistory it will error at the end due to [Issue #108](https://github.com/tbroadley/github-spellcheck-cli/issues/108), and you will lose all the corrections you have made with no way to recover them. To deal with this, you need to delete the folder corresponding to the package in `~/.github-spellcheck/YourUsername`, as well as the branch associated with the created pull request (as GitHub prompts you to do after it has been merged).
+**WARNING**: After you use this tool once for a repository, if you try and use it again for the same repoistory it will error at the end due to [Issue #108](https://github.com/tbroadley/github-spellcheck-cli/issues/108), and you will lose all the corrections you have made with no way to recover them. To deal with this, you need to delete the folder corresponding to the repository in `~/.github-spellcheck`, as well as the GitHub branch associated with the first created pull request (as GitHub prompts you to do after it has been merged).
 
 ## Whitelist
 
